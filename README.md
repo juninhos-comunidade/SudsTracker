@@ -9,7 +9,7 @@
 
 ## 📝 Sobre o Projeto
 
-O **SUDS Tracker** é uma ferramenta digital voltada para a **regulação emocional e saúde mental**. A aplicação utiliza a Escala Subjetiva de Unidades de Sofrimento (SUDS) para ajudar os usuários a identificarem, monitorarem e lidarem com seus níveis de estresse e ansiedade. A ideia é proporcionar um espaço seguro e intuitivo para que as pessoas possam entender melhor seus sentimentos e adotar práticas de autocuidado.
+O **SUDS Tracker** é uma ferramenta digital voltada para a **regulação emocional e saúde mental**. A aplicação utiliza a Escala Subjetiva de Unidades de Sofrimento (SUDS) para ajudar os usuários a identificarem, monitorarem e lidarem com seus níveis de estresse e ansiedade. A ideia é proporcionar um espaço seguro e intuitivo para que as pessoas possam entender melhor seus sentimentos e adotar práticas de autocuidado. SUDS Tracker é um projeto idealizado e liderado por Laryssa Ferreira.
 
 Este projeto está sendo construído de forma 100% colaborativa dentro do ecossistema da **Comunidade Juninhos**. Nascido de uma ideia para ajudar na área da saúde mental, nosso foco primordial é criar um ambiente de aprendizado acolhedor, onde desenvolvedores de todos os níveis — especialmente iniciantes — possam unir forças, aplicar conceitos modernos de engenharia de software e entregar uma solução com excelente usabilidade e impacto social real.
 
@@ -21,10 +21,10 @@ Este projeto está sendo construído de forma 100% colaborativa dentro do ecossi
 
 O projeto foi estruturado seguindo os conceitos de **modularização**, alta coesão e baixo acoplamento, visando facilitar a contribuição de todos:
 
-* **Frontend:** ...
-* **Backend:** ...
-* **Banco de Dados:** ...
-* **Infraestrutura:** ...
+* **Frontend:** Laryssa & Levi
+* **Backend:** Well, Yuri, João
+* **Banco de Dados:** Júlia
+* **Infraestrutura:** João & Well
 
 ---
 
@@ -108,11 +108,12 @@ Um projeto completo só ganha vida com uma equipe sintonizada. Conheça as mente
 
 | Avatar | Membro | Função / Especialidade | GitHub |
 | :---: | :--- | :--- | :--- |
-| <img src="https://github.com/github.png" width="40" style="border-radius:50%"/> | **XXX** | Pendente | ... |
-| <img src="https://github.com/github.png" width="40" style="border-radius:50%"/> | **XXX** | Pendente | ... |
-| <img src="https://github.com/github.png" width="40" style="border-radius:50%"/> | **XXX** | Pendente | ... |
-| <img src="https://github.com/github.png" width="40" style="border-radius:50%"/> | **XXX** | Pendente | ... |
-| <img src="https://github.com/github.png" width="40" style="border-radius:50%"/> | **XXX** | Pendente | ... |
+| <img src="https://github.com/LaryssaHtml.png" width="40" style="border-radius:50%"/> | **Laryssa** |UI/UX + Front-end (HTML/CSS)| @LaryssaHtml |
+| <img src="https://github.com/jonnguii.png" width="40" style="border-radius:50%"/> | **João** | Back-end | @jonnguii |
+| <img src="https://github.com/keitsdev.png" width="40" style="border-radius:50%"/> | **Yuri** | Back-end | @keitsdev |
+| <img src="https://github.com/JuhCodeSpace.png" width="40" style="border-radius:50%"/> | **Júlia** |Banco de dados + Segurança| @JuhCodeSpace |
+| <img src="https://github.com/wellpaper23.png" width="40" style="border-radius:50%"/> | **Well** | Back-end | @wellpaper23 |
+| <img src="https://github.com/ilevisantos.png" width="40" style="border-radius:50%"/> | **Levi** | Front-end (HTML/CSS) | @ilevisantos |
 
 ---
 

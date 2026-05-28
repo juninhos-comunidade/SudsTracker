@@ -4,6 +4,31 @@
 
 ---
 
+## Configuração de Variáveis de Ambiente (.env)
+
+Para rodar o backend localmente, siga estes passos:
+
+1. Copie o arquivo `.env.example` e renomeie para `.env` na pasta `apps/backend`.
+2. Preencha os valores necessários no `.env`. Exemplo:
+
+   ```
+   PORT=5000
+
+   # Pode colocar qualquer valor de porta entre 1 e 65535
+   # Outras variáveis podem ser adicionadas conforme necessário
+   ```
+
+3. Instale as dependências do projeto:
+   ```
+   npm install
+   ```
+4. Inicie o servidor:
+   ```
+   npm run dev
+   ```
+
+> O arquivo `.env` não deve ser versionado no Git. Use sempre o `.env.example` como referência para o time.
+
 ## Tecnologias Utilizadas
 
 - Node.js

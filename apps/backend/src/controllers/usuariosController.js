@@ -1,4 +1,4 @@
-import usuariosService from "../services/usuariosService.js";
+//import usuariosService from "../services/usuariosService.js";
 
 async function cadastrarUsuario(req, res) {
   try {

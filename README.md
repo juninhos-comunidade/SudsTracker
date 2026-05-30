@@ -72,6 +72,7 @@ Antes de começar, você vai precisar ter instalado em sua máquina:
    # Instalando dependências do Frontend
    cd frontend
    npm install
+   npm install next react react-dom (caso não tenha instalado)
 
    # Voltando para a raiz e instalando dependências do Backend
    cd ../backend

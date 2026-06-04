@@ -2,7 +2,7 @@ import { Router } from "express";
 import { autenticacaoController } from "../controllers/authController.js";
 
 const router = Router();
-const authController = new authController();
+const authController = new autenticacaoController();
 router.post('/login', authController.autenticarUsuario);
 
 export default router;

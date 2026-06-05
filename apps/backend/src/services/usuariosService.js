@@ -1,14 +1,7 @@
-import { parseISO, isValid, isFuture } from 'date-fns';
+import { parseISO, isValid, isFuture } from "date-fns";
 
 async function cadastrarUsuario(dadosUsuario) {
-  const {
-    nome,
-    email,
-    senha,
-    dataNascimento,
-    registroProfissional,
-    tipoUsuario,
-  } = dadosUsuario;
+  const { nome, senha, dataNascimento, registroProfissional } = dadosUsuario;
 
   // Usa await, pois vai realizar consulta no banco de dados e a operação deve ser async
   await validaUsuario(dadosUsuario);
@@ -33,41 +26,46 @@ async function cadastrarUsuario(dadosUsuario) {
 }
 
 async function validaUsuario(dadosUsuario) {
-  const { email, senha, dataNascimento } = dadosUsuario;
+  const { nome, senha, dataNascimento, registroProfissional } = dadosUsuario;
 
-  if (!email) {
-    throw new Error('Email é obrigatório.');
+
+  const emailPadrao = dadosUsuario.email ? Strin(dadosUsuario.email).trim().toLowerCase() : "";
+
+  if (!nome || String(nome).trim() === "") {
+    throw new Error("Nome é obrigatório.");
   }
 
-  const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const emailValido = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-  if (!emailValido) {
-    throw new Error('Email inválido.');
-  }
-
-  if (!senha) {
-    throw new Error('Senha é obrigatória.');
+  if (!email || !emailValido) {
+    throw new Error("Email inválido ou não informado.");
   }
 
   const senhaValida =
     /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(senha);
 
-  if (!senhaValida) {
-    throw new Error('Senha inválida.');
+  if (!senha || !senhaValida) {
+    throw new Error(
+      "Senha deve ter no mínimo 8 caracteres, uma letra maiúscula, um número e um caractere especial.",
+    );
   }
 
   if (!dataNascimento) {
-    throw new Error('Data de nascimento é obrigatória.');
+    throw new Error("Data de nascimento é obrigatória.");
   }
 
   const dataNascimentoObjDate = parseISO(dataNascimento);
-
-  if (!isValid(dataNascimentoObjDate)) {
-    throw new Error('Data de nascimento inválida.');
+  if (
+    !isValid(dataNascimentoObjDate) ||
+    isFuture(dataNascimentoObjDate || dataNascimentoObjDate)
+  ) {
+    throw new Error("Data de nascimento inválida.");
   }
 
-  if (isFuture(dataNascimentoObjDate)) {
-    throw new Error('Data de nascimento não pode ser futura.');
+  if (tipoUsuario === "PROFISSIONAL" && !registroProfissional) {
+    throw new Error(
+      "Profissionais precisam informar seu Registro Profissional.",
+    );
   }
 
   // Preparando para o Prisma (O Prisma usa findUnique) - Movido para dentro da função!

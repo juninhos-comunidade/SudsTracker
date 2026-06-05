@@ -119,7 +119,6 @@ export default function AuthPage() {
       //   })
       // });
 
-      // Aguarda um breve momento para feedback visual
       await new Promise((resolve) => setTimeout(resolve, 500));
 
       alert('Login realizado com sucesso! Redirecionando...');

@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/usuarios", usuariosRota);
-app.use("/api/usuarios", authRotas);
+app.use("/api/auth", authRotas);
 
 // Middleware global de tratamento de erros
 app.use((err, req, res, next) => {

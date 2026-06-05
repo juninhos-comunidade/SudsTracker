@@ -1,6 +1,5 @@
-import {PrismaClient} from '../generated/prisma/index.js';
+import { prisma } from '../config/database.js';
 
-const prisma = new PrismaClient();
 
 export class UserRepository {
     async findByEmail(email) {

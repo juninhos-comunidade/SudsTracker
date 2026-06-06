@@ -41,3 +41,23 @@
   color: var(--cor-erro);
   margin-top: 2px;
 }
+
+.labelDark {
+  color: #ddd;
+}
+
+.labelLight {
+  color: #333;
+}
+
+.inputDark {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.inputLight {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(200, 200, 200, 0.3);
+  color: #333;
+}

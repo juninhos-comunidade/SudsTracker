@@ -4,7 +4,7 @@
   "type": "module",
   "main": "src/app.js",
   "scripts": {
-    "dev": "dotenvx run --overload -f ../../.env -- nodemon src/app.js",
+    "dev": "dotenvx run --overload -f ./.env -- nodemon src/app.js",
     "start": "node src/app.js"
   },
   "dependencies": {
@@ -15,7 +15,8 @@
     "date-fns": "^4.4.0",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "jsonwebtoken": "^9.0.3"
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.21.0"
   },
   "devDependencies": {
     "@dotenvx/dotenvx": "^1.71.0",

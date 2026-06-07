@@ -154,11 +154,9 @@ export default function AuthPage() {
         
         <div className={styles.caixaFormulario}>
           {/* BOTÃO MODO ESCURO - TOGGLE */}
-          <div
-            className={`${styles.toggleSwitch} ${modoEscuro ? styles.switchDark : styles.switchLight}`}
-          >
-            <input
-              type="checkbox"
+          <div className={`${styles.toggleSwitch} ${modoEscuro ? styles.switchDark : styles.switchLight}`}>
+            <input 
+              type="checkbox" 
               className={styles.toggleInput}
               checked={modoEscuro}
               onChange={() => setModoEscuro(!modoEscuro)}

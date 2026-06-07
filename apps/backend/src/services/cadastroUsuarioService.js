@@ -63,11 +63,12 @@ async function validaUsuario(dadosUsuario) {
   }
 
   const tipoValido = ["paciente", "profissional"];
-  if(!tipoValido.includes(tipoUsuario?.toUpperCase())) {
+  const tipoPadronizado = tipoUsuario ? String(tipoUsuario).toLowerCase() : "";
+  if(!tipoValido.includes(tipoPadronizado)) {
     throw new Error("Tipo de usuário inválido.") 
   }  
 
-  if (tipoUsuario?.toUpperCase() === "PROFISSIONAL" && !registroProfissional) {
+  if (tipoPadronizado === "profissional" && !registroProfissional) {
       throw new Error(
       "Profissionais precisam informar seu Registro Profissional.",
     );

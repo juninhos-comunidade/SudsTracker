@@ -43,19 +43,20 @@ export default function AuthPage() {
 
   const handleSubmitCadastro = async (e) => {
     e.preventDefault();
-
-    if (
-      !nomeCadastro ||
-      !dataNascimento ||
-      !emailCadastro ||
-      !senhaCadastro ||
-      !confirmarSenhaCadastro
-    ) {
+    
+   
+    if (!nomeCadastro || !dataNascimento || !emailCadastro || !senhaCadastro || !confirmarSenhaCadastro) {
       alert('Por favor, preencha todos os campos obrigatórios.');
       return;
     }
 
     if (!validarSenhas(senhaCadastro, confirmarSenhaCadastro)) {
+      return;
+    }
+
+    const tipoValido = ['paciente', 'profissional'];
+    if (!tipoValido.includes(tipoUsuario)) {
+      alert('Tipo de usuário inválido.');
       return;
     }
 
@@ -67,7 +68,9 @@ export default function AuthPage() {
     setCarregando(true);
 
     try {
-      const response = await fetch('/api/usuarios/cadastro', {
+      const API_URL =
+        process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
+      const response = await fetch(`${API_URL}/usuarios/cadastro`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -81,16 +84,18 @@ export default function AuthPage() {
         }),
       });
 
-      // Aguarda um breve momento para feedback visual
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      const data = await response.json();
 
-      alert('Conta criada com sucesso! Redirecionando...');
+      if(!response.ok) {
+        throw new Error(data.message || data.error);
+      }
 
-      // Redireciona para home (será criada depois)
+      alert('Cadastro realizado com sucesso! Redirecionando...');
       router.push('/home');
+
     } catch (erro) {
       console.error('Erro ao cadastrar:', erro);
-      alert('Erro ao criar conta. Tente novamente.');
+      alert(erro.message)
     } finally {
       setCarregando(false);
     }
@@ -145,16 +150,13 @@ export default function AuthPage() {
       </div>
 
       {/* LADO DIREITO */}
-      <div
-        className={`${styles.ladoDireito} ${modoEscuro ? styles.dark : styles.light}`}
-      >
+      <div className={`${styles.ladoDireito} ${modoEscuro ? styles.dark : styles.light}`}>
+        
         <div className={styles.caixaFormulario}>
           {/* BOTÃO MODO ESCURO - TOGGLE */}
-          <div
-            className={`${styles.toggleSwitch} ${modoEscuro ? styles.switchDark : styles.switchLight}`}
-          >
-            <input
-              type="checkbox"
+          <div className={`${styles.toggleSwitch} ${modoEscuro ? styles.switchDark : styles.switchLight}`}>
+            <input 
+              type="checkbox" 
               className={styles.toggleInput}
               checked={modoEscuro}
               onChange={() => setModoEscuro(!modoEscuro)}

@@ -5,12 +5,7 @@ import Image from 'next/image';
 import styles from './page.module.css';
 import InputField from './components/InputField';
 import MensagemErro from './components/MensagemErro';
-import DatePicker, { registerLocale } from 'react-datepicker';
-import { ptBR } from 'date-fns/locale';
-import 'react-datepicker/dist/react-datepicker.css';
-import datePickerStyles from './components/DatePickerCustom.module.css';
-
-registerLocale('pt-BR', ptBR);
+import DatePickerField from './components/DatePickerField';
 
 export default function AuthPage() {
   const router = useRouter();
@@ -332,34 +327,16 @@ export default function AuthPage() {
                     modoEscuro={modoEscuro}
                   />
 
-                  <div className={styles.grupoInput}>
-                    <label htmlFor="dataNascimento" className={modoEscuro ? styles.labelDark : styles.labelLight}>
-                      Data de Nascimento
-                    </label>
-                    <div className={modoEscuro ? datePickerStyles.datePickerWrapper : datePickerStyles.datePickerWrapperLight}>
-                      <DatePicker
-                        id="dataNascimento"
-                        selected={dataNascimento ? new Date(dataNascimento) : null}
-                        onChange={(data) => {
-                          setDataNascimento(data ? data.toISOString().split('T')[0] : '');
-                          limparErro('dataNascimento');
-                        }}
-                        dateFormat="dd/MM/yyyy"
-                        locale="pt-BR"
-                        showMonthDropdown
-                        showYearDropdown
-                        dropdownMode="select"
-                        maxDate={new Date()}
-                        placeholderText="dd/mm/aaaa"
-                        className={modoEscuro ? styles.inputDark : styles.inputLight}
-                      />
-                    </div>
-                    {erros.dataNascimento && (
-                      <span className={`${styles.erroInline} ${modoEscuro ? styles.erroInlineDark : styles.erroInlineLight}`}>
-                        ⚠️ {erros.dataNascimento}
-                      </span>
-                    )}
-                  </div>
+                  <label htmlFor="dataNascimento" className={modoEscuro ? styles.labelDark : styles.labelLight}>
+                    Data de Nascimento
+                  </label>
+                  <DatePickerField
+                    id="dataNascimento"
+                    value={dataNascimento}
+                    onChange={(data) => { setDataNascimento(data); limparErro('dataNascimento'); }}
+                    erro={erros.dataNascimento}
+                    modoEscuro={modoEscuro}
+                  />
 
                   <InputField
                     label="E-mail"

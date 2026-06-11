@@ -1,0 +1,63 @@
+.grupoInput {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.grupoInput label {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.grupoInput input {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.grupoInput input:focus {
+  border-color: var(--cor-primaria);
+}
+
+/* Borda vermelha automática quando o campo tem erro */
+.grupoInput input[aria-invalid='true'] {
+  border-color: var(--cor-erro);
+}
+
+/* Erro inline — modo escuro */
+.erroInlineDark {
+  font-size: 0.78rem;
+  color: #f8a4a4;
+  margin-top: 2px;
+}
+
+/* Erro inline — modo claro */
+.erroInlineLight {
+  font-size: 0.78rem;
+  color: var(--cor-erro);
+  margin-top: 2px;
+}
+
+.labelDark {
+  color: #ddd;
+}
+
+.labelLight {
+  color: #333;
+}
+
+.inputDark {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.inputLight {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(200, 200, 200, 0.3);
+  color: #333;
+}

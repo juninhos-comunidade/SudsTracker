@@ -1,9 +1,11 @@
+import path from "path";
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import cadastroUsuarioRota from "./routes/cadastroUsuarioRota.js";
-import autenticacaoUsuarioRota from "./routes/autenticacaoUsuarioRota.js"
-dotenv.config();
+import loginUsuarioRota from "./routes/loginUsuarioRota.js";
+
+dotenv.config({ path: path.resolve(process.cwd(), "../../.env") });
 const app = express();
 const PORT = process.env.PORT || 5001;
 
@@ -14,7 +16,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/usuarios", cadastroUsuarioRota);
-app.use("/api/usuarios", autenticacaoUsuarioRota);
+app.use("/api/usuarios", loginUsuarioRota);
 
 // Middleware global de tratamento de erros
 app.use((err, req, res, next) => {

@@ -43,25 +43,4 @@ async function logarUsuario ({ email, senha }) {
 
 }
 
-// mock
-// async function logarUsuario ({ email, senha }) {
-//   const userMock = {
-//     id: 1,
-//     nome: 'User Mock',
-//     email: 'suds@exemplo.com',
-//     tipoUsuario: 'paciente',
-//   };
-
-//   if (email !== 'suds@exemplo.com' || senha !== 'Suds123@') {
-//     throw new Error('Email ou senha inválidos');
-//   }
-
-//   const token = 'mock-jwt-token-111111';
-
-//   return {
-//     usuario: userMock,
-//     token,
-//   };
-// }
-
 export const loginUsuarioService = { logarUsuario };

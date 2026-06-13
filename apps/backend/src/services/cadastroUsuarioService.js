@@ -88,4 +88,4 @@ async function validaUsuario(dadosUsuario) {
   return dataNascimentoObjDate;
 }
 
-export default { cadastrarUsuario };
+export const cadastroUsuarioService = { cadastrarUsuario };

@@ -155,7 +155,7 @@ export default function AuthPage() {
 
     try {
       const API_URL =
-        process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
+        process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
       const response = await fetch(`${API_URL}/usuarios/cadastro`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -214,20 +214,20 @@ export default function AuthPage() {
     setCarregando(true);
 
     try {
-      // Simulando chamada à API (quando o backend estiver pronto)
-      // const response = await fetch('/api/usuarios/login', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({
-      //     email: emailLogin,
-      //     senha: senhaLogin
-      //   })
-      // });
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+      const response = await fetch(`${API_URL}/usuarios/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: emailLogin,
+          senha: senhaLogin
+        })
+      });
 
       const data = await response.json();
       if(!response.ok) {
-        const mensagemErro = data?.message || data?.error || 'Erro ao criar conta. Tente novamente.';
-        setErroCadastro(mensagemErro)
+        const mensagemErro = data?.message || data?.error || 'Erro ao realizar login. Tente novamente.';
+        setErroLogin(mensagemErro)
         return;
       }
 

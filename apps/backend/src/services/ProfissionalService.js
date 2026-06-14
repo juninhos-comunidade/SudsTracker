@@ -2,7 +2,7 @@ import PacienteRepository from "../repositories/pacienteRepository";
 import ProfissionalRepository from "../repositories/profissionalRepository";
 
 
-export class ProfissionalSerices {
+export class ProfissionalService {
 
     async listarTodosProfissionais(){
         try{

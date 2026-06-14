@@ -1,8 +1,8 @@
-import PacienteRepository from "../repositories/pacienteRepository";
-import ProfissionalRepository from "../repositories/profissionalRepository";
+import PacienteRepository from "../repositories/pacienteRepository.js";
+import ProfissionalRepository from "../repositories/profissionalRepository.js";
 
 
-export class ProfissionalService {
+class ProfissionalService {
 
     async listarTodosProfissionais(){
         try{
@@ -75,3 +75,5 @@ export class ProfissionalService {
         }
     }
 }
+
+export default new ProfissionalService();

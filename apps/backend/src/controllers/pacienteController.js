@@ -1,12 +1,20 @@
 import pacienteService from "../services/pacienteService.js";
 
+
+function tratarErroController(res, error, mensagemLog = 'Erro no servidor') {
+    console.error(`${mensagemLog}:`, error);
+
+    if (error.code === 'P2025' || (error.message && error.message.includes('não encontrado'))) {
+        return res.status(404).json({ mensagem: error.message || "Recurso não encontrado." });
+    }
+    return res.status(500).json({ mensagem: 'Erro interno do servidor.' });
+}
+
+
 const PacienteController = {
   async alterarProfissional(req, res) {
     try {
-      const {
-        id_paciente,
-        id_profissional    
-      } = req.body;
+      const {id_paciente,id_profissional} = req.body;
       
       console.log(req.body);
       const pacienteAtualizado = await pacienteService.atribuirProfissional(id_paciente,{id_profissional});
@@ -16,26 +24,45 @@ const PacienteController = {
         profissional: id_profissional
       });
     } catch (error) {
+        return tratarErroController(res, error, "Erro ao atribuir profissional");
 
-
-      console.error("Erro capturado no atribuição:", error);
-      if (error.code === 'P2025' || error.message?.includes("records that were required but not found")) {
-      return res.status(404).json({ 
-        error: "Operação inválida: O paciente ou o profissional informado não existe." 
-      });
-      }else{
-        return res
-          .status(500)
-          .json({ error: error.message || "Erro interno do servidor." });
-      }
     }
   },
+  
+  async exibirPacientePorUsuario(req, res) {
+    try {
+      const { idUsuario } = req.params;
+      const paciente = await pacienteService.encontrarPacientePorUsuario(idUsuario);
+      return res.status(200).json(paciente);
+    } catch (error) {
+      return tratarErroController(res, error, "Erro ao buscar paciente por usuário");
+    }
+  },
+   async listarPacientesPorProfissional(req, res) {
+    try {
+      const { profissionalId } = req.params;
+      const lista = await pacienteService.listarPacientesPorProfissional(profissionalId);
+      return res.status(200).json(lista);
+    } catch (error) {
+      return tratarErroController(res, error, "Erro ao listar pacientes por profissional");
+    }
+  },
+
+  async listarPacientes(req, res) {
+    try {
+      const pacientes = await pacienteService.listarPacientes();
+      return res.status(200).json(pacientes);
+    } catch (error) {
+      return tratarErroController(res, error, "Erro ao listar pacientes");
+    }
+  },
+
   async exibirPacientePorId(req, res){
     try {
-      const {id_paciente} = req.body;
+      const {id} = req.params;
       console.log(req.body);
 
-      const paciente = await pacienteService.encontrarPacientePorId({id_paciente});
+      const paciente = await pacienteService.encontrarPacientePorId(id);
 
       if (!paciente) {
         return res.status(404).json({ mensagem: "Paciente não encontrado." });
@@ -46,10 +73,7 @@ const PacienteController = {
         profissional: paciente}
       )
     } catch(error){
-      console.error("Erro capturado no atribuição:", error);
-      return res
-        .status(500)
-        .json({ error: error.message || "Erro interno do servidor." });
+          return tratarErroController(res, error, "Erro ao buscar paciente por id");
 
       }
   }

@@ -42,7 +42,7 @@ export class ProfissionalController {
         }
     }
 
-    async autalizarProfissional(req,res){
+    async atualizarProfissional(req,res){
         try {
             const { id } = req.params;
             const  profissionalAtualizado  = req.body;
@@ -67,5 +67,6 @@ export class ProfissionalController {
     
 }
 
+export default new ProfissionalController();
 
 

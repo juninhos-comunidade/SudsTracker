@@ -4,7 +4,7 @@ import UserRepository from '../repositories/userRepository.js';
 export class Autenticar{
 
     async usuarioEntrar({email,senha}){
-    const usuario = await userRepository.findByEmail(email);
+    const usuario = await UserRepository.encontrarPorEmail(email);
     if(!usuario){
         throw new Error('E-mail ou senha incorretos.')
     }

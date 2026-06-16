@@ -1,0 +1,89 @@
+[33mcommit 36060683c04bba233802485d2710de8d470af8e0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mSUD-16[m[33m, [m[1;31morigin/SUD-16[m[33m)[m
+Author: jonnguii <jg.cravo@outlook.com>
+Date:   Sat May 30 21:30:46 2026 -0300
+
+    SUD-16 - fix: required padrao e rota pro backend
+
+[33mcommit d99f209841a4670dbeb77cf51351343369641c0f[m
+Author: Laryssa Ferreira <laryssaferreira26@gmail.com>
+Date:   Wed May 27 22:14:45 2026 -0300
+
+    feat: refinamento completo e novas validações na tela de login
+    
+    - Adicionado campo 'Confirmar Senha' com caixa de erro para senhas divergentes;
+    - Adicionada checkbox 'Esqueceu a senha?' no formulário;
+    - Substituição de imagens de background, ícones claro/escuro e 5 novas fontes;
+    - Ajuste no placeholder do e-mail para 'suds@exemplo.com';
+    - Adicionado alerta de sucesso temporário para simulação de fluxo com o back-end.
+
+[33mcommit a50b50d309c702721d7f9dbd03364f67bad328dc[m
+Author: Laryssa Ferreira <laryssaferreira26@gmail.com>
+Date:   Tue May 26 22:52:23 2026 -0300
+
+    feat: implementa a tela de login inicial, imagens estrutura html e css.
+
+[33mcommit 879b9efda8f8566aeb4f3d697f1f032f4efc684f[m
+Author: Laryssa Ferreira <laryssaferreira26@gmail.com>
+Date:   Mon May 25 12:53:39 2026 -0300
+
+    fix: corrige caminho do globals.css e ajusta arquivos ignorados
+
+[33mcommit e7ecfa43dc305895861a6e5da447303718847e5e[m
+Author: jonnguii <jg.cravo@outlook.com>
+Date:   Sun May 24 23:51:29 2026 -0300
+
+    chore: gitignore up
+
+[33mcommit 503e493f6ebf279331a5c22dcbb17589c669f87e[m
+Author: jonnguii <jg.cravo@outlook.com>
+Date:   Sun May 24 23:42:40 2026 -0300
+
+    chore: .env e readme
+
+[33mcommit 9b0ce2abb760e19bc801a33687d0e965d9f7bd47[m
+Author: jonnguii <jg.cravo@outlook.com>
+Date:   Sun May 24 23:20:00 2026 -0300
+
+    refactor: readme
+
+[33mcommit 47ea8fa6d33c0c7b058c28e37565b875bbc81bd4[m
+Author: jonnguii <jg.cravo@outlook.com>
+Date:   Sun May 24 23:04:49 2026 -0300
+
+    chore: readme
+
+[33mcommit 4c758e94e12a275af2736751be07fc937c2b460e[m
+Author: jonnguii <jg.cravo@outlook.com>
+Date:   Sun May 24 23:03:56 2026 -0300
+
+    chore: configuracoes iniciais do projeto
+
+[33mcommit bc4e5d6d56408e31c0ef5acc44948112b992e7b4[m
+Merge: 673fd8d 59ba361
+Author: João Guilherme <jg.cravo@outlook.com>
+Date:   Sat May 23 15:57:57 2026 -0300
+
+    Merge pull request #1 from juninhos-comunidade/LaryssaHtml-patch-1
+    
+    docs: adiciona funções e especialidades dos membros
+
+[33mcommit 59ba36171ee377dda9354e892d58577d710cc5a1[m
+Author: Laryssa Ferreira <laryssaferreira26@gmail.com>
+Date:   Sat May 23 15:53:56 2026 -0300
+
+    docs: adiciona funções e especialidades dos membros
+    
+    Atualiza README com divisão de funções da equipe,
+    especialidades dos membros e organização da stack tecnológica.
+
+[33mcommit 673fd8ddce022c550da1e714a2bfd64dab6ca9df[m
+Author: Tayronne Silva <110624302+TayronSilva@users.noreply.github.com>
+Date:   Thu May 21 20:31:00 2026 -0300
+
+    update readme
+
+[33mcommit bb29fff53ac959ee1a93115332d5536691ea0c94[m
+Author: Tayronne Silva <110624302+TayronSilva@users.noreply.github.com>
+Date:   Thu May 21 20:18:41 2026 -0300
+
+    Initial commit

@@ -1,3 +1,4 @@
+// utiliza biblioteca bcrypt para gerar hash de senha
 import bcrypt from 'bcrypt';
 
 export async function gerarHash(senha) {

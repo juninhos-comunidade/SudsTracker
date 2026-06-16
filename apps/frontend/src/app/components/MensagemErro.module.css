@@ -1,0 +1,51 @@
+/* Estilo base — compartilhado entre erro e sucesso */
+.mensagem {
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 15px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: slideDown 0.3s ease;
+}
+
+/* Tipo erro — modo escuro */
+.erro {
+  background: rgba(199, 68, 239, 0.15);
+  border: 1px solid #a244ef;
+  color: #d9a5fc;
+}
+
+/* Tipo erro — modo claro */
+.erroLight {
+  background: rgba(191, 68, 239, 0.1);
+  border: 1px solid #e0a5fc;
+  color: #9926dc;
+}
+
+/* Tipo sucesso — modo escuro */
+.sucesso {
+  background: rgba(167, 98, 245, 0.2);
+  border: 1px solid #bd6bf3;
+  color: #eac6ff;
+}
+
+/* Tipo sucesso — modo claro */
+.sucessoLight {
+  background: rgba(167, 98, 245, 0.1);
+  border: 1px solid #d2b4f8;
+  color: #7c3aed;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

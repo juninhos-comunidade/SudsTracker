@@ -293,7 +293,7 @@ function HomeContent() {
                   <span className={styles.bannerEtiqueta}>Informativo</span>
                   <h2>Por que mapear diariamente?</h2>
                   <p>
-                    Ao criar constância nas respostas livres do seu diário pessoal e cruzar com as notas de 0 a 100, nosso sistema gera um mapa preventivo. Isso ajuda você e seu profissional de saúde a detectar picos de estresse antes mesmo que eles se tornem uma crisis de ansiedade.
+                    Ao criar constância nas respostas livres do seu diário pessoal e cruzar com as notas de 0 a 100, nosso sistema gera um mapa preventivo. Isso ajuda você e seu profissional de saúde a detectar picos de estresse antes mesmo que eles se tornem uma crise de ansiedade.
                   </p>
                 </div>
                 <div className={styles.bannerIconeMental}>💡</div>
@@ -332,7 +332,7 @@ function HomeContent() {
                     onClick={handleLimparDados}
                     style={{ background: '#fff5f5', color: '#e53e3e', border: '1px solid #fed7d7', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '14px', fontWeight: '500' }}
                   >
-                    Limpar Preferences do Navegador
+                    Limpar Preferências do Navegador
                   </button>
                 </div>
               </div>
@@ -341,21 +341,12 @@ function HomeContent() {
         </div>
 
         { /* RODAPÉ */}
-        <footer style={{
-          marginTop: '40px',
-          padding: '24px 0 8px 0',
-          borderTop: '1px solid #eae6f0',
-          display: 'flex',
-          justifyContent: 'between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '12px'
-        }}>
-          <p style={{ margin: 0, fontSize: '13px', color: '#8a828e' }}>
+        <footer className={styles.footer}>
+          <p className={styles.footerTexto}>
             &copy; 2026 SUDS App. Todos os direitos reservados.
           </p>
-          <p style={{ margin: 0, fontSize: '12px', color: '#b5aeb9', fontWeight: '500' }}>
-            Designed & Built with 💜
+          <p className={styles.footerAssinatura}>
+            Desenvolvido com 💜 pela equipe SUDS Tracker
           </p>
         </footer>
 

@@ -8,8 +8,7 @@ export default function SudsModal({ onClose, onSaibaMais }) {
   const [imageError, setImageError] = useState(false);
 
   const handleAcaoFinal = (tipo) => {
-    // 1. CORRIGIDO: Agora usa a chave certa 'suds_modal_dont_show'
-    // E só salva SE o usuário marcou a caixinha 'Não mostrar essa apresentação ao entrar'
+    // 1. CORRIGIDO só salva SE o usuário marcou a caixinha 'Não mostrar essa apresentação ao entrar'
     if (typeof window !== 'undefined' && dontShowAgain) {
       localStorage.setItem('suds_modal_dont_show', 'true');
     }
@@ -49,30 +48,33 @@ export default function SudsModal({ onClose, onSaibaMais }) {
 
         <div className={styles.body}>
           <section className={styles.section}>
-            <h3>O que é SUDS?</h3>
+            <h3>O que é a escala SUDS?</h3>
             <p>
-              SUDS (Escala Subjetiva de Unidades de Perturbação) é um método que ajuda você a medir 
-              o seu nível de ansiedade ou sofrimento em uma escala de 0 a 100. 
-              0 significa total calma, enquanto 100 representa o pior nível de ansiedade possível.
+              SUDS é a sigla para Escala Subjetiva de Unidades de Perturbação, criada pelo
+              psicólogo Joseph Wolpe e usada até hoje em terapias como exposição e
+              dessensibilização. Funciona como uma régua de 0 a 100: 0 representa calma
+              total e 100 representa o nível mais intenso de ansiedade ou sofrimento que
+              você já sentiu.
             </p>
           </section>
 
           <section className={styles.section}>
-            <h3>Como funciona?</h3>
+            <h3>Como funciona aqui no app?</h3>
             <p>
-              Você registra periodicamente como está se sentindo. Nosso sistema acompanha sua evolução 
-              ao longo do tempo, identificando padrões e ajudando você e seu profissional a compreender 
-              melhor sua jornada emocional.
+              A cada registro, você atribui uma nota de 0 a 100 ao que está sentindo no
+              momento. Com o tempo, esses registros formam um histórico que ajuda você
+              (e seu profissional, se for o caso) a perceber padrões, gatilhos e a
+              evolução do seu nível de perturbação.
             </p>
           </section>
 
           <section className={styles.section}>
-            <h3>Como usar a plataforma</h3>
+            <h3>Por onde começar</h3>
             <ul>
-              <li>Acesse seu Diário SUDS para registrar suas emoções</li>
-              <li>Visualize suas Estatísticas e tendências</li>
-              <li>Explore mais sobre o método em Sobre SUDS</li>
-              <li>Configure suas preferências conforme necessário</li>
+              <li>Use o Diário SUDS para registrar como você está se sentindo</li>
+              <li>Acompanhe sua evolução na aba Estatísticas</li>
+              <li>Veja mais detalhes sobre a escala em Sobre SUDS</li>
+              <li>Ajuste suas preferências em Configurações</li>
             </ul>
           </section>
         </div>

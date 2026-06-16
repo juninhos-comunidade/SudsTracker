@@ -5,7 +5,7 @@ import userRepository from '../repositories/userRepository.js';
 const JWT_SECRET = process.env.JWT_SECRET;
 
 async function logarUsuario ({ email, senha }) {
-    const usuarioLogin = await userRepository.findByEmail(email);
+    const usuarioLogin = await userRepository.encontrarPorEmail(email);
 
     if (!usuarioLogin) {
         console.log('email errado')

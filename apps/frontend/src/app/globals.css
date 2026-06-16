@@ -1,0 +1,16 @@
+:root {
+  /* Paleta principal - roxo/lilás */
+  --cor-primaria: #a762f5;
+  --cor-primaria-clara: #bd6bf3;
+  --cor-primaria-pastel: #d2b4f8;
+  --cor-destaque: #eac6ff;
+
+  /* Azul complementar */
+  --cor-secundaria: #c5e1f3;
+
+  /* Feedback */
+  --cor-erro: #e53e3e;
+  --cor-sucesso: #a762f5;
+}
+
+

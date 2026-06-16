@@ -1,32 +1,32 @@
-import  PacienteRepository from '../repositories/pacienteRepository.js';
-
-const pacienteRepository = new PacienteRepository();
+import pacienteRepository from '../repositories/pacienteRepository.js';
 
 class PacienteService {
     async atribuirProfissional(pacienteID, { id_profissional }) {
         const pacienteAtualizado = await pacienteRepository.atualizarPorId(
             pacienteID,
             {
-                id_profissional: id_profissional
+                id_profissional: Number(id_profissional)
             }
         );
         return pacienteAtualizado;
-    
     }
-    
-    async encontrarPacientePorId({ id_paciente }){
-        const  paciente = await pacienteRepository.encontrarPorId(id_paciente);
+
+    async encontrarPacientePorId(pacienteId) {
+        const paciente = await pacienteRepository.encontrarPorId(pacienteId);
         return paciente;
     }
-    async listarPacientes(){
+
+    async listarPacientes() {
         const pacientes = await pacienteRepository.encontrarTodas();
         return pacientes;
     }
-    async listarPacientesPorProfissional(profissionalID){
+
+    async listarPacientesPorProfissional(profissionalID) {
         const pacientes = await pacienteRepository.encontrarTodosPorProfissional(profissionalID);
         return pacientes;
     }
-    async encontrarPacientePorUsuario(usuarioId){
+
+    async encontrarPacientePorUsuario(usuarioId) {
         const paciente = await pacienteRepository.encontrarPorUsuario(usuarioId);
         return paciente;
     }

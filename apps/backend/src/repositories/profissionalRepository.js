@@ -1,42 +1,50 @@
 import prisma from '../config/database.js';
 
-class profissionalRepository {
-
-    async atualizarPorId(profissionalId,profissionalAtualizado){
-    return await prisma.profissional.update({
-            where: {id: profissionalId,},
-            data: profissionalAtualizado  
-        });
-    }   
-    async encontrarPorId(profissionalId){
-        return await prisma.profissional.findUnique({
-            where: { id: profissionalId}
+class ProfissionalRepository {
+    async atualizarPorId(profissionalId, profissionalAtualizado) {
+        const id = Number(profissionalId);
+        return await prisma.profissional.update({
+            where: { id: Number.isNaN(id) ? profissionalId : id },
+            data: profissionalAtualizado
         });
     }
-    async encontrarPorUsuario(userId){
+
+    async encontrarPorId(profissionalId) {
+        const id = Number(profissionalId);
         return await prisma.profissional.findUnique({
-                where: {id_usuario: userId}
-            });
+            where: { id: Number.isNaN(id) ? profissionalId : id }
+        });
     }
 
-    async encontrarPorPaciente(pacienteId){
+    async encontrarPorUsuario(userId) {
+        const id = Number(userId);
         return await prisma.profissional.findUnique({
-                where: {id_paciente: pacienteId}
-            });
+            where: { id_usuario: Number.isNaN(id) ? userId : id }
+        });
     }
-    async encontrarTodos(){
+
+    async encontrarPorPaciente(pacienteId) {
+        const id = Number(pacienteId);
+        return await prisma.profissional.findUnique({
+            where: { id_paciente: Number.isNaN(id) ? pacienteId : id }
+        });
+    }
+
+    async encontrarTodos() {
         return await prisma.profissional.findMany();
-
     }
+
     async criarProfissional(data) {
         return await prisma.profissional.create(data);
     }
-    
-    async deletarPorId(profissionalId){
+
+    async deletarPorId(profissionalId) {
+        const id = Number(profissionalId);
         return await prisma.profissional.delete({
-            where: {id: profissionalId}
+            where: { id: Number.isNaN(id) ? profissionalId : id }
         });
     }
 }
 
-export default new profissionalRepository();
+export default new ProfissionalRepository();
+

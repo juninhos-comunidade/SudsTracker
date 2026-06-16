@@ -45,13 +45,12 @@ export class ProfissionalController {
     async atualizarProfissional(req,res){
         try {
             const { id } = req.params;
-            const  profissionalAtualizado  = req.body;
-            const profissional = await ProfissionalService.autalizarProfissional(id, profissionalAtualizado);
+            const profissionalAtualizado = req.body;
+            const profissional = await ProfissionalService.atualizarProfissional(id, profissionalAtualizado);
             return res.status(200).json(profissional);
         } 
         catch (error) {
              return tratarErroController(res, error, 'Erro ao atualizar profissional.');
-
         }
     }
     async encontrarProfissionalPorPaciente(req,res){

@@ -1,15 +1,12 @@
 import prisma from '../config/database.js';
 
 class PacienteRepository {
-    // Adicione um construtor para garantir que a classe segure a referência do prisma
-
-
     async atualizarPorId(pacienteId, pacienteAtualizado) {
         return await prisma.paciente.update({
             where: { id: pacienteId },
-            data: pacienteAtualizado  
+            data: pacienteAtualizado
         });
-    }   
+    }
 
     async encontrarPorId(pacienteId) {
         return await prisma.paciente.findUnique({
@@ -18,14 +15,16 @@ class PacienteRepository {
     }
 
     async encontrarPorUsuario(userId) {
+        const id = Number(userId);
         return await prisma.paciente.findUnique({
-            where: { id_usuario: userId }
+            where: { id_usuario: Number.isNaN(id) ? userId : id }
         });
     }
 
     async encontrarTodosPorProfissional(profissionalId) {
+        const id = Number(profissionalId);
         return await prisma.paciente.findMany({
-            where: { id_profissional: profesionalId }
+            where: { id_profissional: Number.isNaN(id) ? profissionalId : id }
         });
     }
 
@@ -36,7 +35,7 @@ class PacienteRepository {
     async criarPaciente(data) {
         return await prisma.paciente.create(data);
     }
-    
+
     async deletarPorId(pacienteId) {
         return await prisma.paciente.delete({
             where: { id: pacienteId }
@@ -44,4 +43,4 @@ class PacienteRepository {
     }
 }
 
-export default PacienteRepository;
+export default new PacienteRepository();

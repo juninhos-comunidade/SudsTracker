@@ -9,7 +9,13 @@
   },
   "dependencies": {
 <<<<<<< HEAD
+<<<<<<< HEAD
     "bcrypt": "^6.0.0",
+=======
+    "@prisma/adapter-pg": "^7.8.0",
+    "@prisma/client": "^7.8.0",
+    "@prisma/client-runtime-utils": "^7.8.0",
+>>>>>>> 4b4ed9b3ffc37c3b53c1c56e2578fe2cdeb81f32
 =======
     "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^7.8.0",

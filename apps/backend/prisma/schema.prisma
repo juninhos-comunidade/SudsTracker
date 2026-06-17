@@ -13,7 +13,7 @@ datasource db {
 
 //Model Teste!
 
-model User {
+model Usuario {
   id                   String   @id @default(uuid())
   nome                 String
   email                String   @unique
@@ -23,9 +23,59 @@ model User {
   tipoUsuario          String?
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
+
+  profissional Profissional?
+  paciente Paciente?
 }
+
+model Profissional {
+ id Int @id @default(autoincrement())
+ idUsuario String @unique
+ telefone String
+ especialidade String
+ crm String?
+ crp String?
+ crefito String?
+
+ usuario Usuario @relation(fields: [idUsuario], references: [id])
+ pacientes Paciente[]
+ avaliacoes Avaliacao[]
+}
+
 model Paciente {
-  id              String          @id @default(uuid())
-  id_usuario      Int          @unique
-  id_profissional Int?
+ id Int @id @default(autoincrement())
+ idUsuario String @unique
+ idProfissional Int
+
+ usuario Usuario @relation(fields: [idUsuario], references: [id])
+ profissional Profissional @relation(fields: [idProfissional], references: [id])
+
+ anotacoes Anotacao[]
+ avaliacoes Avaliacao[]
+}
+
+model Anotacao {
+ id Int @id @default(autoincrement())
+ idPaciente Int
+ intensidade Int
+ sentimento String
+ anotacao String
+ gatilhos String
+ estrategias String
+ createAt DateTime @default(now())
+ updateAt DateTime @updatedAt
+
+ paciente Paciente @relation(fields: [idPaciente], references: [id])
+}
+
+model Avaliacao {
+ id Int @id @default(autoincrement())
+ idPaciente Int
+ idProfissional Int
+ resultado String
+ createAt DateTime @default(now())
+ updateAt DateTime @updatedAt
+
+ paciente Paciente @relation(fields: [idPaciente], references: [id])
+ profissional Profissional @relation(fields: [idProfissional], references: [id])
 }

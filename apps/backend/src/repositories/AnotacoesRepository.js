@@ -1,6 +1,6 @@
 import prisma from '../config/database.js';
 
-class anotacoesRepository {
+class AnotacoesRepository {
 
     async atualizarPorId(anotacaoId,anotacaoAtualizada){
     return await prisma.anotacao.update({
@@ -20,10 +20,7 @@ class anotacoesRepository {
             }
         )
     }
-    async encontrarTodas(){
-        return await prisma.anotacao.findMany();
 
-    }
     async criarAnotacao(data) {
         return await prisma.anotacao.create(data);
     }

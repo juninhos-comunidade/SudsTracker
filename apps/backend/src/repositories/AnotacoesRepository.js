@@ -21,8 +21,8 @@ class AnotacoesRepository {
         )
     }
 
-    async criarAnotacao(data) {
-        return await prisma.anotacao.create(data);
+    async criarAnotacao(anotacao) {
+        return await prisma.anotacao.create({data: anotacao});
     }
     
     async deletarPorId(anotacaoId){

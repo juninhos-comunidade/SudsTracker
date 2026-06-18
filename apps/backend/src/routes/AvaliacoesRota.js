@@ -4,7 +4,7 @@ import {Router} from "express";
 const router = Router();
 
 router.post("/",AvaliacoesController.criarAvaliacao);
-router.put("/:id",AvaliacoesController.atualizarAvaliacoes);
+router.put("/:id",AvaliacoesController.atualizarAvaliacao);
 router.delete("/:id",AvaliacoesController.deletarAvaliacaoPorId);
 router.get("/:id",AvaliacoesController.encontrarAvaliacaoPorId);
 router.get("/paciente/:pacienteId",AvaliacoesController.encontrarTodasAsAvaliacoesPorPaciente);

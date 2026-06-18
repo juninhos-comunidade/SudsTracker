@@ -6,6 +6,7 @@ import autenticacaoUsuarioRota from "./routes/autenticacaoUsuarioRota.js";
 import pacienteRota from "./routes/pacienteRota.js";
 import profissionalRota from "./routes/profissionalRota.js"
 import AnotacoesRota from "./routes/AnotacoesRota.js";
+import AvaliacoesRota from "./routes/AvaliacoesRota.js";
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -21,6 +22,7 @@ app.use("/api/usuarios", autenticacaoUsuarioRota);
 app.use("/api/pacientes", pacienteRota);
 app.use("/api/profissionais",profissionalRota);
 app.use("/api/anotacoes",AnotacoesRota);
+app.use("/api/avaliacoes",AvaliacoesRota);
 // Middleware global de tratamento de erros
 app.use((err, req, res, next) => {
   console.error(err.stack);

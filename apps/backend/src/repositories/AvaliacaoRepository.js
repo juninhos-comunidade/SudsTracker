@@ -2,13 +2,13 @@ import prisma from '../config/database.js';
 
 class avaliacaoRepository {
 
-    async updateById(avaliacaoId,avaliacaoAtualizada){
+    async atualizarPorId(avaliacaoId,avaliacaoAtualizada){
     return await prisma.avaliacao.update({
             where: {id: avaliacaoId,},
             data: avaliacaoAtualizada  
         })
     }   
-    async findById(avaliacaoId){
+    async encontrarPorId(avaliacaoId){
         return await prisma.avaliacao.findUnique({
             where: { id: avaliacaoId}
         });
@@ -31,8 +31,8 @@ class avaliacaoRepository {
         return await prisma.avaliacao.findMany();
 
     }
-    async criarAvaliacao(data) {
-        return await prisma.avaliacao.create(data);
+    async criarAvaliacao(avaliacao) {
+        return await prisma.avaliacao.create({data: avaliacao});
     }
     
     async deletarPorId(avaliacaoId){

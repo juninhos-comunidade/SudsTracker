@@ -4,7 +4,7 @@ import pg from "pg";
 import path from "path";
 import dotenv from "dotenv";
 
-dotenv.config({ path: path.resolve(process.cwd(), "../../.env") });
+dotenv.config({ path: path.resolve(process.cwd(), "../backend/.env") });
 
 const user = process.env.DB_USER;
 const senha = process.env.DB_PASSWORD;
@@ -20,4 +20,8 @@ console.log("🔍 URL Gerada:", urlDinamica);
 
 const prisma = new PrismaClient({ adapter });
 
+<<<<<<< HEAD
 export default prisma;
+=======
+export default prisma;
+>>>>>>> 3647b2a (SUDT-4 - fix: commits)

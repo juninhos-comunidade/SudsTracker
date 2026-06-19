@@ -7,7 +7,6 @@ async function cadastrarUsuario(dadosUsuario) {
 
   const dataNascimentoObjDate = await validaUsuario(dadosUsuario);
 
-  // Criptografar a senha antes de salvar
   const senhaCriptografada = await gerarHash(senha);
 
   const emailFormatado = email ? String(email).trim().toLowerCase() : "";

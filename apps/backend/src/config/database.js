@@ -20,8 +20,4 @@ console.log("🔍 URL Gerada:", urlDinamica);
 
 const prisma = new PrismaClient({ adapter });
 
-<<<<<<< HEAD
 export default prisma;
-=======
-export default prisma;
->>>>>>> 3647b2a (SUDT-4 - fix: commits)

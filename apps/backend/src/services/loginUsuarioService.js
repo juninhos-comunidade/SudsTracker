@@ -13,7 +13,6 @@ async function logarUsuario ({ email, senha }) {
         throw new Error("Email ou senha inválido");
     }
 
-    // comparar usando bcrypt
     const senhaValida = await verificarSenha(senha, usuarioLogin.senha);
 
     if(!senhaValida) {

@@ -1,7 +1,10 @@
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../generated/prisma/index.js";
 import pg from "pg";
+import path from "path";
+import dotenv from "dotenv";
 
+dotenv.config({ path: path.resolve(process.cwd(), "../../.env") });
 
 const user = process.env.DB_USER;
 const senha = process.env.DB_PASSWORD;

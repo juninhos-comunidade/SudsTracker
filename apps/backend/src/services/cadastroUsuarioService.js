@@ -11,7 +11,7 @@ async function cadastrarUsuario(dadosUsuario) {
 
   const emailFormatado = email ? String(email).trim().toLowerCase() : "";
 
-  const novoUsuario = await UserRepository.create({
+  const novoUsuario = await UserRepository.criarUsuario({
     data: {
       nome,
       email: emailFormatado,
@@ -79,7 +79,7 @@ async function validaUsuario(dadosUsuario) {
     );
   }
 
-  const validaUsuarioExistente = await UserRepository.findByEmail(emailPadrao);
+  const validaUsuarioExistente = await UserRepository.encontrarPorEmail(emailPadrao);
 
   if (validaUsuarioExistente) {
     throw new Error('Já existe um usuário cadastrado com esse Email.');
@@ -88,4 +88,4 @@ async function validaUsuario(dadosUsuario) {
   return dataNascimentoObjDate;
 }
 
-export default { cadastrarUsuario };
+export const cadastroUsuarioService = { cadastrarUsuario };

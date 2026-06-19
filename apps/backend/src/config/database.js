@@ -4,7 +4,7 @@ import pg from "pg";
 import path from "path";
 import dotenv from "dotenv";
 
-dotenv.config({ path: path.resolve(process.cwd(), "../../.env") });
+dotenv.config();
 
 const user = process.env.DB_USER;
 const senha = process.env.DB_PASSWORD;

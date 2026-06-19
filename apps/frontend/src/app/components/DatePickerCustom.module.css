@@ -1,12 +1,3 @@
-/* Wrapper para controlar largura e display */
-.datePickerWrapper {
-  width: 100%;
-}
-
-.datePickerWrapper input {
-  width: 100%;
-}
-
 /* ── Painel principal ── */
 .datePickerWrapper :global(.react-datepicker) {
   background-color: #1d1c1c;
@@ -153,4 +144,25 @@
 .datePickerWrapper :global(.react-datepicker__triangle),
 .datePickerWrapperLight :global(.react-datepicker__triangle) {
   display: none;
+}
+.datePickerWrapper,
+.datePickerWrapperLight {
+  width: 100%;
+}
+
+.datePickerWrapper :global(.react-datepicker-wrapper),
+.datePickerWrapperLight :global(.react-datepicker-wrapper) {
+  width: 100%;
+  display: block;
+}
+
+.datePickerWrapper :global(.react-datepicker__input-container),
+.datePickerWrapperLight :global(.react-datepicker__input-container) {
+  width: 100%;
+}
+
+.datePickerWrapper :global(.react-datepicker__input-container input),
+.datePickerWrapperLight :global(.react-datepicker__input-container input) {
+  width: 100%;
+  box-sizing: border-box;
 }

@@ -3,8 +3,7 @@ import { cadastroUsuarioController } from "../controllers/cadastroUsuarioControl
 
 const router = Router();
 
-import usuariosController from "../controllers/cadastroUsuarioController.js";
 
-router.post("/", usuariosController.cadastrarUsuario);
+router.post("/", cadastroUsuarioController.cadastrarUsuario);
 
 export default router;

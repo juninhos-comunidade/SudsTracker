@@ -61,3 +61,32 @@
   border: 1px solid rgba(200, 200, 200, 0.3);
   color: #333;
 }
+.wrapperInput {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.wrapperInput input {
+  width: 100%;
+  padding-right: 40px; /* espaço para o ícone não sobrepor o texto */
+}
+
+.botaoOlho {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+.botaoOlho svg {
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.botaoOlho:active svg {
+  transform: scale(0.85);
+}

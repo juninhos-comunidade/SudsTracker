@@ -14,18 +14,17 @@ function tratarErroController(res, error, mensagemLog = 'Erro no servidor') {
 const PacienteController = {
   async alterarProfissional(req, res) {
     try {
-      const {id_paciente,id_profissional} = req.body;
-      
-      console.log(req.body);
-      const pacienteAtualizado = await pacienteService.atribuirProfissional(id_paciente,{id_profissional});
+      const { id } = req.params;
+      const { id_profissional } = req.body;
+
+      const pacienteAtualizado = await pacienteService.atribuirProfissional(id, { id_profissional });
     
       return res.status(200).json({
-        mensagem: "Profissional atribuido com sucesso",
-        profissional: id_profissional
+        mensagem: "Profissional atribuído com sucesso",
+        paciente: pacienteAtualizado
       });
     } catch (error) {
         return tratarErroController(res, error, "Erro ao atribuir profissional");
-
     }
   },
   
@@ -57,25 +56,19 @@ const PacienteController = {
     }
   },
 
-  async exibirPacientePorId(req, res){
+  async exibirPacientePorId(req, res) {
     try {
-      const {id} = req.params;
-      console.log(req.body);
-
+      const { id } = req.params;
       const paciente = await pacienteService.encontrarPacientePorId(id);
 
       if (!paciente) {
         return res.status(404).json({ mensagem: "Paciente não encontrado." });
       }
 
-      return res.status(200).json({
-        mensagem: "paciente encontrado com sucesso",
-        profissional: paciente}
-      )
-    } catch(error){
-          return tratarErroController(res, error, "Erro ao buscar paciente por id");
-
-      }
+      return res.status(200).json(paciente);
+    } catch (error) {
+      return tratarErroController(res, error, "Erro ao buscar paciente por id");
+    }
   }
 };
 export default PacienteController;

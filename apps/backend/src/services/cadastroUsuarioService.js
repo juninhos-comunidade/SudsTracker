@@ -1,10 +1,10 @@
-import { parseISO, isValid, isFuture } from "date-fns";
+import { parse, isValid, isFuture, differenceInYears } from "date-fns";
 import UserRepository from "../repositories/userRepository.js";
 
 async function cadastrarUsuario(dadosUsuario) {
   const { nome, email, senha, dataNascimento, registroProfissional, tipoUsuario } = dadosUsuario;
 
-  await validaUsuario(dadosUsuario);
+  const dataNascimentoObjDate = await validaUsuario(dadosUsuario);
 
   // TODO: Criptografar a senha (usando bcrypt, por exemplo) antes de salvar
   const senhaCriptografada = senha;
@@ -16,7 +16,7 @@ async function cadastrarUsuario(dadosUsuario) {
       nome,
       email: emailFormatado,
       senha: senhaCriptografada,
-      dataNascimento: new Date(dataNascimento),
+      dataNascimento: dataNascimentoObjDate,
       registroProfissional,
       tipoUsuario,
     },
@@ -39,12 +39,17 @@ async function validaUsuario(dadosUsuario) {
     throw new Error("Data de nascimento é obrigatória.");
   }
 
-  const dataNascimentoObjDate = parseISO(dataNascimento);
-  if (
-    !isValid(dataNascimentoObjDate) ||
-    isFuture(dataNascimentoObjDate)
-  ) {
+  const dataNascimentoObjDate = parse(dataNascimento, "dd/MM/yyyy", new Date());
+  if (!isValid(dataNascimentoObjDate) || isFuture(dataNascimentoObjDate)) {
     throw new Error("Data de nascimento inválida.");
+  }
+
+  const dataHoje = new Date();
+  const idade = differenceInYears(dataHoje, dataNascimentoObjDate);
+
+  if (idade < 18) {
+    console.log(idade)
+    throw new Error("Data de nascimento inválida. Usuário precisa ter 18 ou mais anos de idade");
   }
 
   const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailPadrao);
@@ -79,6 +84,8 @@ async function validaUsuario(dadosUsuario) {
   if (validaUsuarioExistente) {
     throw new Error('Já existe um usuário cadastrado com esse Email.');
   }
+
+  return dataNascimentoObjDate;
 }
 
-export default { cadastrarUsuario };
+export const cadastroUsuarioService = { cadastrarUsuario };

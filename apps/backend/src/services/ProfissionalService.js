@@ -1,75 +1,79 @@
-import PacienteRepository from "../repositories/pacienteRepository.js";
-import ProfissionalRepository from "../repositories/profissionalRepository.js";
-
+import pacienteRepository from "../repositories/pacienteRepository.js";
+import profissionalRepository from "../repositories/profissionalRepository.js";
 
 class ProfissionalService {
-
-    async listarTodosProfissionais(){
-        try{
-            const listaDeProfissionais = await ProfissionalRepository.encontrarTodos();
-            if(!listaDeProfissionais || listaDeProfissionais.length === 0){
+    async listarTodosProfissionais() {
+        try {
+            const listaDeProfissionais = await profissionalRepository.encontrarTodos();
+            if (!listaDeProfissionais || listaDeProfissionais.length === 0) {
                 throw new Error(`Não foram encontrados profissionais.`);
             }
             return listaDeProfissionais;
-        }catch(error){
+        } catch (error) {
             console.error("Erro ao buscar profissional:", error);
             throw error;
         }
     }
 
-    async exibirProfissionalPorId(profissionalId){
-        try{
-            const profissional = await ProfissionalRepository.encontrarPorId(profissionalId);
-            if(!profissional){
+    async exibirProfissionalPorId(profissionalId) {
+        try {
+            const profissional = await profissionalRepository.encontrarPorId(profissionalId);
+            if (!profissional) {
                 throw new Error(`Profissional com ID ${profissionalId} não encontrado.`);
             }
-        return profissional;
-    }catch(error){ 
-        console.error("Erro ao buscar profissional:", error);
-        throw error;
+            return profissional;
+        } catch (error) {
+            console.error("Erro ao buscar profissional:", error);
+            throw error;
+        }
     }
-}
-    async exibirProfissionalPorUsuario(usuarioId){
-        try{
-            const profissional = await ProfissionalRepository.encontrarPorUsuario(usuarioId);
-            if(!profissional){
+
+    async exibirProfissionalPorUsuario(usuarioId) {
+        try {
+            const profissional = await profissionalRepository.encontrarPorUsuario(usuarioId);
+            if (!profissional) {
                 throw new Error(`Profissional com usuário ${usuarioId} não encontrado.`);
             }
-        return profissional;
-        }catch (error){
+            return profissional;
+        } catch (error) {
             console.error("Erro ao buscar profissional:", error);
             throw error;
-        }           
+        }
     }
 
+    async encontrarProfissionalPorPaciente(pacienteId) {
+        try {
+            const paciente = await pacienteRepository.encontrarPorId(pacienteId);
 
-    async encontrarProfissionalPorPaciente(pacienteId){
-        try{
-            const paciente = await PacienteRepository.encontrarPorId(pacienteId);
-
-            if(!paciente){
-                throw new Error(`Paciente com id ${pacienteId} não encontrado`);
+            if (!paciente) {
+                throw new Error(`Paciente com id ${pacienteId} não encontrado.`);
             }
-            const profissional = await ProfissionalRepository.encontrarPorUsuario(pacienteId);
 
-            if(!profissional){
+            let profissional = null;
+            if (paciente.id_profissional) {
+                profissional = await profissionalRepository.encontrarPorId(paciente.id_profissional);
+            }
+
+            if (!profissional) {
+                profissional = await profissionalRepository.encontrarPorPaciente(pacienteId);
+            }
+
+            if (!profissional) {
                 throw new Error(`Profissional do paciente ID ${pacienteId} não encontrado.`);
-            } 
+            }
 
-        return profissional;
-        }catch (error){
+            return profissional;
+        } catch (error) {
             console.error("Erro ao buscar profissional:", error);
             throw error;
-        }   
-
+        }
     }
-    
-    async autalizarProfissional(profissionalId, profissionalAtualizado){
+
+    async atualizarProfissional(profissionalId, profissionalAtualizado) {
         try {
             await this.exibirProfissionalPorId(profissionalId);
-            
-            return await ProfissionalRepository.atualizarPorId(profissionalId, profissionalAtualizado);
-        }catch (error) {
+            return await profissionalRepository.atualizarPorId(profissionalId, profissionalAtualizado);
+        } catch (error) {
             console.error("Erro ao atualizar profissional:", error);
             throw error;
         }

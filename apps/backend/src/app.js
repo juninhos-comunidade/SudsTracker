@@ -3,18 +3,12 @@ import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import cadastroUsuarioRota from "./routes/cadastroUsuarioRota.js";
-<<<<<<< HEAD
 import autenticacaoUsuarioRota from "./routes/autenticacaoUsuarioRota.js";
 import pacienteRota from "./routes/pacienteRota.js";
 import profissionalRota from "./routes/profissionalRota.js"
 import AnotacoesRota from "./routes/AnotacoesRota.js";
 import AvaliacoesRota from "./routes/AvaliacoesRota.js";
 dotenv.config();
-=======
-import loginUsuarioRota from "./routes/loginUsuarioRota.js";
-
-dotenv.config({ path: path.resolve(process.cwd(), "../../.env") });
->>>>>>> develop
 const app = express();
 const PORT = process.env.PORT || 5001;
 

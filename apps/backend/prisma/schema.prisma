@@ -53,4 +53,22 @@ model Paciente {
  usuario User @relation(fields: [idUsuario], references: [id])
  profissional Profissional @relation(fields: [idProfissional], references: [id])
 
+ anotacoes Anotacao[]
+ //avaliacoes Avaliacao[]
+
+}
+
+model Anotacao {
+ id Int @id @default(autoincrement())
+ idPaciente Int
+ intensidade Int
+ sentimento String
+ anotacao String
+ gatilhos String 
+ estrategias String
+ createAt DateTime @default(now())
+ updateAt DateTime @updatedAt
+
+ paciente Paciente @relation(fields: [idPaciente], references: [id])
+
 }

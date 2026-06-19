@@ -24,4 +24,21 @@ model User {
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
 
+  profissional Profissional?
+
+}
+
+model Profissional {
+ id Int @id @default(autoincrement())
+ idUsuario String @unique
+ telefone String
+ especialidade String
+ crm String?
+ crp String?
+ crefito String?
+
+ usuario User @relation(fields: [idUsuario], references: [id])
+
+ //pacientes Paciente[]
+ //avaliacoes Avaliacao[]
 }

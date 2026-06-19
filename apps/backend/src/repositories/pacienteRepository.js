@@ -32,8 +32,8 @@ class PacienteRepository {
         return await prisma.paciente.findMany();
     }
 
-    async criarPaciente(data) {
-        return await prisma.paciente.create(data);
+    async criarPaciente(paciente) {
+        return await prisma.paciente.create({data: paciente});
     }
 
     async deletarPorId(pacienteId) {

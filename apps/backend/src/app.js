@@ -6,7 +6,8 @@ import cadastroUsuarioRota from "./routes/cadastroUsuarioRota.js";
 import loginUsuarioRota from "./routes/loginUsuarioRota.js";
 import pacienteRota from "./routes/pacienteRota.js";
 import profissionalRota from "./routes/profissionalRota.js"
-
+import AnotacoesRota from "./routes/AnotacoesRota.js";
+import AvaliacoesRota from "./routes/AvaliacoesRota.js";
 
 dotenv.config();
 const app = express();
@@ -20,6 +21,8 @@ app.use(express.json());
 
 app.use("/api/cadastro", cadastroUsuarioRota);
 app.use("/api/usuarios", loginUsuarioRota);
+app.use("/api/anotacoes",AnotacoesRota);
+app.use("/api/avaliacoes",AvaliacoesRota);
 app.use("/api/pacientes", pacienteRota)
 app.use("/api/profissionais",profissionalRota)
 // Middleware global de tratamento de erros

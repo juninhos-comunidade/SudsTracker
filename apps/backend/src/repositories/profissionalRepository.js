@@ -33,9 +33,8 @@ class ProfissionalRepository {
     async encontrarTodos() {
         return await prisma.profissional.findMany();
     }
-
-    async criarProfissional(data) {
-        return await prisma.profissional.create(data);
+    async criarProfissional(profissional) {
+        return await prisma.profissional.create({data: profissional});
     }
 
     async deletarPorId(profissionalId) {

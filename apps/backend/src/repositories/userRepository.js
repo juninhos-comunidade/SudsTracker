@@ -18,8 +18,8 @@ class UserRepository {
         });
     }
 
-    async criarUsuario(data) {
-        return await prisma.user.create(data);
+    async criarUsuario(usuario) {
+        return await prisma.user.create({data: usuario});
     }
     
     async deletarPorId(userID){

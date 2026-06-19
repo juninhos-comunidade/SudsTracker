@@ -3,16 +3,12 @@ import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import cadastroUsuarioRota from "./routes/cadastroUsuarioRota.js";
-<<<<<<< HEAD
-import autenticacaoUsuarioRota from "./routes/autenticacaoUsuarioRota.js";
+import loginUsuarioRota from "./routes/loginUsuarioRota.js";
 import pacienteRota from "./routes/pacienteRota.js";
 import profissionalRota from "./routes/profissionalRota.js"
-dotenv.config();
-=======
-import loginUsuarioRota from "./routes/loginUsuarioRota.js";
 
-dotenv.config({ path: path.resolve(process.cwd(), "../../.env") });
->>>>>>> develop
+
+dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5001;
 
@@ -23,7 +19,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/cadastro", cadastroUsuarioRota);
-app.use("/api/usuarios", autenticacaoUsuarioRota);
+app.use("/api/usuarios", loginUsuarioRota);
 app.use("/api/pacientes", pacienteRota)
 app.use("/api/profissionais",profissionalRota)
 // Middleware global de tratamento de erros

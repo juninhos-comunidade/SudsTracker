@@ -41,7 +41,7 @@ model Profissional {
  usuario User @relation(fields: [idUsuario], references: [id])
 
  pacientes Paciente[]
- //avaliacoes Avaliacao[]
+ avaliacoes Avaliacao[]
 
 }
 
@@ -54,7 +54,7 @@ model Paciente {
  profissional Profissional @relation(fields: [idProfissional], references: [id])
 
  anotacoes Anotacao[]
- //avaliacoes Avaliacao[]
+ avaliacoes Avaliacao[]
 
 }
 
@@ -70,5 +70,18 @@ model Anotacao {
  updateAt DateTime @updatedAt
 
  paciente Paciente @relation(fields: [idPaciente], references: [id])
+
+}
+
+model Avaliacao {
+ id Int @id @default(autoincrement())
+ idPaciente Int
+ idProfissional Int
+ resultado String
+ createAt DateTime @default(now())
+ updateAt DateTime @updatedAt
+
+ paciente Paciente @relation(fields: [idPaciente], references: [id])
+ profissional Profissional @relation(fields: [idProfissional], references: [id])
 
 }

@@ -1,7 +1,7 @@
 -- CreateTable
 CREATE TABLE "Anotacao" (
     "id" SERIAL NOT NULL,
-    "idPaciente" INTEGER NOT NULL,
+    "id_paciente" INTEGER NOT NULL,
     "intensidade" INTEGER NOT NULL,
     "sentimento" TEXT NOT NULL,
     "anotacao" TEXT NOT NULL,
@@ -14,4 +14,4 @@ CREATE TABLE "Anotacao" (
 );
 
 -- AddForeignKey
-ALTER TABLE "Anotacao" ADD CONSTRAINT "Anotacao_idPaciente_fkey" FOREIGN KEY ("idPaciente") REFERENCES "Paciente"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Anotacao" ADD CONSTRAINT "Anotacao_idPaciente_fkey" FOREIGN KEY ("id_paciente") REFERENCES "Paciente"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

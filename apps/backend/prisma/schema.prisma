@@ -11,34 +11,30 @@ datasource db {
   provider = "postgresql"
 }
 
-//Model Teste!
-
-model User {
-  id                   String   @id @default(uuid())
-  nome                 String
-  email                String   @unique
-  senha                String
-  dataNascimento       DateTime
-  registroProfissional String?
-  tipoUsuario          String?
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
+model Usuario {
+  id        String   @id @default(uuid())
+  nome      String
+  dataNascimento     DateTime
+  email     String   @unique
+  senha     String
+  tipoUsuario     String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   profissional Profissional?
   paciente Paciente?
-
 }
 
 model Profissional {
  id Int @id @default(autoincrement())
- idUsuario String @unique
+ id_usuario String @unique
  telefone String
  especialidade String
  crm String?
  crp String?
  crefito String?
 
- usuario User @relation(fields: [idUsuario], references: [id])
+usuario Usuario @relation(fields: [id_usuario], references: [id])
 
  pacientes Paciente[]
  avaliacoes Avaliacao[]
@@ -47,11 +43,11 @@ model Profissional {
 
 model Paciente {
  id Int @id @default(autoincrement())
- idUsuario String @unique
- idProfissional Int?
+ id_usuario String @unique
+ id_profissional Int?
 
- usuario User @relation(fields: [idUsuario], references: [id])
- profissional Profissional? @relation(fields: [idProfissional], references: [id])
+ usuario Usuario @relation(fields: [id_usuario], references: [id])
+ profissional Profissional? @relation(fields: [id_profissional], references: [id])
 
  anotacoes Anotacao[]
  avaliacoes Avaliacao[]
@@ -60,7 +56,7 @@ model Paciente {
 
 model Anotacao {
  id Int @id @default(autoincrement())
- idPaciente Int
+ id_paciente Int
  intensidade Int
  sentimento String
  anotacao String
@@ -69,19 +65,19 @@ model Anotacao {
  createAt DateTime @default(now())
  updateAt DateTime @updatedAt
 
- paciente Paciente @relation(fields: [idPaciente], references: [id])
+ paciente Paciente @relation(fields: [id_paciente], references: [id])
 
 }
 
 model Avaliacao {
  id Int @id @default(autoincrement())
- idPaciente Int
- idProfissional Int
+ id_paciente Int
+ id_profissional Int
  resultado String
  createAt DateTime @default(now())
  updateAt DateTime @updatedAt
 
- paciente Paciente @relation(fields: [idPaciente], references: [id])
- profissional Profissional @relation(fields: [idProfissional], references: [id])
+ paciente Paciente @relation(fields: [id_paciente], references: [id])
+ profissional Profissional @relation(fields: [id_profissional], references: [id])
 
 }

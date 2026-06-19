@@ -25,6 +25,7 @@ model User {
   updatedAt            DateTime @updatedAt
 
   profissional Profissional?
+  paciente Paciente?
 
 }
 
@@ -39,6 +40,17 @@ model Profissional {
 
  usuario User @relation(fields: [idUsuario], references: [id])
 
- //pacientes Paciente[]
+ pacientes Paciente[]
  //avaliacoes Avaliacao[]
+
+}
+
+model Paciente {
+ id Int @id @default(autoincrement())
+ idUsuario String @unique
+ idProfissional Int
+
+ usuario User @relation(fields: [idUsuario], references: [id])
+ profissional Profissional @relation(fields: [idProfissional], references: [id])
+
 }

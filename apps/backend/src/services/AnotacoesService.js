@@ -1,7 +1,6 @@
 import AnotacoesRepository from "../repositories/AnotacoesRepository.js";
 import PacienteRepository from "../repositories/pacienteRepository.js";
 
-const anotacaoRepository = new AnotacoesRepository();
 
 class AnotacoesService{
 

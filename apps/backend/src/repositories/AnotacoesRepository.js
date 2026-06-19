@@ -32,4 +32,4 @@ class AnotacoesRepository {
     }
 }
 
-export default new anotacoesRepository();
+export default new AnotacoesRepository();

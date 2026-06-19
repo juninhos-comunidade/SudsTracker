@@ -1,13 +1,13 @@
 import { parse, isValid, isFuture, differenceInYears } from "date-fns";
 import UserRepository from "../repositories/userRepository.js";
+import { gerarHash } from "../utils/senhaUtils.js";
 
 async function cadastrarUsuario(dadosUsuario) {
   const { nome, email, senha, dataNascimento, registroProfissional, tipoUsuario } = dadosUsuario;
 
   const dataNascimentoObjDate = await validaUsuario(dadosUsuario);
 
-  // TODO: Criptografar a senha (usando bcrypt, por exemplo) antes de salvar
-  const senhaCriptografada = senha;
+  const senhaCriptografada = await gerarHash(senha);
 
   const emailFormatado = email ? String(email).trim().toLowerCase() : "";
 

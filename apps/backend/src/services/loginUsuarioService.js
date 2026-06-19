@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import userRepository from '../repositories/userRepository.js';
+import { verificarSenha } from "../utils/senhaUtils.js";
 
 
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -12,8 +13,7 @@ async function logarUsuario ({ email, senha }) {
         throw new Error("Email ou senha inválido");
     }
 
-    //use o bcrypt pra comparar
-    const senhaValida = senha === usuarioLogin.senha;
+    const senhaValida = await verificarSenha(senha, usuarioLogin.senha);
 
     if(!senhaValida) {
         console.log('senha errada')

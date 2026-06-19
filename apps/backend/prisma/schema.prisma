@@ -23,9 +23,5 @@ model User {
   tipoUsuario          String?
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
-}
-model Paciente {
-  id              String          @id @default(uuid())
-  id_usuario      Int          @unique
-  id_profissional Int?
+
 }

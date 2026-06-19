@@ -48,10 +48,10 @@ model Profissional {
 model Paciente {
  id Int @id @default(autoincrement())
  idUsuario String @unique
- idProfissional Int
+ idProfissional Int?
 
  usuario User @relation(fields: [idUsuario], references: [id])
- profissional Profissional @relation(fields: [idProfissional], references: [id])
+ profissional Profissional? @relation(fields: [idProfissional], references: [id])
 
  anotacoes Anotacao[]
  avaliacoes Avaliacao[]

@@ -1,16 +1,98 @@
 :root {
-  /* Paleta principal - roxo/lilás */
-  --cor-primaria: #a762f5;
-  --cor-primaria-clara: #bd6bf3;
-  --cor-primaria-pastel: #d2b4f8;
-  --cor-destaque: #eac6ff;
+  --lilas-claro: #c6bcf2;
+  --lilas-medio: #b3a2f2;
+  --lilas-principal: #9883e5;
+  --lilas-escuro: #8b73f7;
+  --lilas-suave: #b19ffb;
 
-  /* Azul complementar */
-  --cor-secundaria: #c5e1f3;
+  --lilas-bg-suave: #f5f3ff;
+  --lilas-bg-hover: #ede9fe;
+  --lilas-borda: #e1dbf5;
+  --lilas-borda-hover: #dcd6e8;
 
-  /* Feedback */
-  --cor-erro: #e53e3e;
-  --cor-sucesso: #a762f5;
+  --cinza-fundo: #fcfbfe;
+  --cinza-fundo-alt: #f8f7fc;
+  --cinza-borda: #eae6f0;
+  --cinza-borda-claro: #f0edf5;
+
+  --texto-principal: #2d2930;
+  --texto-secundario: #615966;
+  --texto-suave: #736b78;
+  --texto-claro: #8a828e;
+  --texto-mais-claro: #a197a6;
+
+  --bg-default: #fcfbfe;
+  --bg-surface: #ffffff;
+  --bg-surface-soft: #f8f7fc;
+  --sidebar-bg: #fcfbfe;
+  --header-bg: #ffffff;
+  --border: #eae6f0;
+  --border-soft: #f0edf5;
+  --text-primary: #2d2930;
+  --text-secondary: #615966;
+  --text-muted: #8a828e;
+  --text-soft: #736b78;
+  --danger-bg: #fff0f1;
+  --danger-text: #f43f5e;
+  --danger-border: #ffe4e6;
+  --btn-surface: #f5f3f8;
+  --btn-surface-hover: #eae6f0;
+  --card-shadow: 0 4px 16px rgba(152, 131, 229, 0.05);
+  --panel-shadow: 0 8px 24px rgba(152, 131, 229, 0.03);
+  --input-bg: #fdfcff;
+  --input-color: #4b4b5c;
+  --nav-hover-bg: rgba(139, 115, 247, 0.06);
+  --nav-active-bg: rgba(139, 115, 247, 0.1);
+}
+
+html[data-theme='dark'] {
+  color-scheme: dark;
+  background-color: #07070d;
+}
+
+:root[data-theme='dark'] {
+  --bg-default: #07070d;
+  --bg-surface: #11121a;
+  --bg-surface-soft: #141723;
+  --sidebar-bg: #0c0e18;
+  --header-bg: #090b13;
+  --border: #22263c;
+  --border-soft: #1c1f2f;
+  --text-primary: #f5f5fa;
+  --text-secondary: #c7c7d9;
+  --text-muted: #96a0b6;
+  --text-soft: #8d94a8;
+  --danger-bg: rgba(239, 68, 68, 0.16);
+  --danger-text: #ffc6d1;
+  --danger-border: rgba(239, 68, 68, 0.25);
+  --btn-surface: #141822;
+  --btn-surface-hover: #1e2234;
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+  --panel-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+  --input-bg: #11131f;
+  --input-color: #e4e8ff;
+  --nav-hover-bg: rgba(255, 255, 255, 0.08);
+  --nav-active-bg: rgba(139, 115, 247, 0.14);
+}
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg-default);
+  color: var(--text-primary);
+  font-family: Inter, sans-serif;
+}
+
+body {
+  background: var(--bg-default);
+}
+
+button,
+input,
+select,
+textarea {
+  color: inherit;
+  font: inherit;
 }
 
 

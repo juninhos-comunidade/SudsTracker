@@ -2,11 +2,13 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/app/context/UserContext';
+import { useTheme } from '@/app/context/ThemeContext';
 import styles from './Header.module.css';
 
 export default function Header() {
   const router = useRouter();
   const { logout } = useUser();
+  const { modoEscuro, toggleModoEscuro } = useTheme();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const handleConfirmLogout = () => {
@@ -21,19 +23,19 @@ export default function Header() {
         <nav className={styles.navbar}>
           {/* Lado Esquerdo: Apenas utilitários para não repetir a Sidebar */}
           <div className={styles.leftNav}>
-            <a href="#support" className={styles.navItem}>
+            <a href="/suporte" className={styles.navItem}>
               Suporte
             </a>
           </div>
 
           {/* Lado Direito: Modo Escuro (Futuro) + Botão Sair */}
           <div className={styles.rightNav}>
-            <button 
-              className={styles.themeToggle} 
-              onClick={() => alert('Modo escuro em breve! 😉')}
+            <button
+              className={styles.themeToggle}
+              onClick={toggleModoEscuro}
               title="Alternar tema"
             >
-              ☀️
+              {modoEscuro ? '☀️' : '🌙'}
             </button>
             
             <button 

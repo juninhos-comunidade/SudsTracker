@@ -1,11 +1,13 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useUser, UserProvider } from '@/app/context/UserContext';
 import Sidebar from '@/app/components/Sidebar';
 import Header from '@/app/components/Header';
 import SudsModal from '@/app/components/SudsModal';
 import styles from './home.module.css';
 import { MOCK_STATISTICS } from '@/app/utils/mockData';
+import NovoRegistroModal from '@/app/components/NovoRegistroModal';
+import { useTheme } from '@/app/context/ThemeContext';
 
 export default function HomePage() {
   return (
@@ -19,9 +21,23 @@ function HomeContent() {
   // Ajustado destructuring para pegar tipoUsuario e updateTipoUsuario
   const { user, tipoUsuario, updateTipoUsuario, logout, loading, showSudsModal, fecharOModal } = useUser();
   const [currentTab, setCurrentTab] = useState('home');
+  const { modoEscuro, toggleModoEscuro } = useTheme();
+
 
   // ESTADO AUXILIAR: Controla quando o usuário força a abertura clicando no botão manual
   const [forcedModalOpen, setForcedModalOpen] = useState(false);
+
+  //Registros do paciente
+  const [showNovoRegistroModal, setShowNovoRegistroModal] = useState(false);
+  const [todosRegistros] = useState(() => {
+    if (typeof window === 'undefined') return [];
+    return JSON.parse(localStorage.getItem('suds_registros') || '[]');
+  });
+
+  const ultimoRegistro = todosRegistros.length > 0 ? todosRegistros[0] : null;
+
+  // Limpeza de dados
+  const [confirmandoLimpeza, setConfirmandoLimpeza] = useState(false);
 
   if (loading) {
     return (
@@ -33,12 +49,8 @@ function HomeContent() {
   }
 
   const handleLimparDados = () => {
-    const confirmar = confirm("Deseja limpar as preferências locais deste navegador?");
-    if (confirmar) {
-      logout();
-      alert("Dados limpos! O app foi reiniciado.");
-      window.location.reload();
-    }
+    logout();
+    window.location.reload();
   };
 
   // LÓGICA DO MODAL: Abre automaticamente se o context mandar OU se o usuário clicar manualmente no botão "Saber mais"
@@ -62,6 +74,9 @@ function HomeContent() {
             setCurrentTab('sobre'); 
           }}
         />
+      )}
+      {showNovoRegistroModal && (
+        <NovoRegistroModal onClose={() => setShowNovoRegistroModal(false)} />
       )}
 
       <Header />
@@ -138,7 +153,7 @@ function HomeContent() {
                   </p>
                   <div className={styles.actionButtons}>
                     {tipoUsuario === 'paciente' ? (
-                      <button className={styles.btnPrimary} onClick={() => alert('Formulário de nota SUDS (Em breve!)')}>
+                      <button className={styles.btnPrimary} onClick={() => setShowNovoRegistroModal(true)}>
                         + Novo Registro SUDS
                       </button>
                     ) : (
@@ -171,10 +186,14 @@ function HomeContent() {
                     <span className={styles.widgetBadgeMuted}>Hoje</span>
                   </div>
                   <p className={styles.widgetMainText}>
-                    {tipoUsuario === 'paciente' ? 'SUDS: 35' : 'Nenhum Alerta'}
+                    {tipoUsuario === 'paciente'
+                      ? (ultimoRegistro ? `SUDS: ${ultimoRegistro.nivelSuds}` : 'Nenhum registro ainda')
+                      : 'Nenhum Alerta'}
                   </p>
                   <span className={styles.widgetFooterStatus}>
-                    {tipoUsuario === 'paciente' ? 'Nível de incômodo: Leve' : 'Estabilidade geral na última semana'}
+                    {tipoUsuario === 'paciente'
+                      ? (ultimoRegistro ? `Registrado em ${new Date(ultimoRegistro.data).toLocaleDateString('pt-BR')}` : 'Adicione seu primeiro registro')
+                      : 'Estabilidade geral na última semana'}
                   </span>
                 </div>
 
@@ -218,20 +237,20 @@ function HomeContent() {
                 <div className={styles.gridCard} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '16px' }}>
                   <span style={{ fontSize: '24px' }}>📊</span>
                   <div>
-                    <h3 style={{ fontSize: '12px', color: '#8a828e', margin: 0, fontWeight: 500 }}>
+                    <h3 style={{ fontSize: '12px', color: 'var(--text-muted)', margin: 0, fontWeight: 500 }}>
                       {tipoUsuario === 'paciente' ? 'Média Geral' : 'Média da Clínica'}
                     </h3>
-                    <p style={{ fontSize: '20px', fontWeight: 'bold', color: '#2d2930', margin: '4px 0 0 0' }}>{MOCK_STATISTICS.mediaGeral}</p>
+                    <p style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--text-primary)', margin: '4px 0 0 0' }}>{MOCK_STATISTICS.mediaGeral}</p>
                   </div>
                 </div>
 
                 <div className={styles.gridCard} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '16px' }}>
                   <span style={{ fontSize: '24px' }}>🔥</span>
                   <div>
-                    <h3 style={{ fontSize: '12px', color: '#8a828e', margin: 0, fontWeight: 500 }}>
+                    <h3 style={{ fontSize: '12px', color: 'var(--text-muted)', margin: 0, fontWeight: 500 }}>
                       {tipoUsuario === 'paciente' ? 'Dias Seguidos' : 'Atendimentos Mês'}
                     </h3>
-                    <p style={{ fontSize: '20px', fontWeight: 'bold', color: '#2d2930', margin: '4px 0 0 0' }}>
+                    <p style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--text-primary)', margin: '4px 0 0 0' }}>
                       {tipoUsuario === 'paciente' ? `${MOCK_STATISTICS.diasConsecutivos}d` : '28'}
                     </p>
                   </div>
@@ -240,32 +259,71 @@ function HomeContent() {
                 <div className={styles.gridCard} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '16px' }}>
                   <span style={{ fontSize: '24px' }}>🧠</span>
                   <div>
-                    <h3 style={{ fontSize: '12px', color: '#8a828e', margin: 0, fontWeight: 500 }}>
+                    <h3 style={{ fontSize: '12px', color: 'var(--text-muted)', margin: 0, fontWeight: 500 }}>
                       {tipoUsuario === 'paciente' ? 'Mais Comum' : 'Gatilho Frequente'}
                     </h3>
-                    <p style={{ fontSize: '20px', fontWeight: 'bold', color: '#2d2930', margin: '4px 0 0 0', textTransform: 'capitalize' }}>{MOCK_STATISTICS.emocaoMaisFrequente}</p>
+                    <p style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--text-primary)', margin: '4px 0 0 0', textTransform: 'capitalize' }}>{MOCK_STATISTICS.emocaoMaisFrequente}</p>
                   </div>
                 </div>
 
                 <div className={styles.gridCard} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '16px' }}>
                   <span style={{ fontSize: '24px' }}>📝</span>
                   <div>
-                    <h3 style={{ fontSize: '12px', color: '#8a828e', margin: 0, fontWeight: 500 }}>
+                    <h3 style={{ fontSize: '12px', color: 'var(--text-muted)', margin: 0, fontWeight: 500 }}>
                       {tipoUsuario === 'paciente' ? 'Total Registros' : 'Prontuários Ativos'}
                     </h3>
-                    <p style={{ fontSize: '20px', fontWeight: 'bold', color: '#2d2930', margin: '4px 0 0 0' }}>
+                    <p style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--text-primary)', margin: '4px 0 0 0' }}>
                       {tipoUsuario === 'paciente' ? MOCK_STATISTICS.registrosTotal : '12 pacientes'}
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className={styles.gridCard} style={{ textAlign: 'center', padding: '40px 20px', border: '2px dashed #eae6f0', background: 'none' }}>
-                <p style={{ fontWeight: '600', color: '#615966', margin: '0 0 4px 0' }}>📈 Gráfico de Evolução de Sintomas</p>
-                <p style={{ fontSize: '13px', color: '#8a828e', margin: 0, maxWidth: '450px', marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.4 }}>
+              <div className={styles.gridCard} style={{ textAlign: 'center', padding: '40px 20px', border: '2px dashed var(--border)', background: 'none' }}>
+                <p style={{ fontWeight: '600', color: 'var(--text-secondary)', margin: '0 0 4px 0' }}>📈 Gráfico de Evolução de Sintomas</p>
+                <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: 0, maxWidth: '450px', marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.4 }}>
                   Espaço preparado para renderização acessível. Quando o back-end injetar as rotas de histórico, utilizaremos o Recharts para plotar uma linha lilás estática com balões de texto descritivos.
                 </p>
               </div>
+
+              {tipoUsuario === 'paciente' && (
+            <div style={{ marginTop: '24px' }}>
+              <h3 style={{ marginBottom: '12px' }}>Histórico de Registros</h3>
+
+              {todosRegistros.length === 0 ? (
+                <div className={styles.gridCard} style={{ textAlign: 'center', padding: '24px' }}>
+                  <p style={{ color: 'var(--text-muted)', margin: 0 }}>
+                    Nenhum registro ainda. Adicione seu primeiro registro na aba Home!
+                  </p>
+                </div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  {todosRegistros.map((registro) => (
+                    <div key={registro.id} className={styles.gridCard} style={{ padding: '16px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                        <span style={{ fontWeight: '600', color: 'var(--text-primary)' }}>
+                          SUDS: {registro.nivelSuds}
+                        </span>
+                        <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+                          {new Date(registro.data).toLocaleDateString('pt-BR')}
+                        </span>
+                      </div>
+                      {registro.comoFoiSeuDia && (
+                        <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: '0 0 6px 0' }}>
+                          {registro.comoFoiSeuDia}
+                        </p>
+                      )}
+                      {registro.gatilhos && (
+                        <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: 0 }}>
+                          <strong>Gatilhos:</strong> {registro.gatilhos}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
             </div>
           )}
 
@@ -302,42 +360,108 @@ function HomeContent() {
           )}
 
           {/* CONFIGURAÇÕES */}
-          {currentTab === 'settings' && (
-            <div className={styles.tabContent}>
-              <h1 className={styles.pageTitle}>Configurações do Sistema</h1>
-              <p className={styles.pageSubtitle}>Gerencie suas preferências locais de desenvolvimento</p>
-              
-              <div className={styles.gridCard} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        {currentTab === 'settings' && (
+          <div className={styles.tabContent}>
+            <h1 className={styles.pageTitle}>Configurações do Sistema</h1>
+            <p className={styles.pageSubtitle}>Gerencie suas preferências locais de desenvolvimento</p>
+
+            <div className={styles.gridCard} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div>
+                <p style={{ margin: '0 0 4px 0', fontWeight: '500', color: 'var(--text-secondary)' }}>Usuário de Sessão:</p>
+                <code style={{ background: 'var(--btn-surface)', padding: '4px 8px', borderRadius: '4px', fontSize: '13px' }}>
+                  {user?.nome || 'Visitante'} ({user?.email || 'usuario@suds.com'})
+                </code>
+              </div>
+
+              <div style={{ borderTop: '1px solid #eae6f0', paddingTop: '16px' }}>
+                <p style={{ margin: '0 0 6px 0', fontWeight: '500', color: 'var(--text-secondary)' }}>Simular Visão do App:</p>
+                <select
+                  style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg-surface)', cursor: 'pointer', fontSize: '14px', color: 'var(--text-primary)' }}
+                  value={tipoUsuario}
+                  onChange={(e) => updateTipoUsuario(e.target.value)}
+                >
+                  <option value="paciente">Visão: Paciente</option>
+                  <option value="profissional">Visão: Profissional / Psicólogo</option>
+                </select>
+              </div>
+
+              <div style={{ borderTop: '1px solid #eae6f0', paddingTop: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
-                  <p style={{ margin: '0 0 4px 0', fontWeight: '500', color: '#615966' }}>Usuário de Sessão:</p>
-                  <code style={{ background: '#f5f4f7', padding: '4px 8px', borderRadius: '4px', fontSize: '13px' }}>
-                    {user?.nome || 'Visitante'} ({user?.email || 'usuario@suds.com'})
-                  </code>
+                  <p style={{ margin: '0 0 4px 0', fontWeight: '500', color: 'var(--text-secondary)' }}>Modo Escuro</p>
+                  <p style={{ margin: 0, fontSize: '12px', color: 'var(--text-muted)' }}>Alterna o tema visual do aplicativo</p>
                 </div>
+                <button
+                  onClick={toggleModoEscuro}
+                  style={{
+                    background: modoEscuro ? '#9883e5' : 'var(--btn-surface)',
+                    color: modoEscuro ? 'white' : 'var(--text-primary)',
+                    border: '1px solid var(--border)',
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    fontSize: '13px',
+                    fontWeight: '500',
+                  }}
+                >
+                  {modoEscuro ? '🌙 Ativado' : '☀️ Desativado'}
+                </button>
+              </div>
 
-                <div style={{ borderTop: '1px solid #eae6f0', paddingTop: '16px' }}>
-                  <p style={{ margin: '0 0 6px 0', fontWeight: '500', color: '#615966' }}>Simular Visão do App:</p>
-                  <select 
-                    style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid #eae6f0', background: '#fff', cursor: 'pointer', fontSize: '14px' }}
-                    value={tipoUsuario}
-                    onChange={(e) => updateTipoUsuario(e.target.value)}
-                  >
-                    <option value="paciente">Visão: Paciente</option>
-                    <option value="profissional">Visão: Profissional / Psicólogo</option>
-                  </select>
-                </div>
+              <div style={{ borderTop: '1px solid #eae6f0', paddingTop: '16px' }}>
+                <p style={{ margin: '0 0 6px 0', fontWeight: '500', color: 'var(--text-secondary)' }}>
+                  Notificações <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 400 }}>(em breve)</span>
+                </p>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'not-allowed', opacity: 0.6 }}>
+                  <input type="checkbox" disabled />
+                  <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Receber lembretes diários para registrar o SUDS</span>
+                </label>
+              </div>
 
-                <div style={{ borderTop: '1px solid #eae6f0', paddingTop: '16px' }}>
-                  <button 
-                    onClick={handleLimparDados}
-                    style={{ background: '#fff5f5', color: '#e53e3e', border: '1px solid #fed7d7', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '14px', fontWeight: '500' }}
+              <div style={{ borderTop: '1px solid #eae6f0', paddingTop: '16px' }}>
+                {!confirmandoLimpeza ? (
+                  <button
+                    onClick={() => setConfirmandoLimpeza(true)}
+                    style={{ background: 'var(--erro-bg)', color: 'var(--danger-text)', border: '1px solid var(--erro-borda)', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '14px', fontWeight: '500' }}
                   >
                     Limpar Preferências do Navegador
                   </button>
-                </div>
+                ) : (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+                    <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Tem certeza? Essa ação não pode ser desfeita.</span>
+                    <button
+                      onClick={handleLimparDados}
+                      style={{ background: 'var(--danger-text)', color: 'white', border: 'none', padding: '6px 14px', borderRadius: '8px', cursor: 'pointer', fontSize: '13px', fontWeight: '500' }}
+                    >
+                      Sim, limpar
+                    </button>
+                    <button
+                      onClick={() => setConfirmandoLimpeza(false)}
+                      style={{ background: 'var(--btn-surface)', color: 'var(--text-secondary)', border: '1px solid var(--border)', padding: '6px 14px', borderRadius: '8px', cursor: 'pointer', fontSize: '13px', fontWeight: '500' }}
+                    >
+                      Cancelar
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              <div style={{ borderTop: '1px solid #eae6f0', paddingTop: '16px' }}>
+                <p style={{ margin: '0 0 6px 0', fontWeight: '500', color: 'var(--text-secondary)' }}>
+                  Deletar Conta <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 400 }}>(em breve)</span>
+                </p>
+                <p style={{ margin: '0 0 10px 0', fontSize: '12px', color: 'var(--text-muted)' }}>
+                  Excluir sua conta é uma ação permanente e removerá todos os seus dados.
+                </p>
+                <button
+                  onClick={() => alert('Função de exclusão de conta em desenvolvimento. Em breve disponível!')}
+                  className={styles.btnExcluirConta}
+                >
+                  Excluir Conta
+                </button>
               </div>
             </div>
-          )}
+          </div>
+        )}
+
         </div>
 
         { /* RODAPÉ */}

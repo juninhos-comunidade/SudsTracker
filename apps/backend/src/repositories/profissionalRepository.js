@@ -24,11 +24,19 @@ class ProfissionalRepository {
     }
 
     async encontrarPorPaciente(pacienteId) {
-        const id = Number(pacienteId);
-        return await prisma.profissional.findUnique({
-            where: { id_paciente: Number.isNaN(id) ? pacienteId : id }
+        const idNum = Number(pacienteId);
+        
+        return await prisma.profissional.findFirst({
+            where: {
+                pacientes: { 
+                    some: { // 💡 Avisa ao Prisma para buscar "algum" registro na lista que cumpra a regra
+                        id: Number.isNaN(idNum) ? pacienteId : idNum
+                    }
+                    
+                }
+            }
         });
-    }
+}
 
     async encontrarTodos() {
         return await prisma.profissional.findMany();

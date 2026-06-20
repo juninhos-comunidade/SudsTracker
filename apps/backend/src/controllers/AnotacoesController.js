@@ -22,10 +22,13 @@ class AnotacoesController{
         }
     }
     async atualizarAnotacao(req,res){
-        const anotacao = req.body;
-        const {id} = req.params;
-
         try{
+            const id = Number(req.params.id); 
+            const anotacao = req.body;
+
+            if (isNaN(id)) {
+            return res.status(400).json({ error: "O ID fornecido deve ser um número válido." });
+            }
             const anotacaoAtualizada = await AnotacoesService.atualizarAnotacao(id,anotacao)
             return res.status(200).json(anotacaoAtualizada);
 
@@ -35,7 +38,11 @@ class AnotacoesController{
     }
     async encontrarAnotacaoPorId(req,res){
         try{    
-            const {id} = req.params;
+            const id = Number(req.params.id); 
+            if (isNaN(id)) {
+                return res.status(400).json({ error: "O ID fornecido deve ser um número válido." });
+            }
+            
             const anotacaoEncontrada = await AnotacoesService.encontrarAnotacaoPorID(id);
             return res.status(200).json(anotacaoEncontrada);
         
@@ -45,7 +52,10 @@ class AnotacoesController{
     }
     async encontrarTodasAsAnotacoesPorPaciente(req,res){
         try{    
-            const {pacienteId} = req.params;
+            const pacienteId = Number(req.params.pacienteId); 
+            if (isNaN(pacienteId)) {
+                return res.status(400).json({ error: "O ID fornecido deve ser um número válido." });
+            }
             const listaDeAnotacoesPorPaciente = await AnotacoesService.encontrarTodasAsAnotacoesPorPaciente(pacienteId);
             return res.status(200).json(listaDeAnotacoesPorPaciente);
 
@@ -56,7 +66,10 @@ class AnotacoesController{
     }
     async deletarAnotacaoPorId(req,res){
         try{
-            const {id} = req.params;
+            const id = Number(req.params.id); 
+            if (isNaN(id)) {
+                return res.status(400).json({ error: "O ID fornecido deve ser um número válido." });
+            }
             await AnotacoesService.deletarAnotacao(id);
             return res.status(204).send();
         }catch(error){

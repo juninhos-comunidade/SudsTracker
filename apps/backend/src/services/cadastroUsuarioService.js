@@ -3,7 +3,7 @@ import UserRepository from "../repositories/userRepository.js";
 import { gerarHash } from "../utils/senhaUtils.js";
 
 async function cadastrarUsuario(dadosUsuario) {
-  const { nome, email, senha, dataNascimento, registroProfissional, tipoUsuario } = dadosUsuario;
+  const { nome, email, senha, dataNascimento, registroProfissional, tipoUsuario, telefone ,especialidade} = dadosUsuario;
 
   const dataNascimentoObjDate = await validaUsuario(dadosUsuario);
 
@@ -11,16 +11,30 @@ async function cadastrarUsuario(dadosUsuario) {
 
   const emailFormatado = email ? String(email).trim().toLowerCase() : "";
 
-  const novoUsuario = await UserRepository.criarUsuario({
-    data: {
-      nome,
-      email: emailFormatado,
-      senha: senhaCriptografada,
-      dataNascimento: dataNascimentoObjDate,
-      registroProfissional,
-      tipoUsuario,
-    },
-  });
+const dadosParaCriar = {
+    nome,
+    email: emailFormatado,
+    senha: senhaCriptografada,
+    dataNascimento: dataNascimentoObjDate,
+    tipoUsuario: tipoUsuario
+  };
+ const tipoPadronizado = tipoUsuario.toUpperCase();
+
+  if (tipoPadronizado === "PROFISSIONAL") {
+    dadosParaCriar.profissional = {
+      create: {
+        telefone: telefone,
+        crp: registroProfissional,
+        especialidade: especialidade
+      }
+    };
+  } else if (tipoPadronizado === "PACIENTE") {
+    dadosParaCriar.paciente = {
+      create: {} // Cria o registro na tabela Paciente vinculado a este Usuario
+    };
+  }
+
+const novoUsuario = await UserRepository.criarUsuario(dadosParaCriar);
 
   const { senha: _, ...usuarioSemSenha } = novoUsuario;
   return usuarioSemSenha;

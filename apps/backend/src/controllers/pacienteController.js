@@ -14,7 +14,10 @@ function tratarErroController(res, error, mensagemLog = 'Erro no servidor') {
 const PacienteController = {
   async alterarProfissional(req, res) {
     try {
-      const { id } = req.params;
+      const id = Number(req.params.id); 
+            if (isNaN(id)) {
+                return res.status(400).json({ error: "O ID fornecido deve ser um número válido." });
+            }
       const { id_profissional } = req.body;
 
       const pacienteAtualizado = await pacienteService.atribuirProfissional(id, { id_profissional });
@@ -30,7 +33,8 @@ const PacienteController = {
   
   async exibirPacientePorUsuario(req, res) {
     try {
-      const { idUsuario } = req.params;
+      const idUsuario = (req.params.idUsuario); 
+    
       const paciente = await pacienteService.encontrarPacientePorUsuario(idUsuario);
       return res.status(200).json(paciente);
     } catch (error) {
@@ -39,7 +43,10 @@ const PacienteController = {
   },
    async listarPacientesPorProfissional(req, res) {
     try {
-      const { profissionalId } = req.params;
+      const profissionalId = Number(req.params.profissionalId); 
+      if (isNaN(profissionalId)) {
+        return res.status(400).json({ error: "O ID fornecido deve ser um número válido." });
+      }
       const lista = await pacienteService.listarPacientesPorProfissional(profissionalId);
       return res.status(200).json(lista);
     } catch (error) {
@@ -58,7 +65,10 @@ const PacienteController = {
 
   async exibirPacientePorId(req, res) {
     try {
-      const { id } = req.params;
+      const id = Number(req.params.id); 
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "O ID fornecido deve ser um número válido." });
+      }
       const paciente = await pacienteService.encontrarPacientePorId(id);
 
       if (!paciente) {

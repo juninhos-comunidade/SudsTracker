@@ -55,8 +55,11 @@ export class ProfissionalController {
     }
     async encontrarProfissionalPorPaciente(req,res){
         try {
-            const { pacienteId } = req.params;
-            const profissional = await ProfissionalService.encontrarProfissionalPorPaciente(pacienteId);
+            const { pacienteId } = req.params; 
+
+            const profissional = await ProfissionalService.encontrarProfissionalPorPaciente(Number(pacienteId));
+
+
             return res.status(200).json(profissional);
         } 
         catch (error) {

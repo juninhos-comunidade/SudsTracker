@@ -2,7 +2,7 @@ import { cadastroUsuarioService } from "../services/cadastroUsuarioService.js";
 
 async function cadastrarUsuario(req, res) {
   try {
-    const { nome, email, senha, dataNascimento, registroProfissional, tipoUsuario } = req.body;
+    const { nome, email, senha, dataNascimento, registroProfissional,telefone,especialidade, tipoUsuario } = req.body;
     console.log(req.body);
 
     const novoUsuario = await cadastroUsuarioService.cadastrarUsuario({
@@ -11,6 +11,8 @@ async function cadastrarUsuario(req, res) {
       senha,
       dataNascimento,
       registroProfissional,
+      telefone,
+      especialidade,
       tipoUsuario
     });
 

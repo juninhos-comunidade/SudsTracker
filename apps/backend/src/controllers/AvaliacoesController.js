@@ -22,10 +22,13 @@ class AvaliacoesController{
         }
     }
     async atualizarAvaliacao(req,res){
-        const avaliacao = req.body;
-        const {id} = req.params;
-
+        
         try{
+            const avaliacao = req.body;
+            const id = Number(req.params.id); 
+            if (isNaN(id)) {
+                return res.status(400).json({ error: "O ID fornecido deve ser um número válido." });
+            }
             const avaliacaoAtualizada = await AvaliacoesService.atualizarAvaliacao(id,avaliacao)
             return res.status(200).json(avaliacaoAtualizada);
 
@@ -35,8 +38,11 @@ class AvaliacoesController{
     }
     async encontrarAvaliacaoPorId(req,res){
         try{    
-            const {id} = req.params;
-            const avaliacaoEncontrada = await AvaliacoesService.encontrarAvaliacaoPorId(id);
+            const id = Number(req.params.id); 
+            if (isNaN(id)) {
+                return res.status(400).json({ error: "O ID fornecido deve ser um número válido." });
+            }
+            const avaliacaoEncontrada = await AvaliacoesService.encontrarAvaliacaoPorID(id);
             return res.status(200).json(avaliacaoEncontrada);
         
         } catch (error){
@@ -45,7 +51,10 @@ class AvaliacoesController{
     }
     async encontrarTodasAsAvaliacoesPorPaciente(req,res){
         try{    
-            const {pacienteId} = req.params;
+            const pacienteId = Number(req.params.pacienteId); 
+            if (isNaN(pacienteId)) {
+                return res.status(400).json({ error: "O ID fornecido deve ser um número válido." });
+            }
             const listaDeAvaliacoesPorPaciente = await AvaliacoesService.encontrarTodasAsAvaliacoesPorPaciente(pacienteId);
             return res.status(200).json(listaDeAvaliacoesPorPaciente);
 
@@ -56,7 +65,10 @@ class AvaliacoesController{
     }
     async encontrarTodasAsAvaliacoesPorProfissional(req,res){
         try{    
-            const {profissionalId} = req.params;
+            const profissionalId = Number(req.params.profissionalId); 
+            if (isNaN(profissionalId)) {
+                return res.status(400).json({ error: "O ID fornecido deve ser um número válido." });
+            }
             const listaDeAvalicaoesPorProfissional = await AvaliacoesService.encontrarTodasAsAvaliacoesPorProfissional(profissionalId);
             return res.status(200).json(listaDeAvalicaoesPorProfissional);
 
@@ -67,8 +79,11 @@ class AvaliacoesController{
     }    
     async deletarAvaliacaoPorId(req,res){
         try{
-            const {id} = req.params;
-            await AvaliacoesService.deletarAvaliacaoPorId(id);
+            const id = Number(req.params.id); 
+            if (isNaN(id)) {
+                return res.status(400).json({ error: "O ID fornecido deve ser um número válido." });
+            }
+            await AvaliacoesService.deletarAvaliacao(id);
             return res.status(204).send();
         }catch(error){
             return tratarErroController(res,error,"Erro ao deletar avaliação")

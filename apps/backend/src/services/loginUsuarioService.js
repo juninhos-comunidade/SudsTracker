@@ -3,9 +3,10 @@ import userRepository from '../repositories/userRepository.js';
 import { verificarSenha } from "../utils/senhaUtils.js";
 
 
-const JWT_SECRET = process.env.JWT_SECRET;
 
 async function logarUsuario ({ email, senha }) {
+    
+
     const usuarioLogin = await userRepository.encontrarPorEmail(email);
 
     if (!usuarioLogin) {
@@ -19,7 +20,7 @@ async function logarUsuario ({ email, senha }) {
         console.log('senha errada')
         throw new Error("Email ou senha inválido");
     }
-
+    const JWT_SECRET = process.env.JWT_SECRET ;
     const token = jwt.sign(
         {
           sub: usuarioLogin.id,

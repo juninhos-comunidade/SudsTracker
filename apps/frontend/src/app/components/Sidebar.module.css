@@ -4,11 +4,11 @@
   top: 0;
   height: 100vh;
   width: 280px;
-  background: #fcfbfe; /* Um fundo off-white com um toque sutil de lilás */
-  color: #2d2930;
+  background: var(--sidebar-bg);
+  color: var(--text-primary);
   padding: 24px 20px;
   overflow-y: auto;
-  border-right: 1px solid #eae6f0; 
+  border-right: 1px solid var(--border);
   z-index: 1000;
   display: flex;
   flex-direction: column;
@@ -20,30 +20,27 @@
   height: 100%;
 }
 
-/* Logo */
 .logo {
   font-size: 24px;
   font-weight: 700;
-  color: #8b73f7; /* cor principal (pode ser alterada depois) */
+  color: #8b73f7;
   margin-bottom: 32px;
   letter-spacing: -0.5px;
 }
 
-/* Seção de Perfil  */
 .profileSection {
   margin-bottom: 32px;
   padding: 12px 8px;
-  background: transparent; /* Sem fundo branco cortando o layout */
+  background: transparent;
   text-align: center;
-  border: none; /* Sem bordas desnecessárias */
+  border: none;
 }
 
-/* Ícone/Avatar do Visitante Arredondado em Degradê Lilás */
 .avatar {
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #c3b5fd 0%, #8b73f7 100%); /* Degradê moderno e suave */
+  background: linear-gradient(135deg, #c3b5fd 0%, #8b73f7 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -58,18 +55,17 @@
   font-size: 15px;
   font-weight: 600;
   margin: 0 0 4px 0;
-  color: #2d2930;
+  color: var(--text-primary);
   word-break: break-word;
 }
 
 .userEmail {
   font-size: 12px;
-  color: #8a828e;
+  color: var(--text-secondary);
   margin: 0;
   word-break: break-all;
 }
 
-/* Menu de Navegação */
 .navMenu {
   flex: 1;
   margin-bottom: 24px;
@@ -89,9 +85,9 @@
   display: block;
   width: 100%;
   padding: 12px 14px;
-  color: #615966;
+  color: var(--text-secondary);
   text-decoration: none;
-  border-radius: 12px; /* Cantos levemente mais arredondados  */
+  border-radius: 12px;
   transition: all 0.2s ease-in-out;
   font-size: 14px;
   font-weight: 500;
@@ -101,44 +97,42 @@
   text-align: left;
 }
 
-/* Hover e Estados Ativos em Lilás Pastel */
 .navLink:hover {
-  background: rgba(139, 115, 247, 0.06);
+  background: var(--nav-hover-bg);
   color: #8b73f7;
 }
 
 .navLink.active {
-  background: rgba(139, 115, 247, 0.1);
+  background: var(--nav-active-bg);
   color: #8b73f7;
   font-weight: 600;
 }
 
-/* Botões de Ação no Rodapé */
 .actionButtons {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  border-top: 1px solid #eae6f0;
+  border-top: 1px solid var(--border);
   padding-top: 16px;
 }
 
 .btnLogout {
   padding: 11px 14px;
-  border: 1px solid #eae6f0;
+  border: 1px solid var(--border);
   border-radius: 10px;
   font-weight: 500;
   font-size: 13px;
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: center;
-  background: #ffffff;
-  color: #8a828e;
+  background: var(--bg-surface);
+  color: var(--text-secondary);
 }
 
 .btnLogout:hover {
-  background: #fff1f2; /* Vermelho bem sutil para indicar saída ao passar o mouse */
-  border-color: #ffe4e6;
-  color: #f43f5e;
+  background: var(--danger-bg);
+  border-color: var(--danger-border);
+  color: var(--danger-text);
 }
 
 /* RESPONSIVIDADE */

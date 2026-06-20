@@ -1,7 +1,7 @@
 .settingsContainer {
   display: flex;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #f0f0f5 100%);
+  background: var(--bg-default);
 }
 
 .mainContent {
@@ -19,13 +19,13 @@
 .pageTitle {
   font-size: 32px;
   font-weight: 700;
-  color: #1a1a2e;
+  color: var(--text-primary);
   margin: 0 0 8px 0;
 }
 
 .pageSubtitle {
   font-size: 16px;
-  color: #666;
+  color: var(--text-secondary);
   margin: 0;
 }
 
@@ -34,17 +34,18 @@
 }
 
 .section {
-  background: white;
+  background: var(--bg-surface);
   border-radius: 12px;
   padding: 24px;
   margin-bottom: 24px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border);
 }
 
 .sectionTitle {
   font-size: 18px;
   font-weight: 600;
-  color: #1a1a2e;
+  color: var(--text-primary);
   margin: 0 0 20px 0;
   border-bottom: 2px solid rgba(102, 126, 234, 0.2);
   padding-bottom: 12px;
@@ -66,7 +67,7 @@
   display: block;
   font-size: 14px;
   font-weight: 600;
-  color: #1a1a2e;
+  color: var(--text-primary);
   margin-bottom: 6px;
 }
 
@@ -74,29 +75,29 @@
   margin: 0 0 4px 0;
   font-size: 14px;
   font-weight: 600;
-  color: #1a1a2e;
+  color: var(--text-primary);
 }
 
 .settingLabel p {
   margin: 0;
   font-size: 13px;
-  color: #999;
+  color: var(--text-secondary);
 }
 
 .input,
 .select {
   width: 100%;
   padding: 10px 12px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border);
   border-radius: 8px;
   font-size: 14px;
-  background: #f9f9f9;
-  color: #666;
+  background: var(--input-bg);
+  color: var(--input-color);
 }
 
 .input:disabled,
 .select:disabled {
-  background: #f0f0f0;
+  background: var(--bg-surface-soft);
   cursor: not-allowed;
 }
 
@@ -104,10 +105,9 @@
 .select:focus {
   outline: none;
   border-color: #667eea;
-  background: white;
+  background: var(--bg-surface);
 }
 
-/* Botões */
 .btnSecondary,
 .btnWarning,
 .btnDanger {
@@ -122,9 +122,9 @@
 }
 
 .btnSecondary {
-  background: rgba(102, 126, 234, 0.1);
-  color: #667eea;
-  border: 1px solid rgba(102, 126, 234, 0.3);
+  background: var(--lilas-bg-suave);
+  color: var(--lilas-principal);
+  border: 1px solid var(--lilas-borda);
 }
 
 .btnSecondary:hover {
@@ -154,7 +154,7 @@
 /* Divisor */
 .divider {
   height: 1px;
-  background: #eee;
+  background: var(--border);
   margin: 16px 0;
 }
 
@@ -175,13 +175,13 @@
   margin: 0 0 4px 0;
   font-size: 14px;
   font-weight: 600;
-  color: #1a1a2e;
+  color: var(--text-primary);
 }
 
 .toggleLabel p {
   margin: 0;
   font-size: 13px;
-  color: #999;
+  color: var(--text-secondary);
 }
 
 .toggle {

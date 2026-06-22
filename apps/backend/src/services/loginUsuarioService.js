@@ -38,7 +38,7 @@ async function logarUsuario ({ email, senha }) {
     const { senha: _, ...usuarioSemSenha } = usuarioLogin;
 
     return {
-        usuario: usuarioSemSenha,
+        user: usuarioSemSenha,
         token,
     };
 

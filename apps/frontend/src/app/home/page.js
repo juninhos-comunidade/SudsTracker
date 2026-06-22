@@ -512,7 +512,6 @@ function HomeContent() {
 
       </div>
 
-
         { /* RODAPÉ */}
         <footer className={styles.footer}>
           <p className={styles.footerTexto}>

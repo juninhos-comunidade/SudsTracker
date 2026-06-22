@@ -5,8 +5,10 @@ import { registrarAnotacao } from '../services/AnotacoesService';
 import { buscarPacientePorUsuarioId } from "../services/usuarioService";
 import { useUser } from '@/app/context/UserContext'; 
 export default function NovoRegistroModal({ onClose, modoEscuro = false }) {
-  const [etapa, setEtapa] = useState(1);
-  const { user } = useUser(); 
+ const [etapa, setEtapa] = useState(1);
+ const { user } = useUser(); 
+
+
   // Respostas da Etapa 1
   const [comoFoiSeuDia, setComoFoiSeuDia] = useState('');
   const [gatilhos, setGatilhos] = useState('');
@@ -45,7 +47,7 @@ export default function NovoRegistroModal({ onClose, modoEscuro = false }) {
     }
 
     const dadosNovaAnotacao = {
-      id_paciente: Number(perfil.data.id), // Deixe fixo o ID de um paciente que exista no seu banco
+      id_paciente: Number(perfil.data.id), 
       intensidade: Number(nivelSuds), 
       sentimento: texto, 
       anotacao: comoFoiSeuDia,

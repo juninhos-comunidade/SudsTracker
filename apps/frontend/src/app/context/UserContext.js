@@ -5,73 +5,75 @@ const UserContext = createContext();
 
 export function UserProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [tipoUsuario, setTipoUsuario] = useState('paciente'); // 'paciente' | 'profissional'
+  const [tipoUsuario, setTipoUsuario] = useState(null); // 'PACIENTE' | 'PROFISSIONAL'
   const [loading, setLoading] = useState(true);
   const [showSudsModal, setShowSudsModal] = useState(false);
 
-  // Carregar dados do usuário ao iniciar o app
-  useEffect(() => {
+useEffect(() => {
     const loadUserData = () => {
       if (typeof window !== 'undefined') {
-        const storedUser = localStorage.getItem('suds_current_user');
-        const storedTipoUsuario = localStorage.getItem('suds_tipo_usuario');
+        const token = localStorage.getItem('suds_token');    
+        const usuarioSalvo = localStorage.getItem('suds_user');
         const dontShowModal = localStorage.getItem('suds_modal_dont_show');
 
-        if (storedUser) {
-          const parsedUser = JSON.parse(storedUser);
+        if (token && usuarioSalvo) {
+          const parsedUser = JSON.parse(usuarioSalvo);
           setUser(parsedUser);
-          setTipoUsuario(storedTipoUsuario || parsedUser.tipoUsuario || 'paciente');
+          setTipoUsuario(parsedUser.tipoUsuario ? parsedUser.tipoUsuario.toLowerCase() : 'paciente'); 
         } else {
-          // Se não houver ninguém logado, define um visitante temporário para testes
-          const guestUser = { id: 'guest', nome: 'Visitante', tipoUsuario: 'paciente' };
-          setUser(guestUser);
-          setTipoUsuario('paciente');
+          setUser(null);
+          setTipoUsuario(null);
         }
 
-        if (!dontShowModal) {
+        if (!dontShowModal && usuarioSalvo) {
           setShowSudsModal(true);
         }
       }
       setLoading(false);
     };
 
-    loadUserData();
-  }, []);
+ loadUserData();
+}
+, []); // 💡 Chaves do useEffect corrigidas e fechadas no local exato!
 
-  const updateUser = (userData) => {
-    setUser(userData);
-    localStorage.setItem('suds_current_user', JSON.stringify(userData));
-    if (userData.tipoUsuario) {
-      setTipoUsuario(userData.tipoUsuario);
-      localStorage.setItem('suds_tipo_usuario', userData.tipoUsuario);
-    }
+  // 🔑 Função usada pelos formulários de Login e Cadastro após sucesso na API
+  const loginContext = (dadosLogin) => {
+    if (typeof window !== 'undefined') {
+      const usuarioObjeto = dadosLogin.user || dadosLogin.usuario;
+      if (!usuarioObjeto) {
+        console.error("Dados do usuário não encontrados no retorno da API");
+        return;
+      }
+
+      const tipoDefinido = usuarioObjeto.tipoUsuario ? usuarioObjeto.tipoUsuario.toLowerCase() : 'paciente';
+      localStorage.setItem('suds_token', dadosLogin.token);
+      localStorage.setItem('suds_user', JSON.stringify(usuarioObjeto));
+      localStorage.setItem('suds_tipo_usuario', tipoDefinido); // Cria contingência para a página ler rápido
+
+      setUser(usuarioObjeto);
+      setTipoUsuario(tipoDefinido);
+
+
+       }
   };
 
-  const updateTipoUsuario = (newTipoUsuario) => {
-    setTipoUsuario(newTipoUsuario);
-    localStorage.setItem('suds_tipo_usuario', newTipoUsuario);
-    
-    if (user) {
-      const updatedUser = { ...user, tipoUsuario: newTipoUsuario };
-      setUser(updatedUser);
-      localStorage.setItem('suds_current_user', JSON.stringify(updatedUser));
+  const fecharOModal = () => {
+    setShowSudsModal(false); 
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('suds_modal_dont_show', 'true');
     }
   };
-
- 
-const fecharOModal = () => {
-  setShowSudsModal(false); 
-  
-};
 
   const logout = () => {
     setUser(null);
-    setTipoUsuario('paciente');
-    setShowSudsModal(true);
-    localStorage.removeItem('suds_current_user'); // diz pro navegador esquecer o nome do usuário
-    localStorage.removeItem('suds_tipo_usuario'); // diz pro navegador esquecer se era paciente/profissional
-    localStorage.removeItem('suds_modal_dont_show'); // Faz o modal de introdução voltar a aparecer no próximo login
-    localStorage.removeItem('suds_auth_token'); // Joga fora a chave de acesso do usuário (mesmo que seja só um token de teste por enquanto)
+    setTipoUsuario(null);
+    setShowSudsModal(false);
+    
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('suds_token');
+      localStorage.removeItem('suds_user');
+      localStorage.removeItem('suds_modal_dont_show');
+    }
   };
 
   return (
@@ -81,8 +83,7 @@ const fecharOModal = () => {
         tipoUsuario,
         loading,
         showSudsModal,
-        updateUser,
-        updateTipoUsuario,
+        loginContext, // 💡 Exposto para os formulários usarem
         fecharOModal,
         logout,
       }}

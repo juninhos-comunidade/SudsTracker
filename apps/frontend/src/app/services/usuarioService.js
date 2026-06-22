@@ -57,3 +57,27 @@ export async function buscarPacientePorUsuarioId(usuarioId) {
     return { ok: false, error: 'Falha na conexão com o servidor.' };
   }
 }
+export async function buscarProfissionalPorUsuarioId(usuarioId) {
+  try {
+    const response = await fetch(`${API_URL}/profissionais/usuario/${usuarioId}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    return await tratarResposta(response);
+  } catch (error) {
+    console.error('buscarProfissionalPorUsuarioId', error);
+    return { ok: false, error: 'Falha na conexão com o servidor.' };
+  }
+}
+export async function buscarUsuarioPorEmail(email) {
+  try {
+    const response = await fetch(`${API_URL}/usuarios/email/${encodeURIComponent(email)}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    return await tratarResposta(response);
+  } catch (error) {
+    console.error('buscarUsuarioPorEmail', error);
+    return { ok: false, error: 'Falha na conexão com o servidor.' };
+  }
+}

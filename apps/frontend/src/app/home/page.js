@@ -11,6 +11,7 @@ import { useTheme } from '@/app/context/ThemeContext';
 import { buscarAnotacoesPorPaciente } from '../services/AnotacoesService';
 import { buscarPacientePorUsuarioId } from '../services/usuarioService';
 import { useRouter } from 'next/navigation'
+import VincularPacienteModal from '@/app/components/AtribuirPacienteModal'; // 💡 Adicione junto com os outros imports
 
 
 const formatarDataLocal = (stringData) => {
@@ -40,6 +41,7 @@ function HomeContent() {
   const [showNovoRegistroModal, setShowNovoRegistroModal] = useState(false);
   const [todosRegistros, setTodosRegistros] = useState([]);
   const [confirmandoLimpeza, setConfirmandoLimpeza] = useState(false);
+  const [showVincularModal, setShowVincularModal] = useState(false); // 💡 Controla a abertura do vínculo profissional
 
 
  useEffect(() => {
@@ -114,6 +116,12 @@ function HomeContent() {
       {showNovoRegistroModal && (
         <NovoRegistroModal onClose={() => setShowNovoRegistroModal(false)} />
       )}
+      
+    
+      {showVincularModal && (
+        <VincularPacienteModal onClose={() => setShowVincularModal(false)} />
+      )}
+      
 
       <Header />
 
@@ -193,7 +201,7 @@ function HomeContent() {
                         + Novo Registro SUDS
                       </button>
                     ) : (
-                      <button className={styles.btnPrimary} onClick={() => alert('Vincular novo Paciente')}>
+                      <button className={styles.btnPrimary} onClick={() => setShowVincularModal(true)}>
                         + Vincular Novo Paciente
                       </button>
                     )}

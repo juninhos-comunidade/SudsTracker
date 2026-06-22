@@ -8,6 +8,20 @@ import styles from './home.module.css';
 import { MOCK_STATISTICS } from '@/app/utils/mockData';
 import NovoRegistroModal from '@/app/components/NovoRegistroModal';
 import { useTheme } from '@/app/context/ThemeContext';
+import { buscarAnotacoesPorPaciente } from '../services/AnotacoesService';
+import { buscarPacientePorUsuarioId } from '../services/usuarioService';
+import { useRouter } from 'next/navigation'
+import VincularPacienteModal from '@/app/components/AtribuirPacienteModal'; // 💡 Adicione junto com os outros imports
+
+
+const formatarDataLocal = (stringData) => {
+  if (!stringData) return 'Sem data';
+  const dataObj = new Date(stringData);
+  if (isNaN(dataObj.getTime())) return 'Data inválida';
+  
+  // 💡 O 'timeZone' força o JavaScript a calcular o dia correto com base no fuso do Brasil
+  return dataObj.toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' });
+};
 
 export default function HomePage() {
   return (
@@ -18,49 +32,73 @@ export default function HomePage() {
 }
 
 function HomeContent() {
+  const router = useRouter()
   // Ajustado destructuring para pegar tipoUsuario e updateTipoUsuario
   const { user, tipoUsuario, updateTipoUsuario, logout, loading, showSudsModal, fecharOModal } = useUser();
   const [currentTab, setCurrentTab] = useState('home');
   const { modoEscuro, toggleModoEscuro } = useTheme();
-
-
-  // ESTADO AUXILIAR: Controla quando o usuário força a abertura clicando no botão manual
   const [forcedModalOpen, setForcedModalOpen] = useState(false);
-
-  //Registros do paciente
   const [showNovoRegistroModal, setShowNovoRegistroModal] = useState(false);
-  const [todosRegistros] = useState(() => {
-    if (typeof window === 'undefined') return [];
-    return JSON.parse(localStorage.getItem('suds_registros') || '[]');
-  });
-
-  const ultimoRegistro = todosRegistros.length > 0 ? todosRegistros[0] : null;
-
-  // Limpeza de dados
+  const [todosRegistros, setTodosRegistros] = useState([]);
   const [confirmandoLimpeza, setConfirmandoLimpeza] = useState(false);
+  const [showVincularModal, setShowVincularModal] = useState(false); // 💡 Controla a abertura do vínculo profissional
 
-  if (loading) {
-    return (
-      <div className={styles.loadingContainer}>
-        <div className={styles.spinner}></div>
-        <p>Carregando...</p>
-      </div>
-    );
-  }
+
+ useEffect(() => {
+    if (!loading) {
+      const tokenLocal = typeof window !== 'undefined' ? localStorage.getItem('suds_token') : null;
+      const usuarioLocal = typeof window !== 'undefined' ? localStorage.getItem('suds_user') : null;
+
+      if (!user && !tokenLocal && !usuarioLocal) {
+        alert("Acesso negado. Por favor, faça login para acessar esta página.");
+        router.push('/'); 
+      }
+    }
+  }, [user, loading, router]);
+
+  
+
+  useEffect(() => {
+    async function carregarDadosDoBanco() {
+      const tipoReal = tipoUsuario || (typeof window !== 'undefined' ? localStorage.getItem('suds_tipo_usuario') : null);
+      
+      if (tipoReal === 'paciente' && user?.id) {
+        const perfilPaciente = await buscarPacientePorUsuarioId(user.id);
+
+        if (perfilPaciente.ok && perfilPaciente.data) {
+          const idRealDoPaciente = perfilPaciente.data.id;
+          const resultadoAnotacoes = await buscarAnotacoesPorPaciente(idRealDoPaciente);
+
+          if (resultadoAnotacoes.ok && resultadoAnotacoes.data) {
+            setTodosRegistros(resultadoAnotacoes.data);
+          } else {
+            console.error("Erro ao carregar diário:", resultadoAnotacoes.error);
+          }
+        } else {
+          console.error("Erro ao vincular perfil do paciente:", perfilPaciente.error);
+        }
+      }
+    }
+
+    if (!loading && user) {
+      carregarDadosDoBanco();
+    }
+  }, [tipoUsuario, loading, user]);
+
+  // Lógica de variáveis utilitárias
+  const ultimoRegistro = todosRegistros.length > 0 ? todosRegistros[0] : null;
 
   const handleLimparDados = () => {
     logout();
     window.location.reload();
   };
 
-  // LÓGICA DO MODAL: Abre automaticamente se o context mandar OU se o usuário clicar manualmente no botão "Saber mais"
   const deveExibirOModal = (showSudsModal || forcedModalOpen) && tipoUsuario === 'paciente';
 
   const handleFecharModalGeral = () => {
-    fecharOModal();            // Fecha a sessão automática do contexto
-    setForcedModalOpen(false); // Desativa o gatilho do clique manual
-  };
-
+    fecharOModal();            
+    setForcedModalOpen(false); 
+  };  
   return (
     <div className={styles.homeContainer}>
       <Sidebar currentTab={currentTab} onTabChange={setCurrentTab} />
@@ -78,6 +116,12 @@ function HomeContent() {
       {showNovoRegistroModal && (
         <NovoRegistroModal onClose={() => setShowNovoRegistroModal(false)} />
       )}
+      
+    
+      {showVincularModal && (
+        <VincularPacienteModal onClose={() => setShowVincularModal(false)} />
+      )}
+      
 
       <Header />
 
@@ -157,7 +201,7 @@ function HomeContent() {
                         + Novo Registro SUDS
                       </button>
                     ) : (
-                      <button className={styles.btnPrimary} onClick={() => alert('Vincular novo Paciente')}>
+                      <button className={styles.btnPrimary} onClick={() => setShowVincularModal(true)}>
                         + Vincular Novo Paciente
                       </button>
                     )}
@@ -187,12 +231,12 @@ function HomeContent() {
                   </div>
                   <p className={styles.widgetMainText}>
                     {tipoUsuario === 'paciente'
-                      ? (ultimoRegistro ? `SUDS: ${ultimoRegistro.nivelSuds}` : 'Nenhum registro ainda')
+                      ? (ultimoRegistro ? `SUDS: ${ultimoRegistro.intensidade}` : 'Nenhum registro ainda')
                       : 'Nenhum Alerta'}
                   </p>
                   <span className={styles.widgetFooterStatus}>
                     {tipoUsuario === 'paciente'
-                      ? (ultimoRegistro ? `Registrado em ${new Date(ultimoRegistro.data).toLocaleDateString('pt-BR')}` : 'Adicione seu primeiro registro')
+                      ? (ultimoRegistro ? `Registrado em ${formatarDataLocal(ultimoRegistro.createAt)}` : 'Adicione seu primeiro registro')
                       : 'Estabilidade geral na última semana'}
                   </span>
                 </div>
@@ -298,28 +342,36 @@ function HomeContent() {
                 </div>
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  {todosRegistros.map((registro) => (
-                    <div key={registro.id} className={styles.gridCard} style={{ padding: '16px' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                        <span style={{ fontWeight: '600', color: 'var(--text-primary)' }}>
-                          SUDS: {registro.nivelSuds}
-                        </span>
-                        <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-                          {new Date(registro.data).toLocaleDateString('pt-BR')}
-                        </span>
+                  {todosRegistros.map((registro) => {
+                    // 💡 Força o cálculo correto da data respeitando o fuso horário do Brasil
+                    const dataObj = new Date(registro.createAt);
+                    const dataFormatada = !isNaN(dataObj.getTime())
+                      ? dataObj.toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' })
+                      : 'Data inválida';
+
+                    return (
+                      <div key={registro.id || registro.createAt} className={styles.gridCard} style={{ padding: '16px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                          <span style={{ fontWeight: '600', color: 'var(--text-primary)' }}>
+                            SUDS: {registro.intensidade}
+                          </span>
+                          <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+                            {dataFormatada}
+                          </span>
+                        </div>
+                        {registro.anotacao && (
+                          <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: '0 0 6px 0' }}>
+                            {registro.anotacao}
+                          </p>
+                        )}
+                        {registro.gatilhos && (
+                          <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: 0 }}>
+                            <strong>Gatilhos:</strong> {registro.gatilhos}
+                          </p>
+                        )}
                       </div>
-                      {registro.comoFoiSeuDia && (
-                        <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: '0 0 6px 0' }}>
-                          {registro.comoFoiSeuDia}
-                        </p>
-                      )}
-                      {registro.gatilhos && (
-                        <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: 0 }}>
-                          <strong>Gatilhos:</strong> {registro.gatilhos}
-                        </p>
-                      )}
-                    </div>
-                  ))}
+                    ); // 💡 Fechamento do return corrigido
+                  })} {/* 💡 Fechamento do .map() corrigido */}
                 </div>
               )}
             </div>
@@ -374,15 +426,11 @@ function HomeContent() {
               </div>
 
               <div style={{ borderTop: '1px solid #eae6f0', paddingTop: '16px' }}>
-                <p style={{ margin: '0 0 6px 0', fontWeight: '500', color: 'var(--text-secondary)' }}>Simular Visão do App:</p>
-                <select
-                  style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg-surface)', cursor: 'pointer', fontSize: '14px', color: 'var(--text-primary)' }}
-                  value={tipoUsuario}
-                  onChange={(e) => updateTipoUsuario(e.target.value)}
-                >
-                  <option value="paciente">Visão: Paciente</option>
-                  <option value="profissional">Visão: Profissional / Psicólogo</option>
-                </select>
+                <p style={{ margin: '0 0 4px 0', fontWeight: '500', color: 'var(--text-secondary)' }}>Perfil de Acesso Atual:</p>
+                {/* 💡 CORREGIDO: Remove o <select> e a função quebrada, exibindo apenas o texto puro do banco */}
+                <span style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)', display: 'block', marginTop: '4px' }}>
+                  {tipoUsuario === 'profissional' ? '💼 Profissional / Psicólogo' : '👤 Paciente'}
+                </span>
               </div>
 
               <div style={{ borderTop: '1px solid #eae6f0', paddingTop: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -462,7 +510,7 @@ function HomeContent() {
           </div>
         )}
 
-        </div>
+      </div>
 
         { /* RODAPÉ */}
         <footer className={styles.footer}>

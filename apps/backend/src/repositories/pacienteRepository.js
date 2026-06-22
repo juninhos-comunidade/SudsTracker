@@ -15,10 +15,12 @@ class PacienteRepository {
     }
 
     async encontrarPorUsuario(userId) {
-        const id = Number(userId);
-        return await prisma.paciente.findUnique({
-            where: { id_usuario: Number.isNaN(id) ? userId : id }
-        });
+        return await prisma.paciente.findFirst(
+            {where: 
+                { 
+                    id_usuario: String(userId)
+                }
+            });
     }
 
     async encontrarTodosPorProfissional(profissionalId) {

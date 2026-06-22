@@ -1,9 +1,13 @@
 'use client';
 import { useState } from 'react';
 import styles from './NovoRegistroModal.module.css';
-
+import { registrarAnotacao } from '../services/AnotacoesService';
+import { buscarPacientePorUsuarioId } from "../services/usuarioService";
+import { useUser } from '@/app/context/UserContext'; 
 export default function NovoRegistroModal({ onClose, modoEscuro = false }) {
-  const [etapa, setEtapa] = useState(1);
+ const [etapa, setEtapa] = useState(1);
+ const { user } = useUser(); 
+
 
   // Respostas da Etapa 1
   const [comoFoiSeuDia, setComoFoiSeuDia] = useState('');
@@ -32,25 +36,36 @@ export default function NovoRegistroModal({ onClose, modoEscuro = false }) {
     setEtapa(1);
   };
 
-  const handleSalvar = () => {
-    const novoRegistro = {
-            id: Date.now(), // identificador único simples, baseado no timestamp
-            data: new Date().toISOString(),
-            comoFoiSeuDia,
-            gatilhos,
-            estrategias,
-            nivelSuds,
-        };
 
-        // Busca registros já salvos (ou cria array vazio se não existir)
-        const registrosExistentes = JSON.parse(localStorage.getItem('suds_registros') || '[]');
 
-        // Adiciona o novo registro no início da lista
-        const registrosAtualizados = [novoRegistro, ...registrosExistentes];
+ const handleSalvar = async () => {
+    const perfil = await buscarPacientePorUsuarioId(user.id);
 
-        localStorage.setItem('suds_registros', JSON.stringify(registrosAtualizados));
+     if (!perfil.ok || !perfil.data) {
+      alert("Erro ao identificar seu perfil de paciente. Tente fazer login novamente.");
+      return;
+    }
 
-        onClose(); // fecha o modal depois de salvar
+    const dadosNovaAnotacao = {
+      id_paciente: Number(perfil.data.id), 
+      intensidade: Number(nivelSuds), 
+      sentimento: texto, 
+      anotacao: comoFoiSeuDia,
+      gatilhos: gatilhos || "Nenhum", 
+      estrategias: estrategias || "Nenhuma"
+    };
+
+    // 1. Envia os dados apenas para a API do Backend
+    const resultado = await registrarAnotacao(dadosNovaAnotacao);
+
+    if (resultado.ok) {
+        alert("Anotação registrada com sucesso no banco de dados!");
+        onClose(); // Fecha o modal
+        window.location.reload(); // Recarrega a página para atualizar os dados vindos do banco
+    } else {
+        // Se o banco falhar, avisa o usuário e não fecha o modal para ele não perder o texto digitado
+        alert(`Erro ao salvar no banco de dados: ${resultado.error}`);
+    }
   };
 
   return (

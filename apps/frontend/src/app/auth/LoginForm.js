@@ -7,9 +7,11 @@ import InputField from '../components/InputField';
 import MensagemErro from '../components/MensagemErro';
 import { validarEmail } from '../utils/validacao';
 import { loginUsuario } from '../services/usuarioService';
+import { useUser } from '@/app/context/UserContext'; 
 
 export default function LoginForm({ modoEscuro }) {
   const router = useRouter();
+  const { loginContext } = useUser(); 
   const [emailLogin, setEmailLogin] = useState('');
   const [senhaLogin, setSenhaLogin] = useState('');
   const [erroLogin, setErroLogin] = useState('');
@@ -67,6 +69,7 @@ export default function LoginForm({ modoEscuro }) {
         setErroLogin(resposta.error || 'Email ou senha incorretos. Tente novamente.');
         return;
       }
+      loginContext(resposta.data); 
 
       setSucessoLogin('Login realizado! Redirecionando...');
       setTimeout(() => router.push('/home'), 1500);

@@ -8,12 +8,15 @@ import DatePickerField from '../components/DatePickerField';
 import MensagemErro from '../components/MensagemErro';
 import { validarEmail, validarForcaSenha } from '../utils/validacao';
 import { cadastrarUsuario } from '../services/usuarioService';
-
+import { useUser } from '@/app/context/UserContext'
 export default function CadastroForm({ modoEscuro }) {
   const router = useRouter();
   const [tipoUsuario, setTipoUsuario] = useState('paciente');
   const [nomeCadastro, setNomeCadastro] = useState('');
   const [dataNascimento, setDataNascimento] = useState('');
+  const [telefone, setTelefone] = useState('');
+  const [especialidade, setEspecialidade] = useState('');
+  const { loginContext } = useUser(); 
   const [emailCadastro, setEmailCadastro] = useState('');
   const [senhaCadastro, setSenhaCadastro] = useState('');
   const [confirmarSenhaCadastro, setConfirmarSenhaCadastro] = useState('');
@@ -131,6 +134,8 @@ export default function CadastroForm({ modoEscuro }) {
         email: emailCadastro.trim().toLowerCase(),
         senha: senhaCadastro,
         tipoUsuario,
+        telefone: tipoUsuario === 'profissional' ? telefone.trim() : null,
+        especialidade: tipoUsuario === 'profissional' ? especialidade.trim() : null,
         registroProfissional:
           tipoUsuario === 'profissional' ? registroProfissional.trim() : null,
       });
@@ -139,7 +144,7 @@ export default function CadastroForm({ modoEscuro }) {
         setErroCadastro(resposta.error);
         return;
       }
-
+      loginContext(resposta.data); 
       setSucessoCadastro('Conta criada com sucesso! Redirecionando...');
       setTimeout(() => router.push('/home'), 1500);
     } catch (erro) {
@@ -236,6 +241,28 @@ export default function CadastroForm({ modoEscuro }) {
         />
 
         {tipoUsuario === 'profissional' && (
+          <>
+        {/* INPUT DE TELEFONE */}
+          <InputField
+            label="Telefone Comercial"
+            id="telefone"
+            type="text"
+            placeholder="(XX) 99999-9999"
+            value={telefone}
+            onChange={(e) => setTelefone(e.target.value)}
+            modoEscuro={modoEscuro}
+          />
+
+          <InputField
+            label="Especialidade Clínica"
+            id="especialidade"
+            type="text"
+            placeholder="Ex: TCC, Psicanálise, Hospitalar..."
+            value={especialidade}
+            onChange={(e) => setEspecialidade(e.target.value)}
+            modoEscuro={modoEscuro}
+          />
+
           <InputField
             label="CRM / CRP / Registro Profissional"
             id="registroProfissional"
@@ -249,6 +276,7 @@ export default function CadastroForm({ modoEscuro }) {
             erro={erros.registroProfissional}
             modoEscuro={modoEscuro}
           />
+        </>
         )}
 
         <button

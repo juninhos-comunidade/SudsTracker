@@ -52,7 +52,7 @@
   width: 32px;
   height: 32px;
   border: none;
-  background: #f5f3f8;
+  background: #f5f3ff;
   font-size: 20px;
   cursor: pointer;
   color: #999;
@@ -64,7 +64,7 @@
 }
 
 .closeBtn:hover {
-  background: #e8e0ec;
+  background: #ede9fe;
   color: #555;
 }
 
@@ -75,14 +75,14 @@
 
 .header h2 {
   font-size: 26px;
-  color: #333;
+  color: #2d2930;
   margin: 0 0 8px 0;
   font-weight: 600;
 }
 
 .subtitle {
   font-size: 13px;
-  color: #999;
+  color: #8a828e;
   margin: 0;
 }
 
@@ -96,14 +96,14 @@
 
 .section h3 {
   font-size: 14px;
-  color: #c97a9d;
+  color: #9883e5;
   font-weight: 600;
   margin: 0 0 8px 0;
 }
 
 .section p {
   font-size: 13px;
-  color: #666;
+  color: #615966;
   line-height: 1.6;
   margin: 0;
 }
@@ -116,7 +116,7 @@
 
 .section li {
   font-size: 13px;
-  color: #666;
+  color: #615966;
   line-height: 1.8;
   margin-bottom: 6px;
   padding-left: 16px;
@@ -127,7 +127,7 @@
   content: '•';
   position: absolute;
   left: 0;
-  color: #c97a9d;
+  color: #9883e5;
   font-weight: bold;
 }
 
@@ -137,7 +137,7 @@
   gap: 8px;
   margin-bottom: 24px;
   padding: 12px;
-  background: #f5f3f8;
+  background: #f5f3ff;
   border-radius: 8px;
 }
 
@@ -145,12 +145,12 @@
   cursor: pointer;
   width: 16px;
   height: 16px;
-  accent-color: #c97a9d;
+  accent-color: #9883e5;
 }
 
 .checkboxSection label {
   font-size: 12px;
-  color: #666;
+  color: #615966;
   cursor: pointer;
   user-select: none;
   margin: 0;
@@ -174,23 +174,23 @@
 }
 
 .btnSecondary {
-  background: #f5f3f8;
-  color: #c97a9d;
-  border: 1px solid #e8e0ec;
+  background: #f5f3ff;
+  color: #9883e5;
+  border: 1px solid #e1dbf5;
 }
 
 .btnSecondary:hover {
-  background: #e8e0ec;
-  border-color: #d9d1df;
+  background: #ede9fe;
+  border-color: #dcd6e8;
 }
 
 .btnPrimary {
-  background: #c97a9d;
+  background: #9883e5;
   color: white;
 }
 
 .btnPrimary:hover {
-  background: #b8677a;
+  background: #8b73f7;
 }
 
 /* Responsividade */
@@ -220,14 +220,14 @@
 }
 
 .modalContent::-webkit-scrollbar-track {
-  background: #f5f3f8;
+  background: #f5f3ff;
 }
 
 .modalContent::-webkit-scrollbar-thumb {
-  background: #e0d8ec;
+  background: #e1dbf5;
   border-radius: 3px;
 }
 
 .modalContent::-webkit-scrollbar-thumb:hover {
-  background: #d0c8d8;
+  background: #dcd6e8;
 }

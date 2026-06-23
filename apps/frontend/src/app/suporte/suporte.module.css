@@ -1,0 +1,167 @@
+.suporteContainer {
+  min-height: 100vh;
+  background: #f7f6fa;
+  padding: 40px 20px;
+}
+
+.suporteContent {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.voltarLink {
+  display: inline-block;
+  margin-bottom: 24px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 4px 0;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.voltarLink:hover {
+  color: #8b73f7;
+  border-bottom-color: #8b73f7;
+}
+
+.titulo {
+  font-size: 32px;
+  color: #2d2930;
+  margin: 0 0 8px 0;
+}
+
+.subtitulo {
+  font-size: 15px;
+  color: #8a828e;
+  margin: 0 0 32px 0;
+}
+
+.secao {
+  background: white;
+  border-radius: 16px;
+  padding: 28px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+.secaoTitulo {
+  font-size: 20px;
+  color: #2d2930;
+  margin: 0 0 20px 0;
+}
+
+/* FAQ */
+.faqLista {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.faqItem {
+  border: 1px solid #eae6f0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.faqPergunta {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 16px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2d2930;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.faqPergunta:hover {
+  background: #f9f8fb;
+}
+
+.faqIcone {
+  color: #9883e5;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.faqResposta {
+  padding: 0 16px 16px 16px;
+  font-size: 13px;
+  color: #615966;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Formulário */
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.campo label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #2d2930;
+  margin-bottom: 6px;
+}
+
+.campo input,
+.campo textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #eae6f0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.campo input:focus,
+.campo textarea:focus {
+  outline: none;
+  border-color: #9883e5;
+}
+
+.btnEnviar {
+  background: #9883e5;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btnEnviar:hover {
+  background: #8b73f7;
+}
+
+.mensagemSucesso {
+  background: #f0fff4;
+  border: 1px solid #9ae6b4;
+  color: #276749;
+  padding: 16px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.contatoDireto {
+  text-align: center;
+  font-size: 13px;
+  color: #8a828e;
+  margin-top: 16px;
+}
+
+.contatoDireto a {
+  color: #9883e5;
+  font-weight: 600;
+}

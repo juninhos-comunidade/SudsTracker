@@ -1,0 +1,168 @@
+/* ── Painel principal ── */
+.datePickerWrapper :global(.react-datepicker) {
+  background-color: #1d1c1c;
+  border: 1px solid #a762f5;
+  border-radius: 12px;
+  font-family: inherit;
+  overflow: hidden;
+}
+
+/* ── Painel modo claro ── */
+.datePickerWrapperLight :global(.react-datepicker) {
+  background-color: #f3e8ff;
+  border: 1px solid #d2b4f8;
+  border-radius: 12px;
+  font-family: inherit;
+  overflow: hidden;
+}
+
+/* ── Header ── */
+.datePickerWrapper :global(.react-datepicker__header),
+.datePickerWrapperLight :global(.react-datepicker__header) {
+  border-bottom: 1px solid #a762f5;
+  padding: 10px 0;
+}
+
+.datePickerWrapper :global(.react-datepicker__header) {
+  background-color: #2a2a2a;
+}
+
+.datePickerWrapperLight :global(.react-datepicker__header) {
+  background-color: #e9d5ff;
+}
+
+.datePickerWrapper :global(.react-datepicker__current-month),
+.datePickerWrapperLight :global(.react-datepicker__current-month) {
+  color: #eac6ff;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+/* ── Selects de mês e ano ── */
+.datePickerWrapper :global(.react-datepicker__month-select),
+.datePickerWrapper :global(.react-datepicker__year-select) {
+  background-color: #2a2a2a;
+  color: #eac6ff;
+  border: 1px solid #a762f5;
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  max-height: 120px;
+}
+
+.datePickerWrapperLight :global(.react-datepicker__month-select),
+.datePickerWrapperLight :global(.react-datepicker__year-select) {
+  background-color: #f3e8ff;
+  color: #7c3aed;
+  border: 1px solid #d2b4f8;
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  max-height: 120px;
+}
+
+/* ── Setas de navegação ── */
+.datePickerWrapper :global(.react-datepicker__navigation-icon::before) {
+  border-color: #eac6ff;
+}
+
+.datePickerWrapperLight :global(.react-datepicker__navigation-icon::before) {
+  border-color: #7c3aed;
+}
+
+.datePickerWrapper :global(.react-datepicker__navigation),
+.datePickerWrapperLight :global(.react-datepicker__navigation) {
+  top: 10%;
+  transform: translateY(-50%);
+}
+
+/* ── Nomes dos dias da semana ── */
+.datePickerWrapper :global(.react-datepicker__day-name) {
+  color: #bd6bf3;
+  font-weight: 600;
+}
+
+.datePickerWrapperLight :global(.react-datepicker__day-name) {
+  color: #7c3aed;
+  font-weight: 600;
+}
+
+/* ── Dias ── */
+.datePickerWrapper :global(.react-datepicker__day) {
+  color: #ddd;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.datePickerWrapperLight :global(.react-datepicker__day) {
+  color: #333;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+/* ── Hover ── */
+.datePickerWrapper :global(.react-datepicker__day:hover),
+.datePickerWrapperLight :global(.react-datepicker__day:hover) {
+  background-color: rgba(167, 98, 245, 0.3);
+  color: #fff;
+}
+
+/* ── Dia selecionado ── */
+.datePickerWrapper :global(.react-datepicker__day--selected),
+.datePickerWrapperLight :global(.react-datepicker__day--selected) {
+  background-color: #a762f5;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ── Dia destacado ── */
+.datePickerWrapper :global(.react-datepicker__day--keyboard-selected),
+.datePickerWrapperLight :global(.react-datepicker__day--keyboard-selected) {
+  background-color: rgba(167, 98, 245, 0.25);
+  color: #ddd;
+}
+
+/* ── Dia de hoje ── */
+.datePickerWrapper :global(.react-datepicker__day--today),
+.datePickerWrapperLight :global(.react-datepicker__day--today) {
+  color: #eac6ff;
+  font-weight: 600;
+}
+
+/* ── Dias fora do mês ── */
+.datePickerWrapper :global(.react-datepicker__day--outside-month) {
+  color: #555;
+}
+
+.datePickerWrapperLight :global(.react-datepicker__day--outside-month) {
+  color: #bbb;
+}
+
+/* ── Triângulo/seta do popup ── */
+.datePickerWrapper :global(.react-datepicker__triangle),
+.datePickerWrapperLight :global(.react-datepicker__triangle) {
+  display: none;
+}
+.datePickerWrapper,
+.datePickerWrapperLight {
+  width: 100%;
+}
+
+.datePickerWrapper :global(.react-datepicker-wrapper),
+.datePickerWrapperLight :global(.react-datepicker-wrapper) {
+  width: 100%;
+  display: block;
+}
+
+.datePickerWrapper :global(.react-datepicker__input-container),
+.datePickerWrapperLight :global(.react-datepicker__input-container) {
+  width: 100%;
+}
+
+.datePickerWrapper :global(.react-datepicker__input-container input),
+.datePickerWrapperLight :global(.react-datepicker__input-container input) {
+  width: 100%;
+  box-sizing: border-box;
+}

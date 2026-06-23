@@ -11,17 +11,74 @@ datasource db {
   provider = "postgresql"
 }
 
-//Model Teste!
+model Usuario {
+  id        String   @id @default(uuid())
+  nome      String
+  dataNascimento     DateTime
+  email     String   @unique
+  senha     String
+  ativo     Boolean @default(true)
+  tipoUsuario     String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-model User {
-  id                   String   @id @default(uuid())
-  nome                 String
-  email                String   @unique
-  senha                String
-  dataNascimento       DateTime
-  registroProfissional String?
-  tipoUsuario          String?
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
+  profissional Profissional?
+  paciente Paciente?
 }
 
+model Profissional {
+ id Int @id @default(autoincrement())
+ id_usuario String @unique
+ telefone String
+ especialidade String
+ crm String?
+ crp String?
+ crefito String?
+
+usuario Usuario @relation(fields: [id_usuario], references: [id])
+
+ pacientes Paciente[]
+ avaliacoes Avaliacao[]
+
+}
+
+model Paciente {
+ id Int @id @default(autoincrement())
+ id_usuario String @unique
+ id_profissional Int?
+
+ usuario Usuario @relation(fields: [id_usuario], references: [id])
+ profissional Profissional? @relation(fields: [id_profissional], references: [id])
+
+ anotacoes Anotacao[]
+ avaliacoes Avaliacao[]
+
+}
+
+model Anotacao {
+ id Int @id @default(autoincrement())
+ id_paciente Int
+ intensidade Int
+ sentimento String
+ anotacao String
+ gatilhos String 
+ estrategias String
+ createAt DateTime @default(now())
+ updateAt DateTime @updatedAt
+
+ paciente Paciente @relation(fields: [id_paciente], references: [id])
+
+}
+
+model Avaliacao {
+ id Int @id @default(autoincrement())
+ id_paciente Int
+ id_profissional Int
+ resultado String
+ createAt DateTime @default(now())
+ updateAt DateTime @updatedAt
+
+ paciente Paciente @relation(fields: [id_paciente], references: [id])
+ profissional Profissional @relation(fields: [id_profissional], references: [id])
+
+}

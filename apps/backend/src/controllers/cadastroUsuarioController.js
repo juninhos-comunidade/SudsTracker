@@ -1,37 +1,20 @@
-import usuariosService from "../services/cadastroUsuarioService.js";
+import { cadastroUsuarioService } from "../services/cadastroUsuarioService.js";
 
 async function cadastrarUsuario(req, res) {
   try {
-    const {
-      nome,
-      email,
-      senha,
-      dataNascimento,
-      registroProfissional,
-      tipoUsuario,
-    } = req.body;
+    const dadosCadastro = req.body;
 
-    console.log(req.body);
-
-    const novoUsuario = await usuariosService.cadastrarUsuario({
-      nome,
-      email,
-      senha,
-      dataNascimento,
-      registroProfissional,
-      tipoUsuario,
-    });
+    const resultadoCadastro = await cadastroUsuarioService.cadastrarUsuario(dadosCadastro);
 
     return res.status(201).json({
-      mensagem: "Usuário cadastrado com sucesso!",
-      usuario: novoUsuario,
+      mensagem: "Cadastro realizado com sucesso",
+      ...resultadoCadastro, 
     });
+
   } catch (error) {
-    console.error("Erro capturado no cadastro:", error);
-    return res
-      .status(400)
-      .json({ error: error.message || "Erro interno do servidor." });
+      console.error("Erro capturado no cadastro:", error);
+      return res.status(400).json({ error: error.message });
   }
 }
 
-export default { cadastrarUsuario };
+export const cadastroUsuarioController = { cadastrarUsuario };

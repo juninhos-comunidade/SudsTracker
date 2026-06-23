@@ -1,24 +1,29 @@
 import prisma from '../config/database.js';
 
 class UserRepository {
-    async findByEmail(email) {
-        return await prisma.user.findUnique({ 
+    async encontrarPorEmail(email) {
+        return await prisma.Usuario.findUnique({ 
             where: { email } 
         });
     }
-    
-    async findById(userID){
-        return await prisma.user.findUnique({
+    async atualizarPorId(userID, updatedUser) {
+        return await prisma.Usuario.update({
+            where: { id: userID },
+            data: updatedUser
+        });
+    }
+    async encontrarPorId(userID){
+        return await prisma.Usuario.findUnique({
             where: { id: userID}
         });
     }
 
-    async create(data) {
-        return await prisma.user.create(data);
+    async criarUsuario(usuario) {
+        return await prisma.Usuario.create({data: usuario});
     }
     
-    async deleteByID(userID){
-        return await prisma.user.delete({
+    async deletarPorId(userID){
+        return await prisma.Usuario.delete({
             where: {id: userID}
         });
     }

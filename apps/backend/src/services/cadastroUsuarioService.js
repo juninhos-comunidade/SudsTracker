@@ -1,29 +1,51 @@
-import { parseISO, isValid, isFuture } from "date-fns";
+import { parse, isValid, isFuture, differenceInYears } from "date-fns";
 import UserRepository from "../repositories/userRepository.js";
+import { gerarHash } from "../utils/senhaUtils.js";
+import jwt from 'jsonwebtoken';
 
 async function cadastrarUsuario(dadosUsuario) {
-  const { nome, email, senha, dataNascimento, registroProfissional, tipoUsuario } = dadosUsuario;
+  const { nome, email, senha, dataNascimento, registroProfissional, tipoUsuario, telefone ,especialidade} = dadosUsuario;
 
-  await validaUsuario(dadosUsuario);
+  const dataNascimentoObjDate = await validaUsuario(dadosUsuario);
 
-  // TODO: Criptografar a senha (usando bcrypt, por exemplo) antes de salvar
-  const senhaCriptografada = senha;
+  const senhaCriptografada = await gerarHash(senha);
 
   const emailFormatado = email ? String(email).trim().toLowerCase() : "";
 
-  const novoUsuario = await UserRepository.create({
-    data: {
+  const dadosParaCriar = {
       nome,
       email: emailFormatado,
       senha: senhaCriptografada,
-      dataNascimento: new Date(dataNascimento),
-      registroProfissional,
-      tipoUsuario,
-    },
-  });
+      dataNascimento: dataNascimentoObjDate,
+      tipoUsuario: tipoUsuario
+    };
+  const tipoPadronizado = tipoUsuario.toUpperCase();
 
+  if (tipoPadronizado === "PROFISSIONAL") {
+    dadosParaCriar.profissional = {
+      create: {
+        telefone: telefone,
+        crp: registroProfissional,
+        especialidade: especialidade
+      }
+    };
+  } else if (tipoPadronizado === "PACIENTE") {
+    dadosParaCriar.paciente = {
+      create: {} // Cria o registro na tabela Paciente vinculado a este Usuario
+    };
+  }
+  const novoUsuario = await UserRepository.criarUsuario(dadosParaCriar);
   const { senha: _, ...usuarioSemSenha } = novoUsuario;
-  return usuarioSemSenha;
+  const secretKey = process.env.JWT_SECRET
+  const token = jwt.sign(
+    { sub: novoUsuario.id, email: novoUsuario.email },
+    secretKey,
+    { expiresIn: "1h" }
+  );
+  return {
+    user: usuarioSemSenha,
+    token
+  };
 }
 
 async function validaUsuario(dadosUsuario) {
@@ -39,12 +61,17 @@ async function validaUsuario(dadosUsuario) {
     throw new Error("Data de nascimento é obrigatória.");
   }
 
-  const dataNascimentoObjDate = parseISO(dataNascimento);
-  if (
-    !isValid(dataNascimentoObjDate) ||
-    isFuture(dataNascimentoObjDate)
-  ) {
+  const dataNascimentoObjDate = parse(dataNascimento, "dd/MM/yyyy", new Date());
+  if (!isValid(dataNascimentoObjDate) || isFuture(dataNascimentoObjDate)) {
     throw new Error("Data de nascimento inválida.");
+  }
+
+  const dataHoje = new Date();
+  const idade = differenceInYears(dataHoje, dataNascimentoObjDate);
+
+  if (idade < 18) {
+    console.log(idade)
+    throw new Error("Data de nascimento inválida. Usuário precisa ter 18 ou mais anos de idade");
   }
 
   const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailPadrao);
@@ -74,11 +101,13 @@ async function validaUsuario(dadosUsuario) {
     );
   }
 
-  const validaUsuarioExistente = await UserRepository.findByEmail(emailPadrao);
+  const validaUsuarioExistente = await UserRepository.encontrarPorEmail(emailPadrao);
 
   if (validaUsuarioExistente) {
     throw new Error('Já existe um usuário cadastrado com esse Email.');
   }
+
+  return dataNascimentoObjDate;
 }
 
-export default { cadastrarUsuario };
+export const cadastroUsuarioService = { cadastrarUsuario };

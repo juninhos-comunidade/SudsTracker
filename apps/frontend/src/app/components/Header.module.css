@@ -3,14 +3,13 @@
   top: 0;
   left: 280px;
   right: 0;
-  background: white;
-  border-bottom: 1px solid #eae6f0;
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--border);
   z-index: 999;
   padding: 0;
   height: 70px;
   display: flex;
   align-items: center;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .navbar {
@@ -19,25 +18,25 @@
   height: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Links na esquerda, utilitários na direita */
+  justify-content: space-between;
 }
 
 .leftNav {
   display: flex;
   align-items: center;
-  flex-shrink: 0; /* Impede que o texto "Suporte" seja esmagado */
+  flex-shrink: 0;
 }
 
 .navItem {
   display: block;
   text-decoration: none;
-  color: #615966;
+  color: var(--text-secondary);
   font-weight: 500;
   font-size: 15px;
   padding: 8px 0;
   border-bottom: 2px solid transparent;
   transition: all 0.2s ease;
-  white-space: nowrap; /* Garante que o texto nunca quebre em duas linhas */
+  white-space: nowrap;
 }
 
 .navItem:hover {
@@ -45,7 +44,6 @@
   border-bottom-color: #8b73f7;
 }
 
-/* Área de utilitários da direita */
 .rightNav {
   display: flex;
   align-items: center;
@@ -53,9 +51,8 @@
   flex-shrink: 0;
 }
 
-/* Botão do Modo Escuro */
 .themeToggle {
-  background: #f5f3f8;
+  background: var(--btn-surface);
   border: none;
   font-size: 16px;
   cursor: pointer;
@@ -68,14 +65,13 @@
 }
 
 .themeToggle:hover {
-  background: #eae6f0;
+  background: var(--btn-surface-hover);
 }
 
-/* Botão Sair */
 .btnTopLogout {
-  background: #fff0f1;
-  color: #f43f5e;
-  border: 1px solid #ffe4e6;
+  background: var(--danger-bg);
+  color: var(--danger-text);
+  border: 1px solid var(--danger-border);
   padding: 8px 18px;
   border-radius: 10px;
   font-size: 14px;
@@ -85,19 +81,18 @@
 }
 
 .btnTopLogout:hover {
-  background: #f43f5e;
-  color: #ffffff;
-  border-color: #f43f5e;
+  background: var(--danger-text);
+  color: white;
+  border-color: var(--danger-text);
 }
 
-/*  INTERFACE DO MODAL DE LOGOUT */
 .modalOverlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(45, 41, 48, 0.4);
+  background: rgba(45, 41, 48, 0.45);
   backdrop-filter: blur(3px);
   display: flex;
   justify-content: center;
@@ -106,25 +101,25 @@
 }
 
 .modalCard {
-  background: #ffffff;
+  background: var(--bg-surface);
   padding: 32px;
   border-radius: 20px;
   width: 90%;
   max-width: 420px;
   text-align: center;
-  box-shadow: 0 20px 40px rgba(45, 41, 48, 0.1);
+  box-shadow: var(--panel-shadow);
   animation: modalUp 0.25s ease-out;
 }
 
 .modalTitle {
-  color: #2d2930;
+  color: var(--text-primary);
   font-size: 22px;
   font-weight: 700;
   margin: 0 0 12px 0;
 }
 
 .modalText {
-  color: #8a828e;
+  color: var(--text-secondary);
   font-size: 14px;
   line-height: 1.6;
   margin: 0 0 28px 0;
@@ -137,7 +132,7 @@
 
 .btnCancel {
   flex: 1;
-  background: #f3f0ff;
+  background: var(--btn-surface);
   color: #8b73f7;
   border: none;
   padding: 12px;
@@ -149,14 +144,14 @@
 }
 
 .btnCancel:hover {
-  background: #e8e3ff;
+  background: var(--btn-surface-hover);
 }
 
 .btnConfirm {
   flex: 1;
-  background: #ffffff;
-  color: #8a828e;
-  border: 1px solid #eae6f0;
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
   padding: 12px;
   border-radius: 12px;
   font-weight: 500;
@@ -166,9 +161,9 @@
 }
 
 .btnConfirm:hover {
-  background: #fff1f2;
-  color: #f43f5e;
-  border-color: #ffe4e6;
+  background: var(--danger-bg);
+  color: var(--danger-text);
+  border-color: var(--danger-border);
 }
 
 @keyframes modalUp {

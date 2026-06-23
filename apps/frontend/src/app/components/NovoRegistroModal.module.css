@@ -1,0 +1,245 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modalContent {
+  background: white;
+  border-radius: 16px;
+  padding: 36px;
+  max-width: 480px;
+  width: 90%;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  position: relative;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.closeBtn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: #f5f3ff;
+  font-size: 20px;
+  cursor: pointer;
+  color: #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.closeBtn:hover {
+  background: #ede9fe;
+  color: #555;
+}
+
+.header {
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+.header h2 {
+  font-size: 24px;
+  color: #2d2930;
+  margin: 0 0 8px 0;
+  font-weight: 600;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: #8a828e;
+  margin: 0;
+}
+
+/* ── Campos de texto da Etapa 1 ── */
+.campo {
+  margin-bottom: 20px;
+}
+
+.campo label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2d2930;
+  margin-bottom: 8px;
+}
+
+.campo textarea,
+.campo input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e1dbf5;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.campo textarea:focus,
+.campo input:focus {
+  outline: none;
+  border-color: #9883e5;
+}
+
+.opcional {
+  color: #b3aebb;
+  font-weight: 400;
+  font-size: 12px;
+}
+
+/* ── Footer com botões ── */
+.footer {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.btnSecondary,
+.btnPrimary {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btnSecondary {
+  background: #f5f3ff;
+  color: #9883e5;
+  border: 1px solid #e1dbf5;
+}
+
+.btnSecondary:hover {
+  background: #ede9fe;
+}
+
+.btnPrimary {
+  background: #9883e5;
+  color: white;
+}
+
+.btnPrimary:hover {
+  background: #8b73f7;
+}
+/* ── Etapa 2: Escala SUDS ── */
+.escalaContainer {
+  text-align: center;
+  padding: 10px 0;
+}
+
+.emoji {
+  font-size: 64px;
+  display: inline-block;
+  animation: popEmoji 0.3s ease;
+}
+
+@keyframes popEmoji {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.textoEmocao {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2d2930;
+  margin: 12px 0 4px 0;
+}
+
+.numeroNivel {
+  font-size: 48px;
+  font-weight: 700;
+  color: #9883e5;
+  margin: 0 0 24px 0;
+}
+
+.perguntaEscala {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2d2930;
+  margin-bottom: 16px;
+}
+
+.slider {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  background: linear-gradient(to right, #4ade80, #fbbf24, #ef4444);
+  margin-bottom: 8px;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: white;
+  border: 3px solid #9883e5;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: white;
+  border: 3px solid #9883e5;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.legendaSlider {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #8a828e;
+  margin-bottom: 24px;
+}

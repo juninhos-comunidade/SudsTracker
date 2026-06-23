@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import { localFont } from "next/font/local";
 import "./globals.css";
+import { ThemeProvider } from '@/app/context/ThemeContext';
 
 
 // FONTS DO GOOGLE
@@ -51,7 +52,11 @@ export default function RootLayout({ children }) {
       lang="pt-BR"
       className={`${geistSans.variable} ${geistMono.variable} ${deterioratHand.variable} ${fantasiColour.variable} ${hopeTake.variable} ${lostWritting.variable} ${myheartFont.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

@@ -1,12 +1,13 @@
 import { Router } from "express";
 import  ProfissionalController from "../controllers/ProfissionalController.js";
+import { validarUsuarioAtivo } from "../middlewares/autenticacaoMiddleware.js";
 
 const router = Router();
 
 
-router.get("/", ProfissionalController.listarProfissionais); 
-router.get("/:id", ProfissionalController.exibirProfissionalPorId);
-router.get("/usuario/:usuarioId", ProfissionalController.exibirProfissionalPorUsuario);
-router.get("/paciente/:pacienteId",ProfissionalController.encontrarProfissionalPorPaciente);
-router.put("/:id", ProfissionalController.atualizarProfissional);
+router.get("/", validarUsuarioAtivo, ProfissionalController.listarProfissionais); 
+router.get("/usuario/:usuarioId", validarUsuarioAtivo, ProfissionalController.exibirProfissionalPorUsuario);
+router.get("/paciente/:pacienteId", validarUsuarioAtivo, ProfissionalController.encontrarProfissionalPorPaciente);
+router.get("/:id", validarUsuarioAtivo, ProfissionalController.exibirProfissionalPorId);
+router.put("/:id", validarUsuarioAtivo, ProfissionalController.atualizarProfissional);
 export default router;

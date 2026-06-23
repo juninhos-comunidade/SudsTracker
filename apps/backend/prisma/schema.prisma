@@ -17,6 +17,7 @@ model Usuario {
   dataNascimento     DateTime
   email     String   @unique
   senha     String
+  ativo     Boolean @default(true)
   tipoUsuario     String?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt

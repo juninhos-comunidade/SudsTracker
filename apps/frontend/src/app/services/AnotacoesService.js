@@ -1,6 +1,5 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
-
 const tratarResposta = async (response) => {
   const data = await response.json().catch(() => null);
 

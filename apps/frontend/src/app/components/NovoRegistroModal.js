@@ -2,11 +2,10 @@
 import { useState } from 'react';
 import styles from './NovoRegistroModal.module.css';
 import { registrarAnotacao } from '../services/AnotacoesService';
-import { buscarPacientePorUsuarioId } from "../services/usuarioService";
 import { useUser } from '@/app/context/UserContext'; 
 export default function NovoRegistroModal({ onClose, modoEscuro = false }) {
  const [etapa, setEtapa] = useState(1);
- const { user } = useUser(); 
+ const { perfilId } = useUser(); 
 
 
   // Respostas da Etapa 1
@@ -39,15 +38,13 @@ export default function NovoRegistroModal({ onClose, modoEscuro = false }) {
 
 
  const handleSalvar = async () => {
-    const perfil = await buscarPacientePorUsuarioId(user.id);
-
-     if (!perfil.ok || !perfil.data) {
+    if (!perfilId) {
       alert("Erro ao identificar seu perfil de paciente. Tente fazer login novamente.");
       return;
     }
 
     const dadosNovaAnotacao = {
-      id_paciente: Number(perfil.data.id), 
+      id_paciente: Number(perfilId), 
       intensidade: Number(nivelSuds), 
       sentimento: texto, 
       anotacao: comoFoiSeuDia,
@@ -59,12 +56,12 @@ export default function NovoRegistroModal({ onClose, modoEscuro = false }) {
     const resultado = await registrarAnotacao(dadosNovaAnotacao);
 
     if (resultado.ok) {
-        alert("Anotação registrada com sucesso no banco de dados!");
+        alert("Anotação registrada com sucesso!");
         onClose(); // Fecha o modal
         window.location.reload(); // Recarrega a página para atualizar os dados vindos do banco
     } else {
         // Se o banco falhar, avisa o usuário e não fecha o modal para ele não perder o texto digitado
-        alert(`Erro ao salvar no banco de dados: ${resultado.error}`);
+        alert(`Erro ao salvar: ${resultado.error}`);
     }
   };
 
@@ -163,7 +160,7 @@ export default function NovoRegistroModal({ onClose, modoEscuro = false }) {
                 Salvar Registro
               </button>
             </div>
-          </div>
+          </div>  
         )}
       </div>
     </div>

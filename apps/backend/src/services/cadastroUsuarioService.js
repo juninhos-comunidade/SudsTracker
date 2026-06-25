@@ -79,11 +79,12 @@ async function validaUsuario(dadosUsuario) {
   if (!emailPadrao || !emailValido) {
     throw new Error("Email inválido");
   }
+  const senhaNormalizada = senha.normalize('NFC');
 
   const senhaValida =
-    /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(senha);
+    /^(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[\s\S]{8,64}$/.test(senhaNormalizada);
 
-  if (!senha || !senhaValida) {
+  if (!senhaValida) {
     throw new Error(
       "Senha deve ter no mínimo 8 caracteres, uma letra maiúscula, um número e um caractere especial.",
     );

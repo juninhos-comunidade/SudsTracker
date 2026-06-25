@@ -5,19 +5,21 @@ import path from "path";
 import dotenv from "dotenv";
 import { defineConfig } from "prisma/config";
 
-// Força a leitura do .env duas pastas acima (raiz do Monorepo)
-dotenv.config({ path: path.resolve(process.cwd(), "../../.env") });
+// Força a leitura do .env duas pastas acima apenas se não estiver em produção
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config({ path: path.resolve(process.cwd(), "../../.env") });
+}
 
+let urlDinamica = process.env.DATABASE_URL;
 
-
-const user = process.env.DB_USER;
-const senha = process.env.DB_PASSWORD;
-const host = process.env.DB_HOST;
-const porta = process.env.DB_PORT;
-const banco = process.env.DB_NAME;
-
-const urlDinamica = `postgresql://${user}:${senha}@${host}:${porta}/${banco}?schema=public`;
-
+if (!urlDinamica) {
+  const user = process.env.DB_USER;
+  const senha = process.env.DB_PASSWORD;
+  const host = process.env.DB_HOST;
+  const porta = process.env.DB_PORT;
+  const banco = process.env.DB_NAME;
+  urlDinamica = `postgresql://${user}:${senha}@${host}:${porta}/${banco}?schema=public`;
+}
 
 export default defineConfig({
   schema: "prisma/schema.prisma",

@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useUser, UserProvider } from '@/app/context/UserContext';
 import Sidebar from '@/app/components/Sidebar';
 import Header from '@/app/components/Header';
@@ -241,13 +242,21 @@ function HomeContent() {
                     {tipoUsuario === 'paciente' && (
                       <button 
                         className={styles.bannerBotao} 
-                        onClick={() => setForcedModalOpen(true)} // CORRIGIDO: Ativa o modal manualmente sem dar reload!
+                        onClick={() => setForcedModalOpen(true)} 
                       >
                         Saber mais sobre o método →
                       </button>
                     )}
                   </div>
-                  <div className={styles.bannerIconeMental}>🧠</div>
+                  
+                  <div className={styles.bannerIconeMental}>
+                    <Image
+                      src="/suds-cientistas.png"
+                      alt="Ícone do banner"
+                      width={170}
+                      height={170}
+                    />
+                  </div>
                 </section>
 
                 {/* CARD DE RESUMO SEMANAL */}
@@ -268,11 +277,21 @@ function HomeContent() {
                 </div>
               </div>
 
-             {/* ÁREA DE AÇÃO PRINCIPAL */}
-              <section className={styles.contentArea}>
-                {tipoUsuario === 'paciente' ? (
-                  <div className={styles.placeholderCard}>
-                    <div className={styles.placeholderIcon}>📝</div>
+                        {/* ÁREA DE AÇÃO PRINCIPAL */}
+            <section className={styles.contentArea}>
+              {tipoUsuario === 'paciente' ? (
+                <div className={styles.placeholderCard}>
+                  
+                  {/* CONTAINER DA IMAGEM AJUSTADO */}
+                  <div className={styles.imageContainer}>
+                    <Image
+                      src="/registro.png"
+                      alt="Novo Registro"
+                      width={160}
+                      height={160}
+                      className={styles.illustration}
+                    />
+                  </div>
                     <h2>Pronto para começar?</h2>
                     <p>Adicione um novo registro e mapeie como está seu nível de estresse ou calmaria agora.</p>
                     <div className={styles.actionButtons}>
@@ -283,15 +302,24 @@ function HomeContent() {
                   </div>
                 ) : pacientesVinculados.length === 0 ? (
                   <div className={styles.placeholderCard}>
-                    <div className={styles.placeholderIcon}>👥</div>
-                    <h2>Gestão de Pacientes</h2>
-                    <p>Visualize e gerencie a listagem completa de indivíduos sob sua supervisão psicológica.</p>
-                    <div className={styles.actionButtons}>
-                      <button className={styles.btnPrimary} onClick={() => setShowVincularModal(true)}>
-                        + Vincular Novo Paciente
-                      </button>
-                    </div>
-                  </div>
+ <div className={styles.placeholderIcon}>
+  <Image 
+    src="/gestao-pacientes.png" 
+    alt="Ilustração de Gestão de Pacientes"
+    width={300}  
+    height={300} 
+    priority
+    style={{ width: 'auto', height: '250px', objectFit: 'contain' }}
+  />
+</div>
+  <h2>Gestão de Pacientes</h2>
+  <p>Visualize e gerencie a listagem completa de indivíduos sob sua supervisão psicológica.</p>
+  <div className={styles.actionButtons}>
+    <button className={styles.btnPrimary} onClick={() => setShowVincularModal(true)}>
+      + Vincular Novo Paciente
+    </button>
+  </div>
+</div>
                 ) : (
                   <div
                     className={styles.placeholderCard}
@@ -416,12 +444,12 @@ function HomeContent() {
               <section className={styles.collaboratorsSection}>
                 <h2 className={styles.sectionTitle}>Colaboradores do Projeto</h2>
                 <div className={styles.collaboratorsGrid}>
-                  <div className={styles.collaboratorCard}><div className={styles.collaboratorAvatar}>👨‍⚕️</div><div className={styles.collaboratorInfo}><h4>João Guilherme</h4><p>back-end</p></div></div>
-                  <div className={styles.collaboratorCard}><div className={styles.collaboratorAvatar}>💻</div><div className={styles.collaboratorInfo}><h4>Júlia Barbosa</h4><p>back-end/segurança</p></div></div>
-                  <div className={styles.collaboratorCard}><div className={styles.collaboratorAvatar}>🎨</div><div className={styles.collaboratorInfo}><h4>Well</h4><p>back-end/API</p></div></div>
+                  <div className={styles.collaboratorCard}><div className={styles.collaboratorAvatar}>👨‍⚕️</div><div className={styles.collaboratorInfo}><h4>João Guilherme</h4><p>Back-end</p></div></div>
+                  <div className={styles.collaboratorCard}><div className={styles.collaboratorAvatar}>💻</div><div className={styles.collaboratorInfo}><h4>Júlia Barbosa</h4><p>Back-end/Segurança</p></div></div>
+                  <div className={styles.collaboratorCard}><div className={styles.collaboratorAvatar}>🎨</div><div className={styles.collaboratorInfo}><h4>Wevelle Barbosa</h4><p>Back-end/API</p></div></div>
                   <div className={styles.collaboratorCard}><div className={styles.collaboratorAvatar}>👩‍⚕️</div><div className={styles.collaboratorInfo}><h4>Laryssa Ferreira</h4><p>UI-UX/Frontend</p></div></div>
-                  <div className={styles.collaboratorCard}><div className={styles.collaboratorAvatar}>⚙️</div><div className={styles.collaboratorInfo}><h4>Yuri</h4><p>back-end</p></div></div>
-                  <div className={styles.collaboratorCard}><div className={styles.collaboratorAvatar}>📋</div><div className={styles.collaboratorInfo}><h4>Levi Santos</h4><p>frontend</p></div></div>
+                  <div className={styles.collaboratorCard}><div className={styles.collaboratorAvatar}>⚙️</div><div className={styles.collaboratorInfo}><h4>Yuri Torres</h4><p>Back-end</p></div></div>
+                  <div className={styles.collaboratorCard}><div className={styles.collaboratorAvatar}>📋</div><div className={styles.collaboratorInfo}><h4>Levi Santos</h4><p>Frontend</p></div></div>
                 </div>
               </section>
             </>
@@ -564,7 +592,15 @@ function HomeContent() {
                     Ao criar constância nas respostas livres do seu diário pessoal e cruzar com as notas de 0 a 100, nosso sistema gera um mapa preventivo. Isso ajuda você e seu profissional de saúde a detectar picos de estresse antes mesmo que eles se tornem uma crise de ansiedade.
                   </p>
                 </div>
-                <div className={styles.bannerIconeMental}>💡</div>
+                <div className={styles.bannerIconeMental}>
+  <Image
+    src="/ideia.png"
+    alt="Ícone de ideia"
+     width={180}
+  height={180}
+  style={{ width: 'auto', height: '180px', objectFit: 'contain' }}
+  />
+</div>
               </section>
             </div>
           )}

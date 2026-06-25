@@ -4,11 +4,15 @@
   top: 0;
   height: 100vh;
   width: 280px;
-  background: var(--sidebar-bg);
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-right: 1px solid rgba(180, 160, 240, 0.35);
+  box-shadow: 4px 0 24px rgba(152, 131, 229, 0.08);
   color: var(--text-primary);
   padding: 24px 20px;
   overflow-y: auto;
-  border-right: 1px solid var(--border);
+  border-right: 1px solid rgba(139, 115, 247, 0.15); 
   z-index: 1000;
   display: flex;
   flex-direction: column;
@@ -146,4 +150,11 @@
     height: 56px;
     font-size: 18px;
   }
+}
+
+:global([data-theme='dark']) .sidebar {
+  background: rgba(70, 70, 70, 0.007);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
 }

@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { localFont } from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from '@/app/context/ThemeContext';
+import { UserProvider } from '@/app/context/UserContext';
 
 
 // FONTS DO GOOGLE
@@ -54,7 +55,9 @@ export default function RootLayout({ children }) {
     >
       <body>
         <ThemeProvider>
-          {children}
+          <UserProvider>
+            {children}
+          </UserProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -31,10 +31,10 @@ export default function SudsModal({ onClose, onSaibaMais }) {
           <div className={styles.avatarContainer}>
             {!imageError ? (
               <Image 
-                src="/lua.png"  /* TEMPORÁRIO */ 
-                alt="Assistente SUDS" 
-                width={75}            
-                height={75}           
+                src="/boas-vindas.png" 
+                alt="SUDS" 
+                width={200}            
+                height={180}           
                 className={styles.avatarImage} 
                 onError={() => setImageError(true)}
               />
@@ -42,7 +42,7 @@ export default function SudsModal({ onClose, onSaibaMais }) {
               <span className={styles.avatarEmoji}>👩‍⚕️✨</span>
             )}
           </div>
-          <h2>Bem-vindo ao SUDS</h2>
+          <h2>Bem-vindo(a) ao SUDS</h2>
           <p className={styles.subtitle}>Seu acompanhamento de saúde mental</p>
         </div>
 
@@ -61,7 +61,7 @@ export default function SudsModal({ onClose, onSaibaMais }) {
           <section className={styles.section}>
             <h3>Como funciona aqui no app?</h3>
             <p>
-              A cada registro, você atribui uma nota de 0 a 100 ao que está sentindo no
+              A cada registro, você atribui uma nota de 0 a 10/100 ao que está sentindo no
               momento. Com o tempo, esses registros formam um histórico que ajuda você
               (e seu profissional, se for o caso) a perceber padrões, gatilhos e a
               evolução do seu nível de perturbação.
@@ -69,11 +69,19 @@ export default function SudsModal({ onClose, onSaibaMais }) {
           </section>
 
           <section className={styles.section}>
+            <p>
+              Esta plataforma ainda está em desenvolvimento. Seu feedback e apoio são super importantes para nós!
+            </p>
+          </section>
+
+
+          <section className={styles.section}>
             <h3>Por onde começar</h3>
             <ul>
               <li>Use o Diário SUDS para registrar como você está se sentindo</li>
               <li>Acompanhe sua evolução na aba Estatísticas</li>
               <li>Veja mais detalhes sobre a escala em Sobre SUDS</li>
+              <li>Acesse a aba &ldquo;Suporte&rdquo; para tirar dúvidas.</li>
               <li>Ajuste suas preferências em Configurações</li>
             </ul>
           </section>

@@ -18,8 +18,11 @@
 }
 
 .modalContent {
-  background: white;
+  background: rgba(236, 236, 236, 0.774);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
   border-radius: 16px;
+  border: 1px solid rgba(198, 188, 242, 0.45);
   padding: 36px;
   max-width: 480px;
   width: 90%;
@@ -48,7 +51,9 @@
   width: 32px;
   height: 32px;
   border: none;
-  background: #f5f3ff;
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   font-size: 20px;
   cursor: pointer;
   color: #999;
@@ -71,7 +76,7 @@
 
 .header h2 {
   font-size: 24px;
-  color: #2d2930;
+  color: #9883e5;
   margin: 0 0 8px 0;
   font-weight: 600;
 }
@@ -97,6 +102,9 @@
 
 .campo textarea,
 .campo input {
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   width: 100%;
   padding: 12px;
   border: 1px solid #e1dbf5;
@@ -115,7 +123,7 @@
 }
 
 .opcional {
-  color: #b3aebb;
+  color: #68636e;
   font-weight: 400;
   font-size: 12px;
 }
@@ -193,7 +201,7 @@
 .numeroNivel {
   font-size: 48px;
   font-weight: 700;
-  color: #9883e5;
+  color: #8d6fd3;
   margin: 0 0 24px 0;
 }
 
@@ -240,6 +248,50 @@
   display: flex;
   justify-content: space-between;
   font-size: 12px;
-  color: #8a828e;
+  color: #584f5c;
   margin-bottom: 24px;
+}
+
+:global([data-theme='dark']) .modalContent {
+  background: rgba(28, 24, 34, 0.808);
+  border: 1px solid rgba(160, 100, 219, 0.3);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+:global([data-theme='dark']) .header h2 {
+  color: var(--text-primary);
+}
+
+:global([data-theme='dark']) .campo label {
+  color: var(--text-primary);
+}
+
+:global([data-theme='dark']) .campo textarea,
+:global([data-theme='dark']) .campo input {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(160, 100, 219, 0.25);
+  color: var(--text-primary);
+}
+
+:global([data-theme='dark']) .campo textarea::placeholder,
+:global([data-theme='dark']) .campo input::placeholder {
+  color: var(--text-muted);
+}
+
+:global([data-theme='dark']) .textoEmocao,
+:global([data-theme='dark']) .perguntaEscala {
+  color: var(--text-primary);
+}
+
+:global([data-theme='dark']) .closeBtn {
+  background: rgba(160, 100, 219, 0.15);
+  color: var(--text-muted);
+}
+
+:global([data-theme='dark']) .btnSecondary {
+  background: rgba(160, 100, 219, 0.1);
+  color: var(--lilas-claro);
+  border-color: rgba(160, 100, 219, 0.2);
 }

@@ -71,14 +71,22 @@ model Anotacao {
 }
 
 model Avaliacao {
- id Int @id @default(autoincrement())
- id_paciente Int
- id_profissional Int
- resultado String
- createAt DateTime @default(now())
- updateAt DateTime @updatedAt
+  id                  Int          @id @default(autoincrement())
+  id_paciente         Int
+  id_profissional     Int
+  titulo              String?    
+  tecnicas_utilizadas String?    
+  evolucao_percebida  String?      
+  pontos_positivos    String?      
+  suds_observado      Int?         
+  objetivo_semana     String?      
+  mensagem_paciente   String?      
+  
+  createAt            DateTime     @default(now())
+  updateAt            DateTime     @updatedAt
 
- paciente Paciente @relation(fields: [id_paciente], references: [id])
- profissional Profissional @relation(fields: [id_profissional], references: [id])
-
+  paciente            Paciente     @relation(fields: [id_paciente], references: [id])
+  profissional        Profissional @relation(fields: [id_profissional], references: [id])
 }
+
+

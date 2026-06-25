@@ -1,6 +1,5 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
-
 const tratarResposta = async (response) => {
   const data = await response.json().catch(() => null);
 
@@ -12,19 +11,39 @@ const tratarResposta = async (response) => {
   return { ok: false, error: mensagemErro, data };
 };
 
+const getHeaders = () => {
+  const token = localStorage.getItem('suds_token');
+  return {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`,
+  };
+};
+
 export async function vincularPacienteAoProfissional(pacienteId, profissionalId) {
   try {
     const response = await fetch(`${API_URL}/pacientes/${pacienteId}/atribuir-profissional`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: getHeaders(),
       body: JSON.stringify({ id_profissional: Number(profissionalId) }),
     });
 
-    const data = await response.json().catch(() => null);
-    if (response.ok) return { ok: true, data };
-    return { ok: false, error: data?.error || 'Erro ao vincular paciente.' };
+    return await tratarResposta(response);
   } catch (error) {
     console.error('vincularPacienteAoProfissional', error);
+    return { ok: false, error: 'Falha na conexão com o servidor.' };
+  }
+}
+
+export async function listarPacientesPorProfissional(profissionalId) {
+  try {
+    const response = await fetch(`${API_URL}/pacientes/profissional/${profissionalId}`, {
+      method: 'GET',
+      headers: getHeaders(),
+    });
+
+    return await tratarResposta(response);
+  } catch (error) {
+    console.error('listarPacientesPorProfissional', error);
     return { ok: false, error: 'Falha na conexão com o servidor.' };
   }
 }

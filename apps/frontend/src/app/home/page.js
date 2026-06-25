@@ -10,8 +10,12 @@ import NovoRegistroModal from '@/app/components/NovoRegistroModal';
 import { useTheme } from '@/app/context/ThemeContext';
 import { buscarAnotacoesPorPaciente } from '../services/AnotacoesService';
 import { buscarPacientePorUsuarioId } from '../services/usuarioService';
+import { listarPacientesPorProfissional } from '../services/ProfissionalService';
+import { buscarProfissionalPorUsuarioId } from '../services/usuarioService';
 import { useRouter } from 'next/navigation'
-import VincularPacienteModal from '@/app/components/AtribuirPacienteModal'; // 💡 Adicione junto com os outros imports
+import VincularPacienteModal from '@/app/components/AtribuirPacienteModal';
+import CriarAvaliacaoModal from '@/app/components/CriarAvaliacaoModal';
+import { buscarAvaliacoesPorPaciente } from '../services/AvaliacaoService';
 
 
 const formatarDataLocal = (stringData) => {
@@ -34,7 +38,7 @@ export default function HomePage() {
 function HomeContent() {
   const router = useRouter()
   // Ajustado destructuring para pegar tipoUsuario e updateTipoUsuario
-  const { user, tipoUsuario, updateTipoUsuario, logout, loading, showSudsModal, fecharOModal } = useUser();
+  const { user, tipoUsuario,perfilId, updateTipoUsuario, logout, loading, showSudsModal, fecharOModal } = useUser();
   const [currentTab, setCurrentTab] = useState('home');
   const { modoEscuro, toggleModoEscuro } = useTheme();
   const [forcedModalOpen, setForcedModalOpen] = useState(false);
@@ -42,6 +46,15 @@ function HomeContent() {
   const [todosRegistros, setTodosRegistros] = useState([]);
   const [confirmandoLimpeza, setConfirmandoLimpeza] = useState(false);
   const [showVincularModal, setShowVincularModal] = useState(false); // 💡 Controla a abertura do vínculo profissional
+  const [pacientesVinculados, setPacientesVinculados] = useState([]);
+  const [pacienteSelecionado, setPacienteSelecionado] = useState(null);
+  const abrirDetalhePaciente = (paciente) => {
+    setPacienteSelecionado(paciente);
+    setCurrentTab('detalhePaciente');
+  };
+  const [anotacoesDoPacienteSelecionado, setAnotacoesDoPacienteSelecionado] = useState([]);
+  const [showCriarAvaliacaoModal, setShowCriarAvaliacaoModal] = useState(false);
+  const [avaliacoesDoPacienteSelecionado, setAvaliacoesDoPacienteSelecionado] = useState([]);
 
 
  useEffect(() => {
@@ -85,6 +98,62 @@ function HomeContent() {
     }
   }, [tipoUsuario, loading, user]);
 
+  useEffect(() => {
+    async function carregarPacientesDoProfissional() {
+      const tipoReal = tipoUsuario || (typeof window !== 'undefined' ? localStorage.getItem('suds_tipo_usuario') : null);
+
+      if (tipoReal === 'profissional' && user?.id) {
+        const perfilProfissional = await buscarProfissionalPorUsuarioId(user.id);
+
+        if (perfilProfissional.ok && perfilProfissional.data) {
+          const idRealDoProfissional = perfilProfissional.data.id;
+          const resultadoPacientes = await listarPacientesPorProfissional(idRealDoProfissional);
+
+          if (resultadoPacientes.ok && resultadoPacientes.data) {
+            setPacientesVinculados(resultadoPacientes.data);
+          } else {
+            console.error("Erro ao carregar pacientes vinculados:", resultadoPacientes.error);
+          }
+        } else {
+          console.error("Erro ao identificar perfil profissional:", perfilProfissional.error);
+        }
+      }
+    }
+
+    if (!loading && user) {
+      carregarPacientesDoProfissional();
+    }
+  }, [tipoUsuario, loading, user]);
+
+  useEffect(() => {
+    async function carregarAnotacoesDoPaciente() {
+      if (pacienteSelecionado?.id) {
+        const resultado = await buscarAnotacoesPorPaciente(pacienteSelecionado.id);
+        if (resultado.ok && resultado.data) {
+          setAnotacoesDoPacienteSelecionado(resultado.data);
+        } else {
+          console.error("Erro ao buscar anotações do paciente:", resultado.error);
+          setAnotacoesDoPacienteSelecionado([]);
+        }
+      }
+    }
+
+    carregarAnotacoesDoPaciente();
+  }, [pacienteSelecionado]);
+  useEffect(() => {
+    async function carregarAvaliacoesDoPaciente() {
+      if (pacienteSelecionado?.id) {
+        const resultado = await buscarAvaliacoesPorPaciente(pacienteSelecionado.id);
+        if (resultado.ok && resultado.data) {
+          setAvaliacoesDoPacienteSelecionado(resultado.data);
+        } else {
+          setAvaliacoesDoPacienteSelecionado([]);
+        }
+      }
+    }
+    carregarAvaliacoesDoPaciente();
+  }, [pacienteSelecionado]);
+
   // Lógica de variáveis utilitárias
   const ultimoRegistro = todosRegistros.length > 0 ? todosRegistros[0] : null;
 
@@ -121,7 +190,23 @@ function HomeContent() {
       {showVincularModal && (
         <VincularPacienteModal onClose={() => setShowVincularModal(false)} />
       )}
-      
+
+      {showCriarAvaliacaoModal && (
+        <CriarAvaliacaoModal
+          paciente={pacienteSelecionado}
+          profissionalId={perfilId}
+          onClose={(recarregar) => {
+            setShowCriarAvaliacaoModal(false);
+            if (recarregar && pacienteSelecionado?.id) {
+              // 💡 Recarrega as avaliações sem dar reload na página inteira
+              buscarAvaliacoesPorPaciente(pacienteSelecionado.id).then((res) => {
+                if (res.ok && res.data) setAvaliacoesDoPacienteSelecionado(res.data);
+              });
+            }
+          }}
+        />
+      )}
+            
 
       <Header />
 
@@ -183,32 +268,105 @@ function HomeContent() {
                 </div>
               </div>
 
-              {/* ÁREA DE AÇÃO PRINCIPAL */}
+             {/* ÁREA DE AÇÃO PRINCIPAL */}
               <section className={styles.contentArea}>
-                <div className={styles.placeholderCard}>
-                  <div className={styles.placeholderIcon}>
-                    {tipoUsuario === 'paciente' ? '📝' : '👥'}
-                  </div>
-                  <h2>{tipoUsuario === 'paciente' ? 'Pronto para começar?' : 'Gestão de Pacientes'}</h2>
-                  <p>
-                    {tipoUsuario === 'paciente'
-                      ? 'Adicione um novo registro e mapeie como está seu nível de estresse ou calmaria agora.'
-                      : 'Visualize e gerencie a listagem completa de indivíduos sob sua supervisão psicológica.'}
-                  </p>
-                  <div className={styles.actionButtons}>
-                    {tipoUsuario === 'paciente' ? (
+                {tipoUsuario === 'paciente' ? (
+                  <div className={styles.placeholderCard}>
+                    <div className={styles.placeholderIcon}>📝</div>
+                    <h2>Pronto para começar?</h2>
+                    <p>Adicione um novo registro e mapeie como está seu nível de estresse ou calmaria agora.</p>
+                    <div className={styles.actionButtons}>
                       <button className={styles.btnPrimary} onClick={() => setShowNovoRegistroModal(true)}>
                         + Novo Registro SUDS
                       </button>
-                    ) : (
+                    </div>
+                  </div>
+                ) : pacientesVinculados.length === 0 ? (
+                  <div className={styles.placeholderCard}>
+                    <div className={styles.placeholderIcon}>👥</div>
+                    <h2>Gestão de Pacientes</h2>
+                    <p>Visualize e gerencie a listagem completa de indivíduos sob sua supervisão psicológica.</p>
+                    <div className={styles.actionButtons}>
                       <button className={styles.btnPrimary} onClick={() => setShowVincularModal(true)}>
                         + Vincular Novo Paciente
                       </button>
-                    )}
+                    </div>
                   </div>
-                </div>
-              </section>
+                ) : (
+                  <div
+                    className={styles.placeholderCard}
+                    style={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      gap: '16px',
+                      alignContent: 'flex-start',
+                      maxHeight: '300px',
+                      overflowY: 'auto',
+                    }}
+                  >
+                    {pacientesVinculados.map((paciente) => (
+                      <button
+                        key={paciente.id}
+                        onClick={() => abrirDetalhePaciente(paciente)}
+                        className={styles.gridCard}
+                        style={{
+                          width: '160px',
+                          textAlign: 'center',
+                          padding: '20px',
+                          cursor: 'pointer',
+                          border: 'none',
+                          fontFamily: 'inherit',
+                        }}
+                      >
+                        <div
+                          style={{
+                            width: '56px',
+                            height: '56px',
+                            borderRadius: '50%',
+                            background: '#9883e5',
+                            color: 'white',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '20px',
+                            fontWeight: '700',
+                            margin: '0 auto 12px auto',
+                          }}
+                        >
+                          {paciente.usuario?.nome ? paciente.usuario.nome.charAt(0).toUpperCase() : '?'}
+                        </div>
+                        <p style={{ fontWeight: '600', color: 'var(--text-primary)', margin: '0 0 4px 0', fontSize: '14px' }}>
+                          {paciente.usuario?.nome || 'Sem nome'}
+                        </p>
+                        <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: 0 }}>
+                          {paciente.usuario?.email || ''}
+                        </p>
+                      </button>
+                    ))}
 
+                    <button
+                      onClick={() => setShowVincularModal(true)}
+                      className={styles.gridCard}
+                      style={{
+                        width: '160px',
+                        padding: '20px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                        border: '2px dashed var(--border)',
+                        background: 'none',
+                      }}
+                    >
+                      <span style={{ fontSize: '32px', color: '#9883e5', marginBottom: '8px' }}>+</span>
+                      <span style={{ fontSize: '13px', color: 'var(--text-secondary)', fontWeight: '500' }}>
+                        Adicionar Paciente
+                      </span>
+                    </button>
+                  </div>
+                )}
+              </section>
               {/* CARDS COMPLEMENTARES - GRID */}
               <section className={styles.cardsGrid}>
                 <div className={styles.gridCard}>
@@ -507,6 +665,200 @@ function HomeContent() {
                 </button>
               </div>
             </div>
+          </div>
+        )}
+        {/* DETALHE DO PACIENTE (visão do profissional) */}
+        {currentTab === 'detalhePaciente' && pacienteSelecionado && (
+          <div className={styles.tabContent}>
+            <button
+              onClick={() => setCurrentTab('home')}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#9883e5',
+                cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: '500',
+                marginBottom: '20px',
+                padding: 0,
+              }}
+            >
+              ← Voltar para Pacientes
+            </button>
+
+            <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
+              {/* COLUNA LATERAL: dados + ações */}
+              <div style={{ width: '220px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div className={styles.gridCard} style={{ textAlign: 'center', padding: '24px' }}>
+                  <div
+                    style={{
+                      width: '72px',
+                      height: '72px',
+                      borderRadius: '50%',
+                      background: '#9883e5',
+                      color: 'white',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '28px',
+                      fontWeight: '700',
+                      margin: '0 auto 16px auto',
+                    }}
+                  >
+                    {pacienteSelecionado.usuario?.nome ? pacienteSelecionado.usuario.nome.charAt(0).toUpperCase() : '?'}
+                  </div>
+                  <p style={{ fontWeight: '600', color: 'var(--text-primary)', margin: '0 0 4px 0' }}>
+                    {pacienteSelecionado.usuario?.nome || 'Sem nome'}
+                  </p>
+                  <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: 0 }}>
+                    {pacienteSelecionado.usuario?.email || ''}
+                  </p>
+                </div>
+
+                <button
+                  className={styles.btnPrimary}
+                  onClick={() => setShowCriarAvaliacaoModal(true)}
+                >
+                  Criar Avaliação
+                </button>
+
+                <button
+                  className={styles.btnExcluirConta}
+                  onClick={() => alert('Funcionalidade de desvincular em desenvolvimento.')}
+                >
+                  Desvincular Paciente
+                </button>
+              </div>
+
+              {/* HISTÓRICO DE REGISTROS DO PACIENTE */}
+              <div style={{ flex: 1, minWidth: '280px' }}>
+                <h3 style={{ marginBottom: '12px' }}>Histórico de Registros</h3>
+
+                {anotacoesDoPacienteSelecionado.length === 0 ? (
+                  <div className={styles.gridCard} style={{ textAlign: 'center', padding: '24px' }}>
+                    <p style={{ color: 'var(--text-muted)', margin: 0 }}>
+                      Este paciente ainda não fez nenhum registro.
+                    </p>
+                  </div>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    {anotacoesDoPacienteSelecionado.map((registro) => {
+                      const dataObj = new Date(registro.createAt);
+                      const dataFormatada = !isNaN(dataObj.getTime())
+                        ? dataObj.toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' })
+                        : 'Data inválida';
+
+                      return (
+                        <div key={registro.id} className={styles.gridCard} style={{ padding: '16px' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                            <span style={{ fontWeight: '600', color: 'var(--text-primary)' }}>
+                              SUDS: {registro.intensidade}
+                            </span>
+                            <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+                              {dataFormatada}
+                            </span>
+                          </div>
+                          {registro.anotacao && (
+                            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: '0 0 6px 0' }}>
+                              {registro.anotacao}
+                            </p>
+                          )}
+                          {registro.gatilhos && (
+                            <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: 0 }}>
+                              <strong>Gatilhos:</strong> {registro.gatilhos}
+                            </p>
+                          )}
+                          {registro.estrategias && (
+                            <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: '4px 0 0 0' }}>
+                              <strong>Estratégias:</strong> {registro.estrategias}
+                            </p>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </div>
+             {/* AVALIAÇÕES CLÍNICAS DO PROFISSIONAL */}
+              <div style={{ flex: 1, minWidth: '280px', marginTop: '32px' }}>
+                <h3 style={{ marginBottom: '12px' }}>Avaliações Clínicas</h3>
+
+                {avaliacoesDoPacienteSelecionado.length === 0 ? (
+                  <div className={styles.gridCard} style={{ textAlign: 'center', padding: '24px' }}>
+                    <p style={{ color: 'var(--text-muted)', margin: 0 }}>
+                      Nenhuma avaliação registrada ainda.
+                    </p>
+                  </div>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    {avaliacoesDoPacienteSelecionado.map((avaliacao) => {
+                      const dataObj = new Date(avaliacao.createAt || avaliacao.createdAt);
+                      const dataFormatada = !isNaN(dataObj.getTime())
+                        ? dataObj.toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' })
+                        : 'Data inválida';
+
+                      return (
+                        <div key={avaliacao.id} className={styles.gridCard} style={{ padding: '16px' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                            <span style={{ fontWeight: '600', color: 'var(--text-primary)', fontSize: '15px' }}>
+                              {avaliacao.titulo}
+                            </span>
+                            <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+                              {dataFormatada}
+                            </span>
+                          </div>
+
+                          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '10px' }}>
+                            {avaliacao.evolucao_percebida && (
+                              <span style={{
+                                fontSize: '12px', fontWeight: '500', padding: '2px 10px',
+                                borderRadius: '20px', background: '#f0ecff', color: '#9883e5',
+                              }}>
+                                {avaliacao.evolucao_percebida}
+                              </span>
+                            )}
+                            {avaliacao.suds_observado !== undefined && avaliacao.suds_observado !== null && (
+                              <span style={{
+                                fontSize: '12px', fontWeight: '500', padding: '2px 10px',
+                                borderRadius: '20px', background: 'var(--btn-surface)', color: 'var(--text-secondary)',
+                                border: '1px solid var(--border)',
+                              }}>
+                                SUDS observado: {avaliacao.suds_observado}
+                              </span>
+                            )}
+                          </div>
+
+                          {avaliacao.tecnicas_utilizadas && (
+                            <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: '0 0 4px 0' }}>
+                              <strong>Técnicas:</strong> {avaliacao.tecnicas_utilizadas}
+                            </p>
+                          )}
+                          {avaliacao.pontos_positivos && (
+                            <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: '0 0 4px 0' }}>
+                              <strong>Pontos positivos:</strong> {avaliacao.pontos_positivos}
+                            </p>
+                          )}
+                          {avaliacao.objetivo_semana && (
+                            <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: '0 0 4px 0' }}>
+                              <strong>Objetivo da semana:</strong> {avaliacao.objetivo_semana}
+                            </p>
+                          )}
+                          {avaliacao.mensagem_paciente && (
+                            <p style={{
+                              fontSize: '13px', color: 'var(--text-primary)', margin: '8px 0 0 0',
+                              padding: '10px', borderRadius: '8px', background: '#f0ecff',
+                              fontStyle: 'italic',
+                            }}>
+                              💬 {avaliacao.mensagem_paciente}
+                            </p>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
           </div>
         )}
 

@@ -69,7 +69,7 @@ export default function LoginForm({ modoEscuro }) {
         setErroLogin(resposta.error || 'Email ou senha incorretos. Tente novamente.');
         return;
       }
-      loginContext(resposta.data); 
+      await loginContext(resposta.data); 
 
       setSucessoLogin('Login realizado! Redirecionando...');
       setTimeout(() => router.push('/home'), 1500);

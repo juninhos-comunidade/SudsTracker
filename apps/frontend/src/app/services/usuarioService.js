@@ -42,9 +42,13 @@ export async function loginUsuario(payload) {
 }
 export async function buscarPacientePorUsuarioId(usuarioId) {
   try {
+    const token = localStorage.getItem('suds_token');
     const response = await fetch(`${API_URL}/pacientes/usuario/${usuarioId}`, {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
     });
 
     const data = await response.json().catch(() => null);
@@ -59,9 +63,14 @@ export async function buscarPacientePorUsuarioId(usuarioId) {
 }
 export async function buscarProfissionalPorUsuarioId(usuarioId) {
   try {
+    const token = localStorage.getItem('suds_token');
+
     const response = await fetch(`${API_URL}/profissionais/usuario/${usuarioId}`, {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
     });
     return await tratarResposta(response);
   } catch (error) {
@@ -71,9 +80,14 @@ export async function buscarProfissionalPorUsuarioId(usuarioId) {
 }
 export async function buscarUsuarioPorEmail(email) {
   try {
+    const token = localStorage.getItem('suds_token');
+
     const response = await fetch(`${API_URL}/usuarios/email/${encodeURIComponent(email)}`, {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
     });
     return await tratarResposta(response);
   } catch (error) {

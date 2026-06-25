@@ -555,6 +555,11 @@ function HomeContent() {
                             <strong>Gatilhos:</strong> {registro.gatilhos}
                           </p>
                         )}
+                        {registro.estrategias && (
+                          <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: 0 }}>
+                            <strong>Estratégias:</strong> {registro.estrategias}
+                          </p>
+                        )}                        
                       </div>
                     ); // 💡 Fechamento do return corrigido
                   })} {/* 💡 Fechamento do .map() corrigido */}

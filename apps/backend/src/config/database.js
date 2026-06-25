@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 
 // Na Vercel, as variáveis vêm do painel. Localmente, carrega do .env
 if (process.env.NODE_ENV !== 'production') {
-  dotenv.config({ path: path.resolve(__dirname, "../../.env") });
+  dotenv.config({ path: path.resolve(__dirname, "../../../../.env") });
 }
 
 let connectionString = process.env.DATABASE_URL;

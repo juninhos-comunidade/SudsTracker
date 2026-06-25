@@ -6,7 +6,7 @@ import styles from './settings.module.css';
 
 export default function SettingsPage() {
   // Pegamos as funções de atualização e logout que já existem no seu UserContext!
-  const { user, role, updateRole, logout, loading } = useUser();
+  const { user, tipoUsuario, logout, loading } = useUser();
 
   if (loading) {
     return <div>Carregando...</div>;
@@ -63,11 +63,11 @@ export default function SettingsPage() {
               </div>
               <select 
                 className={styles.select}
-                value={role}
-                onChange={(e) => updateRole(e.target.value)}
+                value={tipoUsuario || 'paciente'}
+                disabled
               >
-                <option value="patient">Paciente</option>
-                <option value="professional">Profissional / Psicólogo</option>
+                <option value="paciente">Paciente</option>
+                <option value="profissional">Profissional / Psicólogo</option>
               </select>
             </div>
           </section>

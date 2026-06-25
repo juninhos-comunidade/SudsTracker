@@ -1,5 +1,6 @@
 'use client';
 import { createContext, useContext, useState, useEffect } from 'react';
+import { buscarPacientePorUsuarioId, buscarProfissionalPorUsuarioId } from '@/app/services/usuarioService';
 
 const UserContext = createContext();
 
@@ -8,9 +9,24 @@ export function UserProvider({ children }) {
   const [tipoUsuario, setTipoUsuario] = useState(null); // 'PACIENTE' | 'PROFISSIONAL'
   const [loading, setLoading] = useState(true);
   const [showSudsModal, setShowSudsModal] = useState(false);
+  const [perfilId, setPerfilId] = useState(null);
+
+const buscarPerfilId = async (usuarioId, tipo) => {
+  if (tipo === 'paciente') {
+    const resultado = await buscarPacientePorUsuarioId(usuarioId);
+    return resultado.ok ? resultado.data?.id : null;
+  }
+
+  if (tipo === 'profissional') {
+    const resultado = await buscarProfissionalPorUsuarioId(usuarioId);
+    return resultado.ok ? resultado.data?.id : null;
+  }
+
+  return null;
+};
 
 useEffect(() => {
-    const loadUserData = () => {
+    const loadUserData = async () => {
       if (typeof window !== 'undefined') {
         const token = localStorage.getItem('suds_token');    
         const usuarioSalvo = localStorage.getItem('suds_user');
@@ -19,10 +35,15 @@ useEffect(() => {
         if (token && usuarioSalvo) {
           const parsedUser = JSON.parse(usuarioSalvo);
           setUser(parsedUser);
-          setTipoUsuario(parsedUser.tipoUsuario ? parsedUser.tipoUsuario.toLowerCase() : 'paciente'); 
+          const tipoFinal = parsedUser.tipoUsuario ? parsedUser.tipoUsuario.toLowerCase() : 'paciente';
+          setTipoUsuario(tipoFinal);
+
+          const idDoPerfil = await buscarPerfilId(parsedUser.id, tipoFinal);
+          setPerfilId(idDoPerfil);
         } else {
           setUser(null);
           setTipoUsuario(null);
+          setPerfilId(null);
         }
 
         if (!dontShowModal && usuarioSalvo) {
@@ -37,7 +58,7 @@ useEffect(() => {
 , []); // 💡 Chaves do useEffect corrigidas e fechadas no local exato!
 
   // 🔑 Função usada pelos formulários de Login e Cadastro após sucesso na API
-  const loginContext = (dadosLogin) => {
+  const loginContext = async (dadosLogin) => {
     if (typeof window !== 'undefined') {
       const usuarioObjeto = dadosLogin.user || dadosLogin.usuario;
       if (!usuarioObjeto) {
@@ -48,13 +69,14 @@ useEffect(() => {
       const tipoDefinido = usuarioObjeto.tipoUsuario ? usuarioObjeto.tipoUsuario.toLowerCase() : 'paciente';
       localStorage.setItem('suds_token', dadosLogin.token);
       localStorage.setItem('suds_user', JSON.stringify(usuarioObjeto));
-      localStorage.setItem('suds_tipo_usuario', tipoDefinido); // Cria contingência para a página ler rápido
+      localStorage.setItem('suds_tipo_usuario', tipoDefinido);
 
       setUser(usuarioObjeto);
       setTipoUsuario(tipoDefinido);
 
-
-       }
+      const idDoPerfil = await buscarPerfilId(usuarioObjeto.id, tipoDefinido);
+      setPerfilId(idDoPerfil);
+    }
   };
 
   const fecharOModal = () => {
@@ -81,6 +103,7 @@ useEffect(() => {
       value={{
         user,
         tipoUsuario,
+        perfilId,
         loading,
         showSudsModal,
         loginContext, // 💡 Exposto para os formulários usarem

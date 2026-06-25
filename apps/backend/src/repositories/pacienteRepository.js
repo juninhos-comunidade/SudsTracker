@@ -19,15 +19,42 @@ class PacienteRepository {
             {where: 
                 { 
                     id_usuario: String(userId)
-                }
-            });
+                },
+                include: {
+                    usuario:{
+                        select: {
+                            id: true,
+                            nome: true,
+                            dataNascimento: true,
+                            email: true,
+                            tipoUsuario: true,
+                            createdAt: true,
+                            updatedAt: true,
+                            } 
+                        }
+                    }
+                });
     }
 
     async encontrarTodosPorProfissional(profissionalId) {
         const id = Number(profissionalId);
         return await prisma.paciente.findMany({
-            where: { id_profissional: Number.isNaN(id) ? profissionalId : id }
-        });
+            where: { id_profissional: Number.isNaN(id) ? profissionalId : id },
+            include: {
+                    usuario:{
+                        select: {
+                            id: true,
+                            nome: true,
+                            dataNascimento: true,
+                            email: true,
+                            tipoUsuario: true,
+                            createdAt: true,
+                            updatedAt: true,
+                            } 
+                        }
+                    }
+        
+                });
     }
 
     async encontrarTodas() {

@@ -21,7 +21,7 @@
   --texto-claro: #8a828e;
   --texto-mais-claro: #a197a6;
 
-  --bg-default: #fcfbfe;
+  --bg-default: #e8e3f8;
   --bg-surface: #ffffff;
   --bg-surface-soft: #f8f7fc;
   --sidebar-bg: #fcfbfe;
@@ -43,15 +43,17 @@
   --input-color: #4b4b5c;
   --nav-hover-bg: rgba(139, 115, 247, 0.06);
   --nav-active-bg: rgba(139, 115, 247, 0.1);
+  --glass-bg: rgba(255, 255, 255, 0.55);
+  --glass-border: rgba(198, 188, 242, 0.4);
 }
 
 html[data-theme='dark'] {
   color-scheme: dark;
-  background-color: #07070d;
+  background: linear-gradient(135deg, #0d0b1a 0%, #110e22 40%, #130f28 100%);
 }
 
 :root[data-theme='dark'] {
-  --bg-default: #07070d;
+  --bg-default: transparent;
   --bg-surface: #11121a;
   --bg-surface-soft: #141723;
   --sidebar-bg: #0c0e18;
@@ -73,19 +75,33 @@ html[data-theme='dark'] {
   --input-color: #e4e8ff;
   --nav-hover-bg: rgba(255, 255, 255, 0.08);
   --nav-active-bg: rgba(139, 115, 247, 0.14);
+  --glass-bg: rgba(139, 115, 247, 0.08);
+  --glass-border: rgba(139, 115, 247, 0.2);
 }
 
-html, body {
+html {
   margin: 0;
   min-height: 100%;
-  background: var(--bg-default);
   color: var(--text-primary);
   font-family: Inter, sans-serif;
 }
 
 body {
-  background: var(--bg-default);
+  margin: 0;
+  min-height: 100vh;
+  /* Modo claro */
+  background: var(--bg-default); 
+  background-attachment: fixed;
 }
+
+html[data-theme='dark'],
+html[data-theme='dark'] body {
+  background: linear-gradient(135deg, #1a1a1c 0%, #1a1a1c 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+
 
 button,
 input,
@@ -94,5 +110,4 @@ textarea {
   color: inherit;
   font: inherit;
 }
-
 

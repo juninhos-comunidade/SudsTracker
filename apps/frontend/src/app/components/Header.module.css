@@ -3,8 +3,11 @@
   top: 0;
   left: 280px;
   right: 0;
-  background: var(--header-bg);
-  border-bottom: 1px solid var(--border);
+  /* Efeito vidro para o Modo Claro */
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(139, 115, 247, 0.15);
   z-index: 999;
   padding: 0;
   height: 70px;
@@ -54,14 +57,16 @@
 .themeToggle {
   background: var(--btn-surface);
   border: none;
-  font-size: 16px;
   cursor: pointer;
-  padding: 8px;
+  padding: 0; 
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: background 0.2s;
+  width: 45px; 
+  height: 45px;
+  overflow: hidden; /* garante que a imagem não vaze */
 }
 
 .themeToggle:hover {
@@ -69,9 +74,10 @@
 }
 
 .btnTopLogout {
-  background: var(--danger-bg);
-  color: var(--danger-text);
-  border: 1px solid var(--danger-border);
+  background: var(--lilas-bg-suave);
+  color: var(--lilas-principal);
+  border: 1px solid var(--lilas-borda);
+  
   padding: 8px 18px;
   border-radius: 10px;
   font-size: 14px;
@@ -81,10 +87,27 @@
 }
 
 .btnTopLogout:hover {
-  background: var(--danger-text);
-  color: white;
-  border-color: var(--danger-text);
+  background: var(--lilas-bg-hover);
+  border-color: var(--lilas-borda-hover);
+  color: var(--lilas-escuro);
 }
+
+
+:global(.dark) button.btnTopLogout,
+:global(.dark) .btnTopLogout {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: var(--lilas-claro);
+}
+
+:global(.dark) button.btnTopLogout:hover,
+:global(.dark) .btnTopLogout:hover {
+  background: rgba(152, 131, 229, 0.2); 
+  border-color: var(--lilas-principal);
+  color: #ffffff;
+}
+
+
 
 .modalOverlay {
   position: fixed;
@@ -92,8 +115,9 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(45, 41, 48, 0.45);
-  backdrop-filter: blur(3px);
+  background: rgba(20, 15, 35, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -101,89 +125,126 @@
 }
 
 .modalCard {
-  background: var(--bg-surface);
-  padding: 32px;
-  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  padding: 40px 36px 32px;
+  border-radius: 28px;
   width: 90%;
-  max-width: 420px;
+  max-width: 400px;
   text-align: center;
-  box-shadow: var(--panel-shadow);
-  animation: modalUp 0.25s ease-out;
+  border: 1px solid rgba(180, 160, 255, 0.4);
+  box-shadow:
+    0 8px 32px rgba(139, 115, 247, 0.15),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  animation: modalUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modalEmoji {
+  font-size: 40px;
+  margin-bottom: 16px;
+  display: block;
 }
 
 .modalTitle {
   color: var(--text-primary);
   font-size: 22px;
   font-weight: 700;
-  margin: 0 0 12px 0;
+  margin: 0 0 10px 0;
+  letter-spacing: -0.3px;
 }
 
 .modalText {
   color: var(--text-secondary);
   font-size: 14px;
-  line-height: 1.6;
-  margin: 0 0 28px 0;
+  line-height: 1.7;
+  margin: 0 0 32px 0;
 }
 
 .modalActions {
   display: flex;
-  gap: 12px;
+  gap: 10px;
 }
 
 .btnCancel {
   flex: 1;
-  background: var(--btn-surface);
-  color: #8b73f7;
+  background: linear-gradient(135deg, #9883e5 0%, #b19ffb 100%);
+  color: #ffffff;
   border: none;
-  padding: 12px;
-  border-radius: 12px;
+  padding: 13px;
+  border-radius: 14px;
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(139, 115, 247, 0.35);
 }
 
 .btnCancel:hover {
-  background: var(--btn-surface-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(139, 115, 247, 0.45);
 }
 
 .btnConfirm {
   flex: 1;
-  background: var(--bg-surface);
+  background: rgba(255, 255, 255, 0.5);
   color: var(--text-secondary);
-  border: 1px solid var(--border);
-  padding: 12px;
-  border-radius: 12px;
+  border: 1px solid rgba(180, 160, 240, 0.35);
+  padding: 13px;
+  border-radius: 14px;
   font-weight: 500;
   font-size: 14px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
 }
 
 .btnConfirm:hover {
-  background: var(--danger-bg);
-  color: var(--danger-text);
-  border-color: var(--danger-border);
+  background: rgba(240, 236, 255, 0.8);
+  color: #8b73f7;
+  border-color: rgba(139, 115, 247, 0.4);
+  transform: translateY(-1px);
+}
+
+:global([data-theme='dark']) .modalCard {
+  background: rgba(30, 22, 48, 0.75);
+  border: 1px solid rgba(160, 130, 220, 0.25);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+:global([data-theme='dark']) .btnConfirm {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(160, 130, 220, 0.25);
+  color: var(--text-secondary);
+}
+
+:global([data-theme='dark']) .btnConfirm:hover {
+  background: rgba(139, 115, 247, 0.15);
+  color: #c4a8f5;
+  border-color: rgba(139, 115, 247, 0.4);
 }
 
 @keyframes modalUp {
-  from { transform: translateY(15px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from { transform: translateY(20px) scale(0.97); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
 }
 
-/*  RESPONSIVIDADE CORRIGIDA (SEM SOBREPOSIÇÃO)  */
+/*  RESPONSIVIDADE  */
 @media (max-width: 1024px) {
   .header { 
-    left: 280px; /* Mantém o recuo correto para não entrar debaixo da sidebar */
+    left: 280px; 
   }
   .navbar { 
-    padding: 0 30px 0 40px; /* Dá uma folga extra de segurança na esquerda */
+    padding: 0 30px 0 40px;
   }
 }
 
 @media (max-width: 768px) {
   .header { 
-    left: 200px; /* Ajustado para quando a sua sidebar encolher para 200px */
+    left: 200px; 
   }
   .navbar { 
     padding: 0 20px 0 30px; 
@@ -204,4 +265,18 @@
   .navItem { 
     font-size: 13px; 
   }
+}
+
+:global([data-theme='dark']) .header {
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+:global([data-theme='dark']) .modalCard {
+  background: rgba(28, 24, 34, 0.438);
+  border: 1px solid rgba(160, 100, 219, 0.3);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }

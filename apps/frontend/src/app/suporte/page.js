@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import styles from './suporte.module.css';
+import { useTheme } from '@/app/context/ThemeContext';
 
 const PERGUNTAS_FREQUENTES = [
   {
@@ -45,9 +46,10 @@ export default function SuportePage() {
     setEmail('');
     setMensagem('');
   };
+  const { modoEscuro } = useTheme();
 
   return (
-    <div className={styles.suporteContainer}>
+    <div className={`${styles.suporteContainer} ${modoEscuro ? styles.dark : ''}`}>
       <div className={styles.suporteContent}>
         <Link href="/home" className={styles.voltarLink}>
           Voltar para tela inicial

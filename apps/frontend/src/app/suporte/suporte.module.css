@@ -165,3 +165,59 @@
   color: #9883e5;
   font-weight: 600;
 }
+
+/* ───────── MODO ESCURO ───────── */
+
+.suporteContainer.dark {
+  background: #1d1c1c;
+}
+
+.dark .secao {
+  background: #2a2a2a;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+.dark .titulo,
+.dark .secaoTitulo,
+.dark .faqPergunta,
+.dark .campo label {
+  color: #eee;
+}
+
+.dark .subtitulo {
+  color: #aaa;
+}
+
+.dark .faqItem {
+  border-color: #3a3a3a;
+}
+
+.dark .faqPergunta:hover {
+  background: #333;
+}
+
+.dark .faqResposta {
+  color: #ccc;
+}
+
+.dark .campo input,
+.dark .campo textarea {
+  background: #1d1c1c;
+  border-color: #3a3a3a;
+  color: #eee;
+}
+
+.dark .campo input::placeholder,
+.dark .campo textarea::placeholder {
+  color: #888;
+}
+
+.dark .mensagemSucesso {
+  background: #1c2e22;
+  border-color: #48bb78;
+  color: #68d391;
+}
+
+.dark .contatoDireto {
+  color: #aaa;
+}

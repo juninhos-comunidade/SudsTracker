@@ -1,10 +1,18 @@
 'use client';
-import { useUser } from '@/app/context/UserContext';
+import { useUser, UserProvider } from '@/app/context/UserContext';
 import Sidebar from '@/app/components/Sidebar';
 import Header from '@/app/components/Header';
 import styles from './settings.module.css';
 
-export default function SettingsPage() {
+export default function SettingsPageWrapper() {
+  return (
+    <UserProvider>
+      <SettingsPage />
+    </UserProvider>
+  );
+}
+
+function SettingsPage() {
   // Pegamos as funções de atualização e logout que já existem no seu UserContext!
   const { user, role, updateRole, logout, loading } = useUser();
 
